@@ -5,15 +5,15 @@ function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, tex
 
 	// Call the Phaser.Button constructor
 	Phaser.Button.call(this, game, x, y, key, callback, callbackContext, buttonFrame, buttonFrame, buttonFrame, buttonFrame);
-	// Set the anchor point to the middle, scale to double
-	this.anchor.set(0.5);
-	this.scale.set(2);
 
 	// Add this sprite to the game
 	game.add.existing(this);
 
 	
 	this.text = this.addChild(game.make.text(0, 0, text, {font: "15px Courier", font: "15px Lucida Console", fontWeight: "bold", fill: "#f22"}));
+	this.text.anchor.set(0.5);
+	this.text.x = this.width / 2;
+	this.text.y = this.height / 2;
 
 
 	// Add changing tint events for mouse input

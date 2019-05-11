@@ -38,6 +38,14 @@ function create() {
 	this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
 	this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.5);
 
+
+	this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
+
+	this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar");
+
+	//this.testBar = new ProgressBar(game, 500, 500, 300, 16, 300, 12, "barAtlas", "WorkStartCap", "WorkBar", "WorkEndCap", "WorkProgress");
+	//this.testBar.sleep = true;
+
 }
 
 function update() {

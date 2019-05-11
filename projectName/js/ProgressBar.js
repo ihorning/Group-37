@@ -79,18 +79,19 @@ ProgressBar.prototype.update = function() {
 				this.sleep = true;
 			}
 		}
-		// Calculate how much of the bar can be shown
-		var shownProgress = (this.percent / 100) * this.maxProgressWidth;
-		if(this.displayModulus != 0 && this.percent != 100) {
-			shownProgress -= shownProgress % this.displayModulus;
-			// If not reversed (bar going up), blocks appear as floor of value
-			// If reversed (bar going down), blocks appear as ceiling of value
-			if(this.reversed && this.shownProgress > 0) {
-				shownProgress += this.displayModulus;
-			}
-		}
-
-		// Do the actual change
-		this.progress.width = shownProgress;
 	}
+
+	// Calculate how much of the bar can be shown
+	var shownProgress = (this.percent / 100) * this.maxProgressWidth;
+	if(this.displayModulus != 0 && this.percent != 100) {
+		shownProgress -= shownProgress % this.displayModulus;
+		// If not reversed (bar going up), blocks appear as floor of value
+		// If reversed (bar going down), blocks appear as ceiling of value
+		if(this.reversed && this.shownProgress > 0) {
+			shownProgress += this.displayModulus;
+		}
+	}
+
+	// Do the actual change
+	this.progress.width = shownProgress;
 }

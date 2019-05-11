@@ -36,10 +36,11 @@ World.prototype.update = function() {
 		this.debugTimeDisplay.text = numberToDisplay+"";
 	}
 
-	if(this.character = null) {
+	if(this.character == null) {
 		this.job.sleep = true;
 	} else {
 		this.job.sleep = false;
+		this.character.update();
 	}
 
 	this.job.update();

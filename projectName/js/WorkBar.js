@@ -50,7 +50,7 @@ WorkBar.prototype.update = function() {
 	if(this.reversed) {
 		delta *= -1;
 	}
-	this.currentTime += delta;
+	//this.currentTime += delta;
 	if(!this.sleep) {
 		this.percent += delta;
 		this.progress.tint = "0xffffff";

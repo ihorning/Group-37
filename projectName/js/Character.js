@@ -1,3 +1,5 @@
+"use strict";
+
 function Character(game, planet, planetList, key, frame) {
 	Phaser.Sprite.call(this, game, planet.x + 53, planet.y, key, frame, 0);
 	this.anchor.set(0.5);
@@ -10,19 +12,29 @@ function Character(game, planet, planetList, key, frame) {
 
 	game.add.existing(this);
 
+
+	this.ageBar = game.add.existing(new AgeBar(game, this.width, 0, this));
+
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
 	this.input.enableDrag();
 	this.events.onDragStart.add(this.ExitPlanet, this);
 	this.events.onDragStop.add(this.EnterPlanet, this);
 
-	this.game = game;
+	this.life = 100;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
+	if(this.planet != null) {
+		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
+		if(this.life < 0) {
+			alert("I died");
+			this.kill();
+		}
+	}
 }
 
 Character.prototype.ExitPlanet = function() {
@@ -34,7 +46,7 @@ Character.prototype.ExitPlanet = function() {
 	}
 	this.planet.character = null;
 	this.planet = null;
-	this.game.add.existing(this);
+	game.add.existing(this);
 	console.log("this should be null: "+this.planet);
 }
 
@@ -55,5 +67,7 @@ Character.prototype.EnterPlanet = function() {
 	this.planet.character = this;
 	this.x = 53;
 	this.y = 0;
+	this.ageBar.x = this.planet.x + this.x + this.width;
+	this.ageBar.y = this.planet.y + this.y;
 	console.log("new planet: "+this.planet);
 }

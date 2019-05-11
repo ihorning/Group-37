@@ -5,24 +5,24 @@
 // Change these "constant" (not really) variables to whatever the default values for WorkBar should be.
 // I put these variables here instead of as parameters to reduce clutter.
 
-var WORK_BAR_WIDTH = 600;
-var WORK_BAR_HEIGHT = 32;
+var WORK_BAR_WIDTH = 128;
+var WORK_BAR_HEIGHT = 16;
 var WORK_PROGRESS_WIDTH = WORK_BAR_WIDTH;
-var WORK_PROGRESS_HEIGHT = 28;
+var WORK_PROGRESS_HEIGHT = 12;
 
 var WORK_BAR_KEY = "barAtlas";
 var WORK_BAR_FRAMES = {
-	start: "testStartCap",
-	middle: "testBar",
-	end: "testEndCap",
-	progress: "testProgress"
+	start: "WorkStartCap",
+	middle: "WorkBar",
+	end: "WorkEndCap",
+	progress: "WorkProgress"
 }
 
-var WORK_BAR_MODULUS = 30;
+var WORK_BAR_MODULUS = 8;
 
 var WORK_BAR_TINT = "0xaaaaaa";
 
-var WORK_BAR_FONT = {font: "30px Courier", font: "30px Lucida Console", fontWeight: "bold", fill: "#fff"};
+var WORK_BAR_FONT = {font: "20px Courier", font: "20px Lucida Console", fontWeight: "bold", fill: "#fff"};
 
 // Constructor
 function WorkBar(game, x, y, timeMultiplier) {

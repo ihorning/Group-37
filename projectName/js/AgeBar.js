@@ -5,22 +5,22 @@
 // Change these "constant" (not really) variables to whatever the default values for AgeBar should be.
 // I put these variables here instead of as parameters to reduce clutter.
 
-var AGE_BAR_WIDTH = 450;
-var AGE_BAR_HEIGHT = 32;
+var AGE_BAR_WIDTH = 96;
+var AGE_BAR_HEIGHT = 10;
 var AGE_PROGRESS_WIDTH = AGE_BAR_WIDTH;
-var AGE_PROGRESS_HEIGHT = 28;
+var AGE_PROGRESS_HEIGHT = 4;
 
 var AGE_BAR_KEY = "barAtlas";
 var AGE_BAR_FRAMES = {
-	start: "testStartCap",
-	middle: "testBar",
-	end: "testEndCap",
-	progress: "testProgress"
+	start: "AgeStartCap",
+	middle: "AgeBar",
+	end: "AgeEndCap",
+	progress: "AgeProgress"
 }
 
 var AGE_BAR_MODULUS = 0;
 
-var AGE_BAR_FONT = {font: "30px Courier", font: "30px Lucida Console", fontWeight: "bold", fill: "#eff"};
+var AGE_BAR_FONT = {font: "16px Courier", font: "16px Lucida Console", fontWeight: "bold", fill: "#eff"};
 
 // Constructor
 function AgeBar(game, x, y, person) {
@@ -40,7 +40,7 @@ function AgeBar(game, x, y, person) {
 
 AgeBar.prototype = Object.create(ProgressBar.prototype);
 // Define the constructor
-AgeBar.prototype.constructor = WorkBar;
+AgeBar.prototype.constructor = AgeBar;
 
 // Update the progress size, if not sleeping
 AgeBar.prototype.update = function() {

@@ -17,7 +17,7 @@ function World(game, x, y, key, frame, timeMultiplier) {
 	this.debugTimeDisplay.anchor.set(0.5);
 
 
-	this.job = this.addChild(new WorkBar(game, -WORK_PROGRESS_WIDTH / 2, ((this.height / 2) + 50), this.timeMultiplier));
+	this.job = this.addChild(new WorkBar(game, -WORK_PROGRESS_WIDTH / 2, ((this.height / 2) + 32), this.timeMultiplier));
 
 
 	this.character = null;

@@ -32,11 +32,11 @@ function create() {
 
 	// Put the planets on the screen
 	// Some parameters directly copied here
-	this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 1);
-	this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 1.25);
-	this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1.5);
-	this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.75);
-	this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.5);
+	this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.25);
+	this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75);
+	this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
+	this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
+	this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
 
 
 	this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];

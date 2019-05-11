@@ -5,6 +5,8 @@ var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create
 function preload() {
 	game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 	game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
+	game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
+	game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 }
 
 function create() {
@@ -38,12 +40,17 @@ function create() {
 	this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
 	this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
 
+	//add audio to be sent to character prefab
+	this.clickCharacter = game.add.audio('clickCharacter');
+	this.dropCharacter = game.add.audio('dropCharacter');
+	this.audio = [this.clickCharacter, this.dropCharacter];
+
 
 	this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-	this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar");
-	this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar");
-	this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar");
+	this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio);
+	this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio);
+	this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio);
 
 	//this.testBar = new ProgressBar(game, 500, 500, 300, 16, 300, 12, "barAtlas", "WorkStartCap", "WorkBar", "WorkEndCap", "WorkProgress");
 	//this.testBar.sleep = true;

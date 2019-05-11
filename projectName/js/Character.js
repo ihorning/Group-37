@@ -1,6 +1,6 @@
 "use strict";
 
-function Character(game, planet, planetList, key, frame) {
+function Character(game, planet, planetList, key, frame, audio) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, planet.x + 53, planet.y, key, frame, 0);
 
@@ -16,6 +16,9 @@ function Character(game, planet, planetList, key, frame) {
 
 	// Store the planetList
 	this.planetList = planetList;
+
+	//Store the audio for character interaction
+	this.audio = audio;
 
 	// Add this to the game
 	game.add.existing(this);
@@ -56,6 +59,9 @@ Character.prototype.update = function() {
 }
 
 Character.prototype.ExitPlanet = function() { // Remove this from the current planet (when drag starts)
+	//play the clickCharacter sound
+	this.audio[0].play('', 0, 1, false);
+
 	// Find and remove this from the planet's children
 	for(var i = 0; i < this.planet.children.length; i++) {
 		if(this.planet.children[i] === this) {
@@ -73,6 +79,9 @@ Character.prototype.ExitPlanet = function() { // Remove this from the current pl
 }
 
 Character.prototype.EnterPlanet = function() { // Add this to the nearest planet (when drag ends)
+	//play the dropCharacter sound
+	this.audio[1].play('', 0, 1, false);
+
 	// Find the nearest planet...
 	var minDistance = Infinity;
 	var minInd = 0;

@@ -45,7 +45,7 @@ Character.prototype.update = function() {
 		// Age self
 		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
 		if(this.life < 0) { // If dead,
-			alert("I died"); // Debug alert
+			//alert("I died"); // Debug alert
 			this.destroy(); // Destroy this
 		}
 	}

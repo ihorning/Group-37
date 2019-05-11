@@ -14,6 +14,8 @@ function Character(game, planet, planetList, key, frame) {
 
 
 	this.ageBar = game.add.existing(new AgeBar(game, this.width, 0, this));
+	this.ageBar.x = this.x + this.width;
+	this.ageBar.y = this.y;
 
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
@@ -32,7 +34,7 @@ Character.prototype.update = function() {
 		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
 		if(this.life < 0) {
 			alert("I died");
-			this.kill();
+			this.destroy();
 		}
 	}
 }
@@ -55,11 +57,13 @@ Character.prototype.EnterPlanet = function() {
 	minDistance = Infinity;
 	var minInd = 0;
 	for(var i = 0; i < this.planetList.length; i++) {
-		var newDistance = Math.pow(Math.pow(this.planetList[i].x - this.x, 2) + Math.pow(this.planetList[i].y - this.y, 2), 0.5);
-		if(newDistance < minDistance) {
-			console.log("TET");
-			minDistance = newDistance;
-			minInd = i;
+		if(this.planetList[i].character == null) {
+			var newDistance = Math.pow(Math.pow(this.planetList[i].x - this.x, 2) + Math.pow(this.planetList[i].y - this.y, 2), 0.5);
+			if(newDistance < minDistance) {
+				console.log("TET");
+				minDistance = newDistance;
+				minInd = i;
+			}
 		}
 	}
 	this.planet = this.planetList[minInd];

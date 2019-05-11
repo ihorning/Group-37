@@ -13,7 +13,7 @@ function World(game, x, y, key, frame, timeMultiplier) {
 
 
 
-	this.debugTimeDisplay = this.addChild(game.make.text(0, 0, "0", {font: "15px Courier", font: "15px Lucida Console", fontWeight: "bold", fill: "#f22"}));
+	this.debugTimeDisplay = this.addChild(game.make.text(0, 0, "0", {font: "15px Courier", font: "15px Lucida Console", fontWeight: "bold", fill: "#fff"}));
 	this.debugTimeDisplay.anchor.set(0.5);
 
 

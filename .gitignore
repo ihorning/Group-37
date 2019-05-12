@@ -3,4 +3,5 @@
 *.jpeg
 *.mp3
 *.wav
+.DS_Store
 # json files are included

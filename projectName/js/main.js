@@ -69,7 +69,7 @@ Play.prototype = {
 
 		// Put the planets on the screen
 		// Some parameters directly copied here
-		this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.25);
+		this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.5);
 		this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75);
 		this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
 		this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
@@ -87,6 +87,9 @@ Play.prototype = {
 		this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio);
 		this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio);
 
+		this.characterList = [this.slowChar, this.medChar, this.fastChar];
+		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
+
 		//this.testBar = new ProgressBar(game, 500, 500, 300, 16, 300, 12, "barAtlas", "WorkStartCap", "WorkBar", "WorkEndCap", "WorkProgress");
 		//this.testBar.sleep = true;
 	},
@@ -94,17 +97,31 @@ Play.prototype = {
 	update: function() {
 		// run game loop
 		// if statement going to end screen: check character's dead and planet progress bars
-		// if() { // all characters have died
+		var allCharactersDead = true;
+		var allJobsDone = true;
+		for (var i = 0; i < this.characterList.length; i++) {
+			if(this.characterList[i].alive) {
+				allCharactersDead = false;
+				break;
+			}
+		}
+		for (var i = 0; i < this.ProgressBarList.length; i++) {
+			if(!this.ProgressBarList[i].complete) {
+				allJobsDone = false;
+				break;
+			}
+		}
+		if(allCharactersDead) { // all characters have died
 
-		// 	won = false;
-		//	game.state.start('GameOver');
+			won = false;
+			game.state.start('GameOver');
 
-		// }else if() { // productivity has been completed
+		}else if(allJobsDone) { // productivity has been completed
 
-		// 	won = true;
-		//	game.state.start('GameOver');
+			won = true;
+			game.state.start('GameOver');
 
-		// }
+		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
 			game.state.start('GameOver');

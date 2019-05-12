@@ -35,7 +35,7 @@ function WorkBar(game, x, y, timeMultiplier) {
 
 	// Store timeMultiplier
 	this.timeMultiplier = timeMultiplier;
-	this.efficiency = 1;
+	this.efficiency = 1.9;
 
 	// Add a text object to display %
 	this.displayText = this.addChild(game.make.text(WORK_BAR_WIDTH, 0, "0%", WORK_BAR_FONT));

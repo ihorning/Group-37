@@ -45,7 +45,7 @@ Character.prototype.constructor = Character;
 Character.prototype.update = function() {
 	if(this.planet != null) { // If on a planet...
 		// Age self
-		this.life -= this.planet.timeMultiplier * 0.65 * game.time.elapsed / 1000;
+		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
 		if(this.life < 0) { // If dead,
 			//alert("I died"); // Debug alert
 

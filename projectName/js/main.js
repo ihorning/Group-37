@@ -24,10 +24,13 @@ MainMenu.prototype = {
 		// add play button, for now using SPACEBAR
 		// this.playButton = new PlayButton(game, game.width/2, game.height/2, )
 
-		game.add.text(game.width/4, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
-		game.add.text(game.width/4, game.width/5, 'Keep them from dying and fill the productivity bars', { fontSize: '16px', fill: '#fff'});
+		this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
+		this.instruct1.anchor.setTo(0.5);
+		this.instruct2 = game.add.text(game.width/2, game.width/5, 'Keep them from dying and fill the productivity bars', { fontSize: '16px', fill: '#fff'});
+		this.instruct2.anchor.setTo(0.5);
 
-		game.add.text(game.width/4, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
+		this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
+		this.toplay.anchor.setTo(0.5);
 		
 	},
 	update: function() {
@@ -139,12 +142,15 @@ GameOver.prototype = {
 	create: function() {
 		// check if player won or lost
 		if(won === true){
-			game.add.text(game.width/4, game.width/5, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
+			this.yay = game.add.text(game.width/2, game.width/5, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
+			this.yay.anchor.setTo(0.5);
 		}else {
-			game.add.text(game.width/4, game.width/5, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
+			this.dang = game.add.text(game.width/2, game.width/5, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
+			this.dang.anchor.setTo(0.5);
 		}
 
-		game.add.text(game.width/4, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
+		this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
+		this.retry.anchor.setTo(0.5);
 		
 	},
 	update: function() {

@@ -2,12 +2,14 @@
 
 function Character(game, planet, planetList, key, frame, audio) {
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, planet.x + 53, planet.y, key, frame, 0);
+	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
 
 	// Set anchor to middle
 	this.anchor.set(0.5);
 	// Set scale to 0.2
 	this.scale.set(0.2);
+
+	game.add.existing(this);
 		
 	// Set the planet:
 	this.planet = planet; // Get reference to planet
@@ -20,15 +22,12 @@ function Character(game, planet, planetList, key, frame, audio) {
 	//Store the audio for character interaction
 	this.audio = audio;
 
-	// Add this to the game
-	game.add.existing(this);
-
 
 	// Add an AgeBar for this character
 	this.ageBar = game.add.existing(new AgeBar(game, this.width, 0, this));
 	// Set its location
-	this.ageBar.x = this.x + this.width;
-	this.ageBar.y = this.y;
+	this.ageBar.x = this.planet.x + this.x + this.width;
+	this.ageBar.y = this.planet.y + this.y;
 
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;

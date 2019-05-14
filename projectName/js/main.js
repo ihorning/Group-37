@@ -164,8 +164,11 @@ GameOver.prototype = {
 	}
 }
 
+game.state.add("RocketTest", RocketTest);
+game.state.start("RocketTest");
+
 //add states to StateManager and start MainMenu
 game.state.add('MainMenu', MainMenu);
 game.state.add('Play', Play);
 game.state.add('GameOver', GameOver);
-game.state.start('MainMenu');
+//game.state.start('MainMenu');

@@ -1,6 +1,7 @@
 "use strict";
 
-function Character(game, planet, planetList, key, frame, audio) {
+function Character(game, universalTime, planet, planetList, key, frame, audio, name) {
+	this.universalTime = universalTime;
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
 
@@ -10,9 +11,12 @@ function Character(game, planet, planetList, key, frame, audio) {
 	this.scale.set(0.2);
 
 	game.add.existing(this);
+
+	this.name = name;
 		
 	// Set the planet:
 	this.planet = planet; // Get reference to planet
+	this.home = this.planet; // Save as home planet
 	this.planet.addChild(this); // Make this person a child of the planet
 	this.planet.character = this; // Give the planet reference to this
 
@@ -37,21 +41,44 @@ function Character(game, planet, planetList, key, frame, audio) {
 
 	// Initialize life value to 100%
 	this.life = 100;
+	// Initialize happiness value to 100%
+	this.happiness = 100;
+	this.efficiency = 1.9;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
+	var delta = this.universalTime * game.time.elapsed / 1000;
+
 	if(this.planet != null) { // If on a planet...
 		// Age self
-		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
+		this.life -= this.planet.timeMultiplier * (delta);
+
 		if(this.life < 0) { // If dead,
 			//alert("I died"); // Debug alert
 
 			//Remove charcter
 			this.Die();
 		}
+
+		var difference = Math.abs((100 - this.life) - this.home.currentTime());
+
+		if(this.planet === this.home) {
+			this.happiness += delta * (10 - difference);
+		} else {
+			this.happiness += delta * (5 - difference);
+		}
+		if(this.happiness < 0) {
+			this.happiness = 0;
+		} else if(this.happiness > 100) {
+			this.happiness = 100;
+		}
+
+		this.efficiency = 1.9 * this.happiness / 100;
+
+		console.log(this.name+" "+this.happiness+" "+this.efficiency);
 	}
 }
 

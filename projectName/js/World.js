@@ -1,6 +1,7 @@
 "use strict";
 
-function World(game, x, y, key, frame, timeMultiplier) {
+function World(game, universalTime, x, y, key, frame, timeMultiplier) {
+	this.universalTime = universalTime;
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 
@@ -23,7 +24,7 @@ function World(game, x, y, key, frame, timeMultiplier) {
 	this.debugTimeDisplay.anchor.set(0.5);
 
 	// Add a WorkBar
-	this.job = game.add.existing(new WorkBar(game, -WORK_PROGRESS_WIDTH / 2, ((this.height / 2) + 32), this.timeMultiplier));
+	this.job = game.add.existing(new WorkBar(game, this.universalTime, -WORK_PROGRESS_WIDTH / 2, ((this.height / 2) + 32), this.timeMultiplier));
 	this.addChild(this.job);
 
 	// Start with character as null
@@ -48,6 +49,7 @@ World.prototype.update = function() {
 	if(this.character == null) { // If no character,
 		this.job.sleep = true; // Turn off job progress
 	} else { // If there is a character,
+		this.job.efficiency = this.character.efficiency;
 		this.job.sleep = false; // Turn on job progress
 		this.character.update(); // Run character's update function
 	}
@@ -57,5 +59,5 @@ World.prototype.update = function() {
 }
 
 World.prototype.currentTime = function() {
-	return this.timeMultiplier * this.timer.seconds;
+	return this.timeMultiplier * this.timer.seconds * this.universalTime;
 }

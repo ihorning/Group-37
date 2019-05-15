@@ -17,6 +17,7 @@ function Character(game, universalTime, planet, planetList, key, frame, audio, n
 	// Set the planet:
 	this.planet = planet; // Get reference to planet
 	this.home = this.planet; // Save as home planet
+	this.lastPlanet = this.planet;
 	this.planet.addChild(this); // Make this person a child of the planet
 	this.planet.character = this; // Give the planet reference to this
 
@@ -43,18 +44,26 @@ function Character(game, universalTime, planet, planetList, key, frame, audio, n
 	this.life = 100;
 	// Initialize happiness value to 100%
 	this.happiness = 100;
-	this.efficiency = 1.9;
+	this.efficiency = 1;
+
+	this.debugText = this.addChild(game.make.text(70, -70, "faweion", {font: "60px Courier", fontWeight: "bold", fill: "#fff"}));
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
-	var delta = this.universalTime * game.time.elapsed / 1000;
+
+	var delta;
+	if(this.planet != null) {
+		delta = this.planet.timeMultiplier * this.universalTime * game.time.elapsed / 1000;
+	} else {
+		delta = 0;
+	}
 
 	if(this.planet != null) { // If on a planet...
 		// Age self
-		this.life -= this.planet.timeMultiplier * (delta);
+		this.life -= delta;
 
 		if(this.life < 0) { // If dead,
 			//alert("I died"); // Debug alert
@@ -76,9 +85,9 @@ Character.prototype.update = function() {
 			this.happiness = 100;
 		}
 
-		this.efficiency = 1.9 * this.happiness / 100;
+		this.efficiency = this.happiness / 100;
 
-		console.log(this.name+" "+this.happiness+" "+this.efficiency);
+		this.debugText.text = (this.name+"  :) "+Math.floor(this.happiness)+"%   $ "+Math.floor(100 * this.efficiency)+"%");
 	}
 }
 
@@ -107,7 +116,6 @@ Character.prototype.ExitPlanet = function() { // Remove this from the current pl
 	this.planet = null;
 	// Put this in the main game group
 	game.add.existing(this);
-	console.log("this should be null: "+this.planet);
 }
 
 Character.prototype.EnterPlanet = function() { // Add this to the nearest planet (when drag ends)
@@ -121,7 +129,6 @@ Character.prototype.EnterPlanet = function() { // Add this to the nearest planet
 		if(this.planetList[i].character == null) {
 			var newDistance = Math.pow(Math.pow(this.planetList[i].x - this.x, 2) + Math.pow(this.planetList[i].y - this.y, 2), 0.5);
 			if(newDistance < minDistance) {
-				console.log("TET");
 				minDistance = newDistance;
 				minInd = i;
 			}
@@ -135,5 +142,21 @@ Character.prototype.EnterPlanet = function() { // Add this to the nearest planet
 	this.y = 0;
 	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
 	this.ageBar.y = this.planet.y + this.y;
-	console.log("new planet: "+this.planet);
+	//console.log("new planet: "+this.planet);
+	if(this.lastPlanet !== this.planet) {
+		if(this.planet === this.home) {
+			console.log(this.name+" gains 10 points of happiness for going home");
+			this.happiness += 10;
+			if(this.happiness > 100) {
+				this.happiness = 100;
+			}
+		} else {
+			console.log(this.name+" loses 10 points of happiness for travel");
+			this.happiness -= 10;
+			if(this.happiness < 0) {
+				this.happiness = 0;
+			}
+		}
+	}
+	this.lastPlanet = this.planet;
 }

@@ -36,7 +36,7 @@ function WorkBar(game, universalTime, x, y, timeMultiplier) {
 
 	// Store timeMultiplier
 	this.timeMultiplier = timeMultiplier;
-	this.efficiency = 1.9;
+	this.efficiency = 1;
 
 	// Add a text object to display %
 	this.displayText = this.addChild(game.make.text(WORK_BAR_WIDTH, 0, "0%", WORK_BAR_FONT));
@@ -58,7 +58,7 @@ WorkBar.prototype.update = function() {
 	}
 	if(!this.sleep) { // If not sleeping...
 		// Change percent and make sure tint is normal
-		this.percent += delta;
+		this.percent += 2.25 * delta;
 		this.progress.tint = "0xffffff";
 	} else if(!this.complete) { // If sleeping,
 		// Set tint and do not change percent

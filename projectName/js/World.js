@@ -1,8 +1,12 @@
 "use strict";
 
-function World(game, x, y, key, frame, timeMultiplier) {
+function World(game, x, y, key, frame, timeMultiplier, animated) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, x, y, key, frame);
+	if(animated){
+		this.animations.add('spin', Phaser.Animation.generateFrameNames('Med', 1, 21, '', 2), 10, true);
+		this.animations.play('spin');
+	}
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);

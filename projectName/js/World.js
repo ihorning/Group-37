@@ -13,6 +13,9 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.orbitSpeed = orbitSpeed;
 
 
+	this.orbit = game.add.graphics();
+
+
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 
@@ -47,6 +50,10 @@ World.prototype.constructor = World;
 
 World.prototype.update = function() {
 	var delta = game.time.elapsed / 1000;
+
+	this.orbit.clear();
+	this.orbit.lineStyle(4 - (2 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
+	this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
 
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));

@@ -55,6 +55,7 @@ Play.prototype = {
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
 
+		/*
 		//Set up all orbits, 1 is smallest, 5 biggest
 		this.orbit1 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
 		this.orbit1.anchor.setTo(0.5);
@@ -71,6 +72,7 @@ Play.prototype = {
 		this.orbit5 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
 		this.orbit5.anchor.setTo(0.5);
 		//////////////////////////////////// End of copied and pasted from Gram's code
+		*/
 
 		// Put the planets on the screen
 		// Some parameters directly copied here

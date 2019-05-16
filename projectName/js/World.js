@@ -57,6 +57,8 @@ World.prototype.constructor = World;
 World.prototype.update = function() {
 	var delta = game.time.elapsed / 1000;
 
+	this.orbitRad -= delta / 5;
+
 	this.orbit.clear();
 	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
 	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);

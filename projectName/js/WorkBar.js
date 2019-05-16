@@ -25,8 +25,7 @@ var WORK_BAR_TINT = "0xaaaaaa"; // Tint when sleeping
 var WORK_BAR_FONT = {font: "20px Courier", font: "20px Lucida Console", fontWeight: "bold", fill: "#fff"};
 
 // Constructor
-function WorkBar(game, universalTime, x, y, timeMultiplier) {
-	this.universalTime = universalTime;
+function WorkBar(game, x, y, timeMultiplier) {
 
 	// Call ProgressBar constructor
 	ProgressBar.call(this, game, x, y, WORK_BAR_WIDTH, WORK_BAR_HEIGHT, WORK_PROGRESS_WIDTH, WORK_PROGRESS_HEIGHT, WORK_BAR_KEY, WORK_BAR_FRAMES.start, WORK_BAR_FRAMES.middle, WORK_BAR_FRAMES.end, WORK_BAR_FRAMES.progress);
@@ -51,7 +50,7 @@ WorkBar.prototype.constructor = WorkBar;
 // Update the progress size, if not sleeping
 WorkBar.prototype.update = function() {
 	// How much work has been done this frame
-	var delta = this.universalTime * game.time.elapsed * this.timeMultiplier * this.efficiency / 1000;
+	var delta = game.universalTime * game.time.elapsed * this.timeMultiplier * this.efficiency / 1000;
 
 	if(this.reversed) { // If reversed,
 		delta *= -1; // Subtract

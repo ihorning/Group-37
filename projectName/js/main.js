@@ -4,8 +4,7 @@
 
 // var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var game = new Phaser.Game(900, 900, Phaser.AUTO);
-
-var universalTime = 0.3;
+game.universalTime = 0.3;
 
 var won;
 
@@ -76,11 +75,11 @@ Play.prototype = {
 
 		// Put the planets on the screen
 		// Some parameters directly copied here
-		this.reallySlow = new World(game, universalTime, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.5);
-		this.slow = new World(game, universalTime, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75);
-		this.medium = new World(game, universalTime, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
-		this.fast = new World(game, universalTime, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
-		this.reallyFast = new World(game, universalTime, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
+		this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.5);
+		this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75);
+		this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
+		this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
+		this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
@@ -90,9 +89,9 @@ Play.prototype = {
 
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-		this.slowChar = new Character(game, universalTime, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio, "slow");
-		this.medChar = new Character(game, universalTime, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio, "med");
-		this.fastChar = new Character(game, universalTime, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio, "fast");
+		this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio, "slow");
+		this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio, "med");
+		this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio, "fast");
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];

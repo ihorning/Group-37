@@ -1,7 +1,7 @@
 "use strict";
 
-function Character(game, universalTime, planet, planetList, key, frame, audio, name) {
-	this.universalTime = universalTime;
+function Character(game, planet, planetList, key, frame, audio, name) {
+
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
 
@@ -56,7 +56,7 @@ Character.prototype.update = function() {
 
 	var delta;
 	if(this.planet != null) {
-		delta = this.planet.timeMultiplier * this.universalTime * game.time.elapsed / 1000;
+		delta = this.planet.timeMultiplier * game.universalTime * game.time.elapsed / 1000;
 	} else {
 		delta = 0;
 	}

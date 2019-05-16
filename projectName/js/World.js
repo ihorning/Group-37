@@ -52,7 +52,7 @@ World.prototype.update = function() {
 	var delta = game.time.elapsed / 1000;
 
 	this.orbit.clear();
-	this.orbit.lineStyle(4 - (2 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
+	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
 	this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
 
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);

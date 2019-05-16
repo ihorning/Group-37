@@ -11,7 +11,7 @@ RocketTest.prototype = {
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
 
-		this.orbit1 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
+		/*this.orbit1 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
 		this.orbit1.anchor.setTo(0.5);
 		this.orbit1.scale.setTo(0.33);
 		this.orbit2 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
@@ -27,7 +27,7 @@ RocketTest.prototype = {
 		this.orbit5.anchor.setTo(0.5);
 
 		this.orbitBaseSize = this.orbit5.width / 2;
-		console.log(this.orbitBaseSize);
+		console.log(this.orbitBaseSize);*/
 
 		this.reallySlow = new World(game, 0.33 * 450, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5);
 		this.slow = new World(game, 0.5 * 450, 0.123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75);

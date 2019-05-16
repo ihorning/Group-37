@@ -5,6 +5,7 @@ RocketTest.prototype = {
 	preload: function() {
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
+		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
 	},
 	create: function() {
 
@@ -60,9 +61,9 @@ RocketTest.prototype = {
 
 		this.rocket.anchor.set(0.5);*/
 
-		this.rocket1 = new Rocket(game, this.reallySlow, this.reallyFast, 100, "barAtlas", "WorkProgress");
-		this.rocket2 = new Rocket(game, this.fast, this.slow, 100, "barAtlas", "WorkProgress");
-		this.rocket3 = new Rocket(game, this.fast, this.reallySlow, 100, "barAtlas", "WorkProgress");
+		this.rocket1 = new Rocket(game, this.reallySlow, this.reallyFast, 100, "rocketAtlas", "rocket");
+		this.rocket2 = new Rocket(game, this.fast, this.slow, 100, "rocketAtlas", "rocket");
+		this.rocket3 = new Rocket(game, this.fast, this.reallySlow, 100, "rocketAtlas", "rocket");
 
 	},
 	update: function() {

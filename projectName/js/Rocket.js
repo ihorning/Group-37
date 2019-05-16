@@ -4,7 +4,9 @@ function Rocket(game, sourcePlanet, destinationPlanet, speed, key, frame) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
 
-	this.anchor.set(0.5);
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.75;
+	this.scale.set(0.15);
 
 	this.source = sourcePlanet;
 	this.x = sourcePlanet.x;
@@ -32,7 +34,7 @@ Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
-		console.log("I made it!");
+		//console.log("I made it!");
 		this.kill();
 	}
 
@@ -98,6 +100,14 @@ Rocket.prototype.update = function() {
 	this.orbitRad += radChange * delta;
 	this.orbitAngle += angleChange * delta;
 
+	var x0 = this.x;
+	var y0 = this.y;
+
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
+	var dx = x0 - this.x;
+	var dy = y0 - this.y;
+
+	this.angle = (180 * Math.atan2(dy, dx) / Math.PI) - 90;
 }

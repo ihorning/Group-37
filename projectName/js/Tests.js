@@ -27,16 +27,17 @@ RocketTest.prototype = {
 		this.orbit5.anchor.setTo(0.5);
 
 		this.orbitBaseSize = this.orbit5.width / 2;
+		console.log(this.orbitBaseSize);
 
-		this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.5);
-		this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75);
-		this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
-		this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
-		this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
+		this.reallySlow = new World(game, 0.33 * 450, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5);
+		this.slow = new World(game, 0.5 * 450, 0.123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75);
+		this.medium = new World(game, 0.66 * 450, 1.897 * Math.PI, 3, 'spaceatlas', 'MediumPlanet', 1);
+		this.fast = new World(game, 0.83 * 450, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25);
+		this.reallyFast = new World(game, 1.0 * 450, 1.554 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75);
 
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-		this.planetList[0].radius = this.orbit1.scale.x * this.orbitBaseSize;
+		/*this.planetList[0].radius = this.orbit1.scale.x * this.orbitBaseSize;
 		this.planetList[1].radius = this.orbit2.scale.x * this.orbitBaseSize;
 		this.planetList[2].radius = this.orbit3.scale.x * this.orbitBaseSize;
 		this.planetList[3].radius = this.orbit4.scale.x * this.orbitBaseSize;
@@ -57,12 +58,18 @@ RocketTest.prototype = {
 		this.rocket.radius = this.reallySlow.radius;
 		this.rocket.direction = true;
 
-		this.rocket.anchor.set(0.5);
+		this.rocket.anchor.set(0.5);*/
+
+		this.rocket1 = new Rocket(game, this.reallySlow, this.reallyFast, 100, "barAtlas", "WorkProgress");
+		this.rocket2 = new Rocket(game, this.fast, this.slow, 100, "barAtlas", "WorkProgress");
+		this.rocket3 = new Rocket(game, this.fast, this.reallySlow, 100, "barAtlas", "WorkProgress");
 
 	},
 	update: function() {
-		for(var i = 0; i < this.planetList.length; i++) {
-			this.planetList[i].orbitAngle += game.time.elapsed * this.planetList[i].speed / 1000;
+		var delta = game.time.elapsed / 1000;
+
+		/*for(var i = 0; i < this.planetList.length; i++) {
+			this.planetList[i].orbitAngle += delta * this.planetList[i].speed;
 			while(this.planetList[i].orbitAngle < 0) {
 				this.planetList[i].orbitAngle += 2 * Math.PI;
 			}
@@ -101,14 +108,14 @@ RocketTest.prototype = {
 			} else {
 				angleProportion = (this.rocket.orbitAngle - destinationAngle + (2 * Math.PI)) / (2 * Math.PI);
 			}
-			console.log(destinationAngle+" "+this.rocket.orbitAngle);
-			console.log(angleProportion);
+			//console.log(destinationAngle+" "+this.rocket.orbitAngle);
+			//console.log(angleProportion);
 
 			var radChange = this.rocket.speed * ((this.rocket.planet.radius - this.rocket.radius) / (0.1 * this.orbitBaseSize)) * Math.pow(1 - (angleProportion), 10);
 			if(Math.abs(radChange) > this.rocket.speed) {
 				radChange = (radChange / Math.abs(radChange)) * this.rocket.speed;
 			}
-			//var angleChange = ((this.rocket.speed * game.time.elapsed / 1000) - radChange);
+			//var angleChange = ((this.rocket.speed * delta) - radChange);
 			var angleChange = (this.rocket.speed - Math.abs(radChange));
 			//console.log(radChange + angleChange);
 			angleChange = angleChange / this.rocket.radius;
@@ -116,10 +123,10 @@ RocketTest.prototype = {
 				angleChange *= -1;
 			}
 			//console.log(angleChange);
-			this.rocket.radius += radChange * game.time.elapsed / 1000;
-			this.rocket.orbitAngle += angleChange * game.time.elapsed / 1000;
+			this.rocket.radius += radChange * delta;
+			this.rocket.orbitAngle += angleChange * delta;
 		}
 		this.rocket.x = game.world.centerX + (this.rocket.radius * Math.cos(this.rocket.orbitAngle));
-		this.rocket.y = game.world.centerY - (this.rocket.radius * Math.sin(this.rocket.orbitAngle));
+		this.rocket.y = game.world.centerY - (this.rocket.radius * Math.sin(this.rocket.orbitAngle));*/
 	}
 }

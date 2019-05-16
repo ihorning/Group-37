@@ -1,11 +1,21 @@
 "use strict";
 
-function World(game, x, y, key, frame, timeMultiplier) {
+function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, x, y, key, frame);
+	Phaser.Sprite.call(this, game, -1000, -1000, key, frame);
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
+
+
+	this.orbitRad = orbitRad;
+	this.orbitAngle = orbitAngle;
+	this.orbitSpeed = orbitSpeed;
+
+
+	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
+	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
 
 	// Store the time multiplier
 	this.timeMultiplier = timeMultiplier;
@@ -36,6 +46,12 @@ World.prototype = Object.create(Phaser.Sprite.prototype);
 World.prototype.constructor = World;
 
 World.prototype.update = function() {
+	var delta = game.time.elapsed / 1000;
+
+	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
+	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
+	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
 	// Get the number to be displayed (1 decimal)
 	var numberToDisplay = Math.floor(this.currentTime() * 10) / 10;
 	// Add a .0 if rounds to integer

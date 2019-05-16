@@ -57,7 +57,7 @@ WorkBar.prototype.update = function() {
 	}
 	if(!this.sleep) { // If not sleeping...
 		// Change percent and make sure tint is normal
-		this.percent += 2.25 * delta;
+		this.percent += 2.2 * delta;
 		this.progress.tint = "0xffffff";
 	} else if(!this.complete) { // If sleeping,
 		// Set tint and do not change percent

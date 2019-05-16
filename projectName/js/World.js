@@ -1,5 +1,11 @@
 "use strict";
 
+var circlePath = [];
+var circleDetail = 1000;
+for(var i = 0; i < circleDetail; i++) {
+	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
+}
+
 function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, -1000, -1000, key, frame);
@@ -53,7 +59,12 @@ World.prototype.update = function() {
 
 	this.orbit.clear();
 	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
-	this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
+	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
+	var newCirclePath = [];
+	for(var i = 0; i < circlePath.length; i++) {
+		newCirclePath[i] = new Phaser.Point((circlePath[i].x * this.orbitRad) + game.world.centerX, (circlePath[i].y * this.orbitRad) + game.world.centerY);
+	}
+	this.orbit.drawPolygon(newCirclePath);
 
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));

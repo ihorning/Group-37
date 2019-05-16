@@ -46,7 +46,8 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	this.happiness = 100;
 	this.efficiency = 1;
 
-	this.debugText = this.addChild(game.make.text(70, -70, "faweion", {font: "60px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.debugText = this.addChild(game.make.text(80, -80, "faweion", {font: "80px Courier", fontWeight: "bold", fill: "#fff"}));
+	console.log("debugText note:\n:) = happiness, efficiency\nD = difference in time from home planet\nOn home planet, D < 10 is good\nOn other planet, D < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -76,9 +77,20 @@ Character.prototype.update = function() {
 
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
+			if(difference > 10) {
+				this.debugText.fill = "#ff0000";
+			} else {
+				this.debugText.fill = "#00ff00";
+			}
 		} else {
 			this.happiness += delta * (5 - difference);
+			if(difference > 5) {
+				this.debugText.fill = "#ff0000";
+			} else {
+				this.debugText.fill = "#00ff00";
+			}
 		}
+
 		if(this.happiness < 0) {
 			this.happiness = 0;
 		} else if(this.happiness > 100) {
@@ -87,7 +99,7 @@ Character.prototype.update = function() {
 
 		this.efficiency = this.happiness / 100;
 
-		this.debugText.text = (this.name+"  :) "+Math.floor(this.happiness)+"%   $ "+Math.floor(100 * this.efficiency)+"%");
+		this.debugText.text = (this.name+"  :) "+Math.floor(this.happiness)+"%   D "+Math.floor(difference));
 	}
 }
 

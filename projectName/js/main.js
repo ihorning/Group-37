@@ -120,19 +120,19 @@ Play.prototype = {
 		}
 
 
-		this.timeControlDisplay.text = (Math.floor(game.universalTime * 100 / 3) / 10)+"x speed";
+		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 
 	},
 	speedUp: function() {
-		game.universalTime += 0.2;
-		if(game.universalTime > 0.9) {
-			game.universalTime = 0.9;
+		game.universalTime += 0.25 * 0.3;
+		if(game.universalTime > 3.0 * 0.3) {
+			game.universalTime = 3.0 * 0.3;
 		}
 	},
 	speedDown: function() {
-		game.universalTime -= 0.2;
-		if(game.universalTime < 0.1) {
-			game.universalTime = 0.1;
+		game.universalTime -= 0.25 * 0.3;
+		if(game.universalTime < 0.25 * 0.3) {
+			game.universalTime = 0.25 * 0.3;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 "use strict";
 
 // var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var game = new Phaser.Game(900, 900, Phaser.AUTO);
+var game = new Phaser.Game(1000, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
 var won;

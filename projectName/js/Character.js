@@ -64,19 +64,18 @@ Character.prototype.update = function() {
 		delta = 0;
 	}
 
+	// Age self
+	this.life -= delta;
+
+	if(this.life < 0) { // If dead,
+
+		//Remove charcter
+		this.Die();
+	}
+
 	if(!this.input.isDragged) { // If on a planet...
 		this.debugText.visible = true;
 		this.ageBar.visible = true;
-
-		// Age self
-		this.life -= delta;
-
-		if(this.life < 0) { // If dead,
-			//alert("I died"); // Debug alert
-
-			//Remove charcter
-			this.Die();
-		}
 
 		var difference = Math.abs((100 - this.life) - this.home.currentTime());
 
@@ -108,7 +107,7 @@ Character.prototype.update = function() {
 		if((100 - this.life) - this.home.currentTime() < 0) {
 			aheadBehind = "behind";
 		}
-		this.debugText.text = (this.name+"  :) "+Math.floor(this.happiness)+"%   "+Math.floor(difference)+" "+aheadBehind);
+		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
 
 		this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
 		this.ageBar.y = this.planet.y + this.y;
@@ -130,12 +129,18 @@ Character.prototype.update = function() {
 			}
 		}
 	}
+
+	if(!this.alive) {
+		this.ageBar.visible = false;
+	}
 }
 
 Character.prototype.Die = function() {
 	if(this.planet) {
 		this.planet.character = null;
 	}
+	//this.line.clear();
+	//this.input.disableDrag();
 	this.ageBar.kill();
 	this.kill();
 }
@@ -233,7 +238,7 @@ Character.prototype.EndDrag = function() {
 		}
 
 		// Make a rocket
-		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 350, "rocketAtlas", "rocket");
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 450, "rocketAtlas", "rocket");
 		this.input.disableDrag();
 		// Add this as a child
 		newRocket.addChild(this);

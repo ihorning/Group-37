@@ -39,6 +39,7 @@ Rocket.prototype.constructor = Rocket;
 Rocket.prototype.update = function() {
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
 		console.log("I made it!");
+		this.character.input.enableDrag();
 		this.character.scale.set(this.characterScale);
 		this.character.EnterPlanet(this.destination);
 		this.destroy();

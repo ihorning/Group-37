@@ -64,7 +64,10 @@ Character.prototype.update = function() {
 		delta = 0;
 	}
 
-	if(!this.isDragged) { // If on a planet...
+	if(!this.input.isDragged) { // If on a planet...
+		this.debugText.visible = true;
+		this.ageBar.visible = true;
+
 		// Age self
 		this.life -= delta;
 
@@ -110,8 +113,8 @@ Character.prototype.update = function() {
 		this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
 		this.ageBar.y = this.planet.y + this.y;
 	} else {
-		this.ageBar.x = this.x;
-		this.ageBar.y = this.y;
+		this.debugText.visible = false;
+		this.ageBar.visible = false;
 	}
 
 	this.line.clear();
@@ -165,6 +168,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.character = this;
 	this.x = 53;
 	this.y = 0;
+	this.ageBar.visible = true;
 	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
 	this.ageBar.y = this.planet.y + this.y;
 	console.log("new planet: "+this.planet);
@@ -212,6 +216,8 @@ Character.prototype.EndDrag = function() {
 	// If within range of valid planet...
 	if(minDistance < 100) {
 
+		this.ageBar.visible = false;
+
 		if(this.planetList[minInd] === this.home) {
 			console.log(this.name+" gains 10 points of happiness for going home");
 			this.happiness += 10;
@@ -228,6 +234,7 @@ Character.prototype.EndDrag = function() {
 
 		// Make a rocket
 		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 350, "rocketAtlas", "rocket");
+		this.input.disableDrag();
 		// Add this as a child
 		newRocket.addChild(this);
 		// Position to be beside the rocket

@@ -1,6 +1,6 @@
 "use strict";
 
-function Rocket(game, sourcePlanet, destinationPlanet, speed, key, frame) {
+function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, frame) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
 
@@ -20,6 +20,10 @@ function Rocket(game, sourcePlanet, destinationPlanet, speed, key, frame) {
 
 	this.destination = destinationPlanet;
 
+	this.character = character;
+	this.characterScale = this.character.scale.x;
+	this.character.scale.set(this.character.scale.x / this.scale.x);
+
 	this.speed = speed;
 
 	this.timer = game.time.create(false);
@@ -34,8 +38,10 @@ Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
-		//console.log("I made it!");
-		this.kill();
+		console.log("I made it!");
+		this.character.scale.set(this.characterScale);
+		this.character.EnterPlanet(this.destination);
+		this.destroy();
 	}
 
 	var delta = game.time.elapsed / 1000;
@@ -70,9 +76,6 @@ Rocket.prototype.update = function() {
 	} else {
 		angleProportion = (this.orbitAngle - destinationAngle + (2 * Math.PI)) / (2 * Math.PI);
 	}
-
-	//console.log(destinationAngle+" "+this.orbitAngle+" "+angleProportion);
-	//console.log(angleProportion);
 
 	// Find the rate of change of the orbitRad. This does not yet factor the time since last frame.
 	// This should be a fraction of the distance from the current orbitRad to the destination orbitRad.

@@ -32,18 +32,21 @@ function Character(game, planet, planetList, key, frame, audio) {
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
 	this.input.enableDrag();
-	this.events.onDragStart.add(this.ExitPlanet, this);
-	this.events.onDragStop.add(this.EnterPlanet, this);
+	this.events.onDragStart.add(this.BeginDrag, this);
+	this.events.onDragStop.add(this.EndDrag, this);
 
 	// Initialize life value to 100%
 	this.life = 100;
+
+	this.line = game.add.graphics();
+	this.drawLine = false;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
-	if(this.planet != null) { // If on a planet...
+	if(!this.isDragged) { // If on a planet...
 		// Age self
 		this.life -= this.planet.timeMultiplier * game.time.elapsed / 1000;
 		if(this.life < 0) { // If dead,
@@ -51,6 +54,26 @@ Character.prototype.update = function() {
 
 			//Remove charcter
 			this.Die();
+		}
+
+		this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
+		this.ageBar.y = this.planet.y + this.y;
+	} else {
+		this.ageBar.x = this.x;
+		this.ageBar.y = this.y;
+	}
+
+	this.line.clear();
+	if(this.drawLine) {
+		this.line.lineStyle(4, 0xffffff, 0.5);
+		this.line.moveTo(this.planet.x, this.planet.y);
+		this.line.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
+
+		for(var i = 0; i < this.planetList.length; i++) {
+			if(this.planetList[i].character == null) {
+				this.line.moveTo(this.planetList[i].x, this.planetList[i].y);
+				this.line.drawCircle(this.planetList[i].x, this.planetList[i].y, 100 + (10 * Math.sin(this.planetList[i].currentTime() * Math.PI)))
+			}
 		}
 	}
 }
@@ -64,6 +87,7 @@ Character.prototype.Die = function() {
 }
 
 Character.prototype.ExitPlanet = function() { // Remove this from the current planet (when drag starts)
+	this.drawLine = true;
 	//play the clickCharacter sound
 	this.audio[0].play('', 0, 1, false);
 
@@ -80,10 +104,40 @@ Character.prototype.ExitPlanet = function() { // Remove this from the current pl
 	this.planet = null;
 	// Put this in the main game group
 	game.add.existing(this);
-	console.log("this should be null: "+this.planet);
+	//console.log("this should be null: "+this.planet);
 }
 
-Character.prototype.EnterPlanet = function() { // Add this to the nearest planet (when drag ends)
+Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest planet (when drag ends)
+
+	this.planet = planet;
+	this.planet.addChild(this);
+	this.planet.character = this;
+	this.x = 53;
+	this.y = 0;
+	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
+	this.ageBar.y = this.planet.y + this.y;
+	console.log("new planet: "+this.planet);
+
+}
+
+Character.prototype.BeginDrag = function() {
+	this.drawLine = true;
+	//play the clickCharacter sound
+	this.audio[0].play('', 0, 1, false);
+
+	// Find and remove this from the planet's children
+	for(var i = 0; i < this.planet.children.length; i++) {
+		if(this.planet.children[i] === this) {
+			this.planet.children.splice(i, 1);
+			break;
+		}
+	}
+
+	// Put this in the game world
+	game.add.existing(this);
+}
+
+Character.prototype.EndDrag = function() {
 	//play the dropCharacter sound
 	this.audio[1].play('', 0, 1, false);
 
@@ -100,13 +154,29 @@ Character.prototype.EnterPlanet = function() { // Add this to the nearest planet
 			}
 		}
 	}
-	// Set up new planet...
-	this.planet = this.planetList[minInd]; // Get reference
-	this.planet.addChild(this); // Add this as child
-	this.planet.character = this; // Give it reference to this
-	this.x = 53; // Set x and y position
+
+	// Set x and y to default distance from planet
+	this.x = 53;
 	this.y = 0;
-	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
-	this.ageBar.y = this.planet.y + this.y;
-	console.log("new planet: "+this.planet);
+	// If within range of valid planet...
+	if(minDistance < 100) {
+		// Make a rocket
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 100, "rocketAtlas", "rocket");
+		// Add this as a child
+		newRocket.addChild(this);
+		// Position to be beside the rocket
+		this.x = 100;
+		this.y = -200;
+		// Remove this from planet and planet from this
+		this.planet.character = null;
+		this.planet = null;
+	} else { // If not chosen valid planet,
+		console.log(minDistance);
+		// Put this back on the planet it was on before
+		this.planet.addChild(this);
+	}
+
+	// Stop drawing lines
+	this.line.clear();
+	this.drawLine = false;
 }

@@ -56,6 +56,7 @@ Play.prototype = {
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
 
+		/*
 		//Set up all orbits, 1 is smallest, 5 biggest
 		this.orbit1 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
 		this.orbit1.anchor.setTo(0.5);
@@ -80,6 +81,13 @@ Play.prototype = {
 		this.medium = new World(game, 597, 671, 'spaceatlas', 'MediumPlanet', 1);
 		this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25);
 		this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75);
+		*/
+
+		this.reallySlow = new World(game, 0.33 * 450, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5);
+		this.slow = new World(game, 0.5 * 450, 0.123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75);
+		this.medium = new World(game, 0.66 * 450, 1.897 * Math.PI, 3, 'spaceatlas', 'MediumPlanet', 1);
+		this.fast = new World(game, 0.83 * 450, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25);
+		this.reallyFast = new World(game, 1.0 * 450, 1.554 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
@@ -165,11 +173,11 @@ GameOver.prototype = {
 	}
 }
 
-game.state.add("RocketTest", RocketTest);
-game.state.start("RocketTest");
+//game.state.add("RocketTest", RocketTest);
+//game.state.start("RocketTest");
 
 //add states to StateManager and start MainMenu
 game.state.add('MainMenu', MainMenu);
 game.state.add('Play', Play);
 game.state.add('GameOver', GameOver);
-//game.state.start('MainMenu');
+game.state.start('MainMenu');

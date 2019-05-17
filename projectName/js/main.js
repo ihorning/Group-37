@@ -4,6 +4,7 @@
 
 // var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var game = new Phaser.Game(900, 900, Phaser.AUTO);
+game.universalTime = 0.3;
 
 var won;
 
@@ -89,15 +90,13 @@ Play.prototype = {
 
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-		this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio);
-		this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio);
-		this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio);
+		this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio, "slow");
+		this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio, "med");
+		this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio, "fast");
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
 
-		//this.testBar = new ProgressBar(game, 500, 500, 300, 16, 300, 12, "barAtlas", "WorkStartCap", "WorkBar", "WorkEndCap", "WorkProgress");
-		//this.testBar.sleep = true;
 	},
 
 	update: function() {

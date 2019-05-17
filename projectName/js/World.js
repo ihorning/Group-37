@@ -1,6 +1,7 @@
 "use strict";
 
 function World(game, x, y, key, frame, timeMultiplier, animated) {
+
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 	if(animated){
@@ -52,6 +53,7 @@ World.prototype.update = function() {
 	if(this.character == null) { // If no character,
 		this.job.sleep = true; // Turn off job progress
 	} else { // If there is a character,
+		this.job.efficiency = this.character.efficiency;
 		this.job.sleep = false; // Turn on job progress
 		this.character.update(); // Run character's update function
 	}
@@ -61,5 +63,5 @@ World.prototype.update = function() {
 }
 
 World.prototype.currentTime = function() {
-	return this.timeMultiplier * this.timer.seconds;
+	return this.timeMultiplier * this.timer.seconds * game.universalTime;
 }

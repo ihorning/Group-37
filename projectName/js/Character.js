@@ -227,7 +227,7 @@ Character.prototype.EndDrag = function() {
 		}
 
 		// Make a rocket
-		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 100, "rocketAtlas", "rocket");
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 350, "rocketAtlas", "rocket");
 		// Add this as a child
 		newRocket.addChild(this);
 		// Position to be beside the rocket

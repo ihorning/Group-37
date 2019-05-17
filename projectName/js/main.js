@@ -79,6 +79,11 @@ Play.prototype = {
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
 
+		this.timeControlDisplay = game.add.text(0, 0, '1x speed', { fontSize: '15px', fill: '#fff'});
+		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+		this.leftKey.onDown.add(this.speedDown, this);
+		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+		this.rightKey.onDown.add(this.speedUp, this);
 	},
 
 	update: function() {
@@ -114,6 +119,21 @@ Play.prototype = {
 			game.state.start('GameOver');
 		}
 
+
+		this.timeControlDisplay.text = (Math.floor(game.universalTime * 100 / 3) / 10)+"x speed";
+
+	},
+	speedUp: function() {
+		game.universalTime += 0.2;
+		if(game.universalTime > 0.9) {
+			game.universalTime = 0.9;
+		}
+	},
+	speedDown: function() {
+		game.universalTime -= 0.2;
+		if(game.universalTime < 0.1) {
+			game.universalTime = 0.1;
+		}
 	}
 }
 

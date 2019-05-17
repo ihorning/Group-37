@@ -34,9 +34,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	// Store the time multiplier
 	this.timeMultiplier = timeMultiplier;
 	
-	// Begin a timer
-	this.timer = game.time.create(false);
-	this.timer.start();
+	this.currentTime = 0;
 
 	// Add this to the game
 	game.add.existing(this);
@@ -60,12 +58,13 @@ World.prototype = Object.create(Phaser.Sprite.prototype);
 World.prototype.constructor = World;
 
 World.prototype.update = function() {
-	var delta = game.universalTime * game.time.elapsed / 1000;
+	var delta = this.timeMultiplier * game.universalTime * game.time.elapsed / 1000;
+	this.currentTime += delta;
 
 	this.orbitRad -= delta / 5;
 
 	this.orbit.clear();
-	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
+	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(1.5 * this.currentTime)), 0xffffff, 0.2 * (Math.sin(1.5 * (this.currentTime + 1))));
 	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
 	var newCirclePath = [];
 	for(var i = 0; i < circlePath.length; i++) {
@@ -78,7 +77,7 @@ World.prototype.update = function() {
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 
 	// Get the number to be displayed (1 decimal)
-	var numberToDisplay = Math.floor(this.currentTime() * 10) / 10;
+	var numberToDisplay = Math.floor(this.currentTime * 10) / 10;
 	// Add a .0 if rounds to integer
 	if(Math.floor(numberToDisplay) == numberToDisplay) {
 		this.debugTimeDisplay.text = numberToDisplay+".0";
@@ -99,5 +98,5 @@ World.prototype.update = function() {
 }
 
 World.prototype.currentTime = function() {
-	return this.timeMultiplier * this.timer.seconds * game.universalTime;
+	return this.currentTime;
 }

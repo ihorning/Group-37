@@ -77,7 +77,7 @@ Character.prototype.update = function() {
 		this.debugText.visible = true;
 		this.ageBar.visible = true;
 
-		var difference = Math.abs((100 - this.life) - this.home.currentTime());
+		var difference = Math.abs((100 - this.life) - this.home.currentTime);
 
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
@@ -104,7 +104,7 @@ Character.prototype.update = function() {
 		this.efficiency = this.happiness / 100;
 
 		var aheadBehind = "ahead";
-		if((100 - this.life) - this.home.currentTime() < 0) {
+		if((100 - this.life) - this.home.currentTime < 0) {
 			aheadBehind = "behind";
 		}
 		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
@@ -125,7 +125,7 @@ Character.prototype.update = function() {
 		for(var i = 0; i < this.planetList.length; i++) {
 			if(this.planetList[i].character == null) {
 				this.line.moveTo(this.planetList[i].x, this.planetList[i].y);
-				this.line.drawCircle(this.planetList[i].x, this.planetList[i].y, 100 + (10 * Math.sin(this.planetList[i].currentTime() * Math.PI)))
+				this.line.drawCircle(this.planetList[i].x, this.planetList[i].y, 100 + (10 * Math.sin(this.planetList[i].currentTime * Math.PI)))
 			}
 		}
 	}

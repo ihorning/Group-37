@@ -58,11 +58,11 @@ Play.prototype = {
 		this.blackHole.anchor.setTo(0.5);
 
 		// Add in the planets
-		this.reallySlow = new World(game, 0.33 * 450, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5, false);
-		this.slow = new World(game, 0.5 * 450, 0.123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75, false);
-		this.medium = new World(game, 0.66 * 450, 1.897 * Math.PI, 3, 'medSpin', 'Med01', 1, true);
-		this.fast = new World(game, 0.83 * 450, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25, false);
-		this.reallyFast = new World(game, 1.0 * 450, 1.554 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75, false);
+		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5, false);
+		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75, false);
+		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 3, 'medSpin', 'Med01', 1, true);
+		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25, false);
+		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75, false);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');

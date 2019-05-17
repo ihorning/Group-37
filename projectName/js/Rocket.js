@@ -44,7 +44,7 @@ Rocket.prototype.update = function() {
 		this.destroy();
 	}
 
-	var delta = game.time.elapsed / 1000;
+	var delta = game.universalTime * game.time.elapsed / 1000;
 
 	// Get the orbitAngle of destination in [0, 2*PI)
 	var destinationAngle = this.destination.orbitAngle;

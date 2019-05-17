@@ -60,7 +60,7 @@ World.prototype = Object.create(Phaser.Sprite.prototype);
 World.prototype.constructor = World;
 
 World.prototype.update = function() {
-	var delta = game.time.elapsed / 1000;
+	var delta = game.universalTime * game.time.elapsed / 1000;
 
 	this.orbitRad -= delta / 5;
 

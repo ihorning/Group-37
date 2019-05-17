@@ -67,7 +67,7 @@ RocketTest.prototype = {
 
 	},
 	update: function() {
-		var delta = game.time.elapsed / 1000;
+		var delta = game.universalTime * game.time.elapsed / 1000;
 
 		/*for(var i = 0; i < this.planetList.length; i++) {
 			this.planetList[i].orbitAngle += delta * this.planetList[i].speed;

@@ -1,9 +1,15 @@
 "use strict";
 
-function World(game, x, y, key, frame, timeMultiplier, animated) {
+var circlePath = [];
+var circleDetail = 1000;
+for(var i = 0; i < circleDetail; i++) {
+	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
+}
 
+function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier, animated) {
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, x, y, key, frame);
+	Phaser.Sprite.call(this, game, -1000, -1000, key, frame);
+
 	if(animated){
 		this.animations.add('spin', Phaser.Animation.generateFrameNames('Med', 1, 21, '', 2), 10, true);
 		this.animations.play('spin');
@@ -11,6 +17,19 @@ function World(game, x, y, key, frame, timeMultiplier, animated) {
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
+
+
+	this.orbitRad = orbitRad;
+	this.orbitAngle = orbitAngle;
+	this.orbitSpeed = orbitSpeed;
+
+
+	this.orbit = game.add.graphics();
+
+
+	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
+	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
 
 	// Store the time multiplier
 	this.timeMultiplier = timeMultiplier;
@@ -41,6 +60,23 @@ World.prototype = Object.create(Phaser.Sprite.prototype);
 World.prototype.constructor = World;
 
 World.prototype.update = function() {
+	var delta = game.time.elapsed / 1000;
+
+	this.orbitRad -= delta / 5;
+
+	this.orbit.clear();
+	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(this.currentTime())), 0xffffff, 0.2 * (Math.sin(this.currentTime()) + 1));
+	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
+	var newCirclePath = [];
+	for(var i = 0; i < circlePath.length; i++) {
+		newCirclePath[i] = new Phaser.Point((circlePath[i].x * this.orbitRad) + game.world.centerX, (circlePath[i].y * this.orbitRad) + game.world.centerY);
+	}
+	this.orbit.drawPolygon(newCirclePath);
+
+	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
+	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
+	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
 	// Get the number to be displayed (1 decimal)
 	var numberToDisplay = Math.floor(this.currentTime() * 10) / 10;
 	// Add a .0 if rounds to integer

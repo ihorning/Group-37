@@ -16,6 +16,7 @@ MainMenu.prototype = {
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 		game.load.atlas('medSpin', 'assets/img/medSpin.png', 'assets/img/medSpin.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
+		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 
@@ -52,42 +53,23 @@ Play.prototype = {
 
 	},
 	create: function() {
-		// Put background stuff (black hole, orbit rings) on the screen
-		//////////////////////////////////// Copied and pasted directly from Gram's code
+		// Put black hole on the screen
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
 
-		//Set up all orbits, 1 is smallest, 5 biggest
-		this.orbit1 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
-		this.orbit1.anchor.setTo(0.5);
-		this.orbit1.scale.setTo(0.33);
-		this.orbit2 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
-		this.orbit2.anchor.setTo(0.5);
-		this.orbit2.scale.setTo(0.5);
-		this.orbit3 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
-		this.orbit3.anchor.setTo(0.5);
-		this.orbit3.scale.setTo(0.66);
-		this.orbit4 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
-		this.orbit4.anchor.setTo(0.5);
-		this.orbit4.scale.setTo(0.83);
-		this.orbit5 = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'Orbit');
-		this.orbit5.anchor.setTo(0.5);
-		//////////////////////////////////// End of copied and pasted from Gram's code
-
-		// Put the planets on the screen
-		// Some parameters directly copied here
-		this.reallySlow = new World(game, 576, 410, 'spaceatlas', 'ReallySlowPlanet', 0.5, false);
-		this.slow = new World(game, 404, 260, 'spaceatlas', 'SlowPlanet', 0.75, false);
-		this.medium = new World(game, 597, 671, 'medSpin', 'Med01', 1, true);
-		this.fast = new World(game, 133, 378, 'spaceatlas', 'FastPlanet', 1.25, false);
-		this.reallyFast = new World(game, 135, 683, 'spaceatlas', 'ReallyFastPlanet', 1.75, false);
+		// Add in the planets
+		this.reallySlow = new World(game, 0.33 * 450, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5, false);
+		this.slow = new World(game, 0.5 * 450, 0.123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75, false);
+		this.medium = new World(game, 0.66 * 450, 1.897 * Math.PI, 3, 'medSpin', 'Med01', 1, true);
+		this.fast = new World(game, 0.83 * 450, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25, false);
+		this.reallyFast = new World(game, 1.0 * 450, 1.554 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75, false);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
 		this.dropCharacter = game.add.audio('dropCharacter');
 		this.audio = [this.clickCharacter, this.dropCharacter];
 
-
+		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
 		this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio, "slow");
@@ -163,6 +145,9 @@ GameOver.prototype = {
 
 	}
 }
+
+//game.state.add("RocketTest", RocketTest);
+//game.state.start("RocketTest");
 
 //add states to StateManager and start MainMenu
 game.state.add('MainMenu', MainMenu);

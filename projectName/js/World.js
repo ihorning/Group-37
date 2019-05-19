@@ -6,14 +6,20 @@ for(var i = 0; i < circleDetail; i++) {
 	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
 }
 
-function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier, animated) {
-	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, -1000, -1000, key, frame);
+function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
+	// Call Phaser.TileSprite constructor
+	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
 
-	if(animated){
-		this.animations.add('spin', Phaser.Animation.generateFrameNames('Med', 1, 21, '', 2), 10, true);
-		this.animations.play('spin');
-	}
+	this.pmask = game.add.graphics(0, 0);
+
+    //	Shapes drawn to the Graphics object must be filled.
+    this.pmask.beginFill(0xfacade);
+
+    //	Here we'll draw a circle
+    this.pmask.drawCircle(0, 0, 70);
+
+    //	And apply it to the Sprite
+    this.mask = this.pmask;
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
@@ -53,7 +59,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 
 }
 
-World.prototype = Object.create(Phaser.Sprite.prototype);
+World.prototype = Object.create(Phaser.TileSprite.prototype);
 
 World.prototype.constructor = World;
 
@@ -76,6 +82,9 @@ World.prototype.update = function() {
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 
+	this.pmask.x = this.x;
+	this.pmask.y = this.y;
+
 	// Get the number to be displayed (1 decimal)
 	var numberToDisplay = Math.floor(this.currentTime * 10) / 10;
 	// Add a .0 if rounds to integer
@@ -93,6 +102,8 @@ World.prototype.update = function() {
 		this.character.update(); // Run character's update function
 	}
 
+	//Scroll planet
+	this.tilePosition.x -= this.timeMultiplier;
 	// Run job's update function
 	this.job.update();
 }

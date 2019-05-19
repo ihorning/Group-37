@@ -48,12 +48,25 @@ MainMenu.prototype = {
 
 		var X = game.input.mousePointer.x;
 		var Y = game.input.mousePointer.y;
-		this.testCurve = new RocketCurve(0, X, 0, Y, 0.5, 4);
+		var mouseTheta = Math.atan2(Y - game.world.centerY, X - game.world.centerX);
+		while(mouseTheta < 0) {
+			mouseTheta += Math.PI * 2;
+		}
+		mouseTheta = mouseTheta % (Math.PI * 2);
+		var startTheta = mouseTheta - (Math.PI / 4);
+		while(mouseTheta < startTheta) {
+			mouseTheta += Math.PI * 2;
+		}
+		var mouseRad = Math.pow(Math.pow(X - game.world.centerX, 2) + Math.pow(Y - game.world.centerY, 2), 0.5);
+		this.testCurve = new RocketCurve(startTheta, mouseTheta, 0, mouseRad, 0.25, 2);
 		this.testLine.clear();
-		this.testLine.beginFill(0xffffff, 1);
-		for(var i = 0; i < 100; i++) {
-			var newX = i * X / 100;
-			var newY = this.testCurve.y(newX);
+		this.testLine.beginFill("0xffffff", 1);
+		for(var i = 0; i < 10; i++) {
+			var newTheta = startTheta + ((i / 10) * (mouseTheta - startTheta));
+			var newRad = this.testCurve.y(newTheta);
+			console.log(newRad+" "+newTheta);
+			var newX = game.world.centerX + (newRad * Math.cos(newTheta));
+			var newY = game.world.centerY + (newRad * Math.sin(newTheta));
 			this.testLine.drawCircle(newX, newY, 10);
 		}
 

@@ -20,20 +20,6 @@ RocketCurve.prototype.y = function(x) {
 	return (this.coefficient * this.logBaseFactor * Math.log(((x - this.x0) + this.shape) / this.shape)) + this.y0;
 };
 
-RocketCurve.prototype.step = function(x, y, d) {
-	var diff = Infinity;
-	var delta = d;
-	while(Math.abs(diff) > 5) {
-		diff = d - Math.pow(Math.pow(delta, 2) + Math.pow(this.y(x + delta) - y, 2), 0.5);
-		if(diff > 0) {
-			delta += 2;
-		} else {
-			delta -= 2;
-		}
-	}
-	return delta;
-};
-
 /*
 	Here's how I got the formula:
 

@@ -36,12 +36,25 @@ MainMenu.prototype = {
 
 		this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
 		this.toplay.anchor.setTo(0.5);
-		
+
+		this.testLine = game.add.graphics(0, 0);
+
 	},
 	update: function() {
 		// main menu logic
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 			game.state.start('Play');
+		}
+
+		var X = game.input.mousePointer.x;
+		var Y = game.input.mousePointer.y;
+		this.testCurve = new RocketCurve(0, X, 0, Y, 0.5, 4);
+		this.testLine.clear();
+		this.testLine.beginFill(0xffffff, 1);
+		for(var i = 0; i < 100; i++) {
+			var newX = i * X / 100;
+			var newY = this.testCurve.y(newX);
+			this.testLine.drawCircle(newX, newY, 10);
 		}
 
 	}

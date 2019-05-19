@@ -1,5 +1,10 @@
 "use strict";
 
+var LOG_BASE = 2;
+var LOG_BASE_FACTOR = 1 / Math.log(LOG_BASE);
+var SHAPE = 0.8;
+
+
 function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, frame) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
@@ -31,6 +36,34 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 
 	game.add.existing(this);
 
+
+
+	// Get the angle of the source
+	var x0 = this.source.orbitAngle;
+	while(x0 < 0) {
+		x0 += Math.PI * 2;
+	}
+	x0 = x0 % (Math.PI * 2);
+
+	// Get the radius of the source
+	var y0 = this.source.orbitRad;
+
+	// Get the angle of the destination
+	var x1 = this.destination.orbitAngle;
+	while(x1 < 0) {
+		x1 += Math.PI * 2;
+	}
+	x1 = x1 % (Math.PI * 2);
+	while(x1 < x0) {
+		x1 += Math.PI * 2;
+	}
+
+	// Get the radius of the destination
+	var y1 = destinationPlanet.orbitRad;
+
+	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
+	
+
 }
 
 Rocket.prototype = Object.create(Phaser.Sprite.prototype);
@@ -38,7 +71,6 @@ Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
-		console.log("I made it!");
 		this.character.input.enableDrag();
 		this.character.scale.set(this.characterScale);
 		this.character.EnterPlanet(this.destination);
@@ -47,6 +79,7 @@ Rocket.prototype.update = function() {
 
 	var delta = game.universalTime * game.time.elapsed / 1000;
 
+	/*
 	// Get the orbitAngle of destination in [0, 2*PI)
 	var destinationAngle = this.destination.orbitAngle;
 	while(destinationAngle < 0) {
@@ -98,11 +131,14 @@ Rocket.prototype.update = function() {
 	// Multiply the angleChange by -1 if going clockwise
 	if(clockwise) {
 		angleChange *= -1;
-	}	
+	}	*/
+
 
 	// Do the change
-	this.orbitRad += radChange * delta;
-	this.orbitAngle += angleChange * delta;
+	//this.orbitRad += radChange * delta;
+	//this.orbitAngle += angleChange * delta;
+	this.orbitAngle += 2 * delta;
+	this.orbitRad = this.curve.y(this.orbitAngle);
 
 	var x0 = this.x;
 	var y0 = this.y;

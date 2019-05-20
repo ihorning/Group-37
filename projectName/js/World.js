@@ -50,6 +50,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 
 	// Start with character as null
 	this.character = null;
+	this.pendingArrival = null;
 
 }
 

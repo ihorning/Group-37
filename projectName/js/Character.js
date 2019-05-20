@@ -123,7 +123,7 @@ Character.prototype.update = function() {
 		this.line.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
 
 		for(var i = 0; i < this.planetList.length; i++) {
-			if(this.planetList[i].character == null) {
+			if(this.planetList[i].character == null && !this.planetList[i].pendingArrival) {
 				this.line.moveTo(this.planetList[i].x, this.planetList[i].y);
 				this.line.drawCircle(this.planetList[i].x, this.planetList[i].y, 100 + (10 * Math.sin(this.planetList[i].currentTime * Math.PI)))
 			}
@@ -171,6 +171,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet = planet;
 	this.planet.addChild(this);
 	this.planet.character = this;
+	this.planet.pendingArrival = false;
 	this.x = 53;
 	this.y = 0;
 	this.ageBar.visible = true;
@@ -205,7 +206,7 @@ Character.prototype.EndDrag = function() {
 	var minDistance = Infinity;
 	var minInd = 0;
 	for(var i = 0; i < this.planetList.length; i++) { // Select the planet with the smallest distance to this
-		if(this.planetList[i].character == null) {
+		if(this.planetList[i].character == null && !this.planetList[i].pendingArrival) {
 			var newDistance = Math.pow(Math.pow(this.planetList[i].x - this.x, 2) + Math.pow(this.planetList[i].y - this.y, 2), 0.5);
 			if(newDistance < minDistance) {
 				minDistance = newDistance;
@@ -236,6 +237,8 @@ Character.prototype.EndDrag = function() {
 				this.happiness = 0;
 			}
 		}
+
+		this.planetList[minInd].pendingArrival = true;
 
 		// Make a rocket
 		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 450, "rocketAtlas", "rocket");

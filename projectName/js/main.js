@@ -98,7 +98,7 @@ Play.prototype = {
 			}
 		}
 		for (var i = 0; i < this.ProgressBarList.length; i++) {
-			if(!this.ProgressBarList[i].complete) {
+			if(!this.ProgressBarList[i].bar.complete) {
 				allJobsDone = false;
 				break;
 			}

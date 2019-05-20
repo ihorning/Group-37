@@ -4,6 +4,5 @@
 *.mp3
 *.wav
 .DS_Store
-# json files are included
 *.json
 *.ai

@@ -146,6 +146,9 @@ Rocket.prototype.update = function() {
 	//this.orbitRad += radChange * delta;
 	//this.orbitAngle += angleChange * delta;
 	this.orbitAngle += 2 * delta;
+	if(this.orbitAngle > this.curve.x1) {
+		this.orbitAngle = this.curve.x1;
+	}
 	this.orbitRad = this.curve.y(this.orbitAngle);
 
 	var x0 = this.x;

@@ -8,6 +8,7 @@
 var WORK_BAR_DIVISIONS = 20;
 var WORK_BAR_KEY = "barAtlas";
 var WORK_BAR_FRAME = "circleBar";
+var WORK_BAR_BG_FRAME = "circleBarBG";
 var WORK_BAR_TINT = "0xaaaaaa"; // Tint when sleeping
 var WORK_BAR_FONT = {font: "20px Courier", font: "20px Lucida Console", fontWeight: "bold", fill: "#fff"};
 
@@ -16,6 +17,11 @@ function WorkBar(game, x, y, timeMultiplier) {
 
 	// Call CircleBar constructor
 	Phaser.Sprite.call(this, game, x, y, null, null, 0);
+	this.anchor.set(0.5);
+	this.scale.set(0.8);
+
+	this.BG = this.addChild(new Phaser.Sprite(game, 0, 0, WORK_BAR_KEY, WORK_BAR_BG_FRAME, 0));
+	this.BG.anchor.set(0.5);
 
 	this.bar = this.addChild(new CircleBar(game, 0, 0, WORK_BAR_DIVISIONS, WORK_BAR_KEY, WORK_BAR_FRAME));
 
@@ -24,7 +30,8 @@ function WorkBar(game, x, y, timeMultiplier) {
 	this.efficiency = 1;
 
 	// Add a text object to display %
-	this.displayText = this.addChild(game.make.text(0, (this.height / 2) + 30, "0%", WORK_BAR_FONT));
+	this.displayText = this.addChild(game.make.text(0, 85, "0%", WORK_BAR_FONT));
+	this.displayText.anchor.set(0.5);
 
 	game.add.existing(this);
 }
@@ -56,6 +63,13 @@ WorkBar.prototype.update = function() {
 		this.bar.tint = WORK_BAR_TINT;
 	} else {
 		this.bar.tint = 0xeeffee;
+	}
+
+
+	if(Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * this.scale.x) {
+		this.BG.visible = true;
+	} else {
+		this.BG.visible = false;
 	}
 
 	// Update displayText to current percent

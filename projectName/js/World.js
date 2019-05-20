@@ -65,7 +65,7 @@ World.prototype.update = function() {
 	this.orbitRad -= delta / 5;
 
 	this.orbit.clear();
-	this.orbit.lineStyle(2.5 - (1.3 * Math.sin(1.5 * this.currentTime)), 0xffffff, 0.2 * (Math.sin(1.5 * (this.currentTime + 1))));
+	this.orbit.lineStyle(2.2 - (1.3 * Math.sin(2 * this.currentTime)), 0xffffff, 0.2 + (0.05 * (Math.sin(2 * (this.currentTime + 1)))));
 	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
 	var newCirclePath = [];
 	for(var i = 0; i < circlePath.length; i++) {

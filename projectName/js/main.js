@@ -14,7 +14,7 @@ MainMenu.prototype = {
 		// console.log('MainMenu: preload');
 
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
-		game.load.atlas('medSpin', 'assets/img/medSpin.png', 'assets/img/medSpin.json');
+		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
 		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
@@ -58,11 +58,11 @@ Play.prototype = {
 		this.blackHole.anchor.setTo(0.5);
 
 		// Add in the planets
-		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 4, 'spaceatlas', 'ReallySlowPlanet', 0.5, false);
-		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 5, 'spaceatlas', 'SlowPlanet', 0.75, false);
-		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 3, 'medSpin', 'Med01', 1, true);
-		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 5, 'spaceatlas', 'FastPlanet', 1.25, false);
-		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 2, 'spaceatlas', 'ReallyFastPlanet', 1.75, false);
+		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 4, 'planets', 'RSlowP', 0.5);
+		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 5, 'planets', 'SlowP', 0.75);
+		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 3, 'planets', 'MedP', 1);
+		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 5, 'planets', 'FastP', 1.25);
+		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 2, 'planets', 'RFastP', 1.75);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');

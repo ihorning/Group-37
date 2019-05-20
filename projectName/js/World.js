@@ -6,14 +6,9 @@ for(var i = 0; i < circleDetail; i++) {
 	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
 }
 
-function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier, animated) {
+function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, -1000, -1000, key, frame);
-
-	if(animated){
-		this.animations.add('spin', Phaser.Animation.generateFrameNames('Med', 1, 21, '', 2), 10, true);
-		this.animations.play('spin');
-	}
+	Phaser.Sprite.call(this, game, -1000, -1000);
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
@@ -52,6 +47,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.character = null;
 	this.pendingArrival = null;
 
+	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
 
 World.prototype = Object.create(Phaser.Sprite.prototype);
@@ -100,4 +96,42 @@ World.prototype.update = function() {
 
 World.prototype.currentTime = function() {
 	return this.currentTime;
+}
+
+function WorldSpin(game, key, frame, timeMultiplier, planet) {
+	// Call Phaser.TileSprite constructor
+	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
+	console.log("here?");
+
+	this.planet = planet;
+	this.timeMultiplier = timeMultiplier;
+	this.pmask = game.add.graphics(0, 0);
+
+    //	Shapes drawn to the Graphics object must be filled.
+    this.pmask.beginFill(0xfacade);
+
+    //	Here we'll draw a circle
+    this.pmask.drawCircle(0, 0, 70);
+
+    //	And apply it to the Sprite
+    this.mask = this.pmask;
+
+	// Set the anchor point to the center
+	this.anchor.set(0.5);
+
+	// Add this to the game
+	game.add.existing(this);
+}
+
+WorldSpin.prototype = Object.create(Phaser.TileSprite.prototype);
+
+WorldSpin.prototype.constructor = WorldSpin;
+
+WorldSpin.prototype.update = function() {
+	//Scroll planet
+	this.tilePosition.x -= this.timeMultiplier;
+	this.x = this.planet.x;
+	this.y = this.planet.y;
+	this.pmask.x = this.x;
+	this.pmask.y = this.y;
 }

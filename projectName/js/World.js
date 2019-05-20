@@ -7,19 +7,20 @@ for(var i = 0; i < circleDetail; i++) {
 }
 
 function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
-	// Call Phaser.TileSprite constructor
-	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
+	// Call Phaser.Sprite constructor
+	Phaser.Sprite.call(this, game, -1000, -1000);
+	//, key, frame
 
-	this.pmask = game.add.graphics(0, 0);
+	// this.pmask = game.add.graphics(0, 0);
 
-    //	Shapes drawn to the Graphics object must be filled.
-    this.pmask.beginFill(0xfacade);
+ //    //	Shapes drawn to the Graphics object must be filled.
+ //    this.pmask.beginFill(0xfacade);
 
-    //	Here we'll draw a circle
-    this.pmask.drawCircle(0, 0, 70);
+ //    //	Here we'll draw a circle
+ //    this.pmask.drawCircle(0, 0, 70);
 
-    //	And apply it to the Sprite
-    this.mask = this.pmask;
+ //    //	And apply it to the Sprite
+ //    this.mask = this.pmask;
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
@@ -57,9 +58,10 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	// Start with character as null
 	this.character = null;
 
+	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
 
-World.prototype = Object.create(Phaser.TileSprite.prototype);
+World.prototype = Object.create(Phaser.Sprite.prototype);
 
 World.prototype.constructor = World;
 
@@ -82,8 +84,8 @@ World.prototype.update = function() {
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 
-	this.pmask.x = this.x;
-	this.pmask.y = this.y;
+	// this.pmask.x = this.x;
+	// this.pmask.y = this.y;
 
 	// Get the number to be displayed (1 decimal)
 	var numberToDisplay = Math.floor(this.currentTime * 10) / 10;
@@ -102,12 +104,50 @@ World.prototype.update = function() {
 		this.character.update(); // Run character's update function
 	}
 
-	//Scroll planet
-	this.tilePosition.x -= this.timeMultiplier;
+	// //Scroll planet
+	// this.tilePosition.x -= this.timeMultiplier;
 	// Run job's update function
 	this.job.update();
 }
 
 World.prototype.currentTime = function() {
 	return this.currentTime;
+}
+
+function WorldSpin(game, key, frame, timeMultiplier, planet) {
+	// Call Phaser.TileSprite constructor
+	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
+	console.log("here?");
+
+	this.planet = planet;
+	this.timeMultiplier = timeMultiplier;
+	this.pmask = game.add.graphics(0, 0);
+
+    //	Shapes drawn to the Graphics object must be filled.
+    this.pmask.beginFill(0xfacade);
+
+    //	Here we'll draw a circle
+    this.pmask.drawCircle(0, 0, 70);
+
+    //	And apply it to the Sprite
+    this.mask = this.pmask;
+
+	// Set the anchor point to the center
+	this.anchor.set(0.5);
+
+	// Add this to the game
+	game.add.existing(this);
+}
+
+WorldSpin.prototype = Object.create(Phaser.TileSprite.prototype);
+
+WorldSpin.prototype.constructor = WorldSpin;
+
+WorldSpin.prototype.update = function() {
+	//Scroll planet
+	this.tilePosition.x -= this.timeMultiplier;
+	this.x = this.planet.x;
+	this.y = this.planet.y;
+	this.pmask.x = this.x;
+	this.pmask.y = this.y;
 }

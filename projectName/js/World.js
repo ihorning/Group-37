@@ -73,6 +73,7 @@ World.prototype.update = function() {
 	this.orbit.drawPolygon(newCirclePath);
 
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
+	this.orbitAngle = this.orbitAngle % (Math.PI * 2);
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 

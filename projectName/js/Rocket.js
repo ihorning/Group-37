@@ -142,6 +142,18 @@ Rocket.prototype.update = function() {
 	}	*/
 
 
+
+	var x0 = this.source.orbitAngle;
+	var y0 = this.source.orbitRad;
+	var x1 = this.destination.orbitAngle;
+	var y1 = this.destination.orbitRad;
+
+	//console.log(x0+" "+x1+" "+y0+" "+y1);
+
+	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE, false);
+
+
+
 	// Do the change
 	//this.orbitRad += radChange * delta;
 	//this.orbitAngle += angleChange * delta;

@@ -37,6 +37,11 @@ Rocket.prototype = Object.create(Phaser.Sprite.prototype);
 Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
+
+	if(!this.character.alive) {
+		this.destroy();
+	}
+
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
 		console.log("I made it!");
 		this.character.input.enableDrag();

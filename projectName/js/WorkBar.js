@@ -31,7 +31,8 @@ function WorkBar(game, x, y, timeMultiplier) {
 
 	// Add a text object to display %
 	this.displayText = this.addChild(game.make.text(0, 85, "0%", WORK_BAR_FONT));
-	this.displayText.anchor.set(0.5);
+	this.displayText.anchor.x = 0.5;
+	this.displayText.anchor.y = 0.25;
 
 	game.add.existing(this);
 }
@@ -66,10 +67,12 @@ WorkBar.prototype.update = function() {
 	}
 
 
-	if(Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * this.scale.x) {
+	if(Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * 0.5) {
 		this.BG.visible = true;
+		this.displayText.scale.set(1.15);
 	} else {
 		this.BG.visible = false;
+		this.displayText.scale.set(1);
 	}
 
 	// Update displayText to current percent

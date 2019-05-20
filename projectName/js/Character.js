@@ -3,7 +3,7 @@
 function Character(game, planet, planetList, key, frame, audio, name) {
 
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, 53, 0, key, frame, 0);
+	Phaser.Sprite.call(this, game, 68, 0, key, frame, 0);
 
 	// Set anchor to middle
 	this.anchor.set(0.5);
@@ -36,6 +36,7 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
 	this.input.enableDrag();
+	this.input.useHandCursor = true;
 	this.events.onDragStart.add(this.BeginDrag, this);
 	this.events.onDragStop.add(this.EndDrag, this);
 
@@ -172,7 +173,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.addChild(this);
 	this.planet.character = this;
 	this.planet.pendingArrival = false;
-	this.x = 53;
+	this.x = 68;
 	this.y = 0;
 	this.ageBar.visible = true;
 	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
@@ -216,7 +217,7 @@ Character.prototype.EndDrag = function() {
 	}
 
 	// Set x and y to default distance from planet
-	this.x = 53;
+	this.x = 68;
 	this.y = 0;
 
 	// If within range of valid planet...

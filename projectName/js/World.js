@@ -45,7 +45,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.debugTimeDisplay.anchor.set(0.5);
 
 	// Add a WorkBar
-	this.job = game.add.existing(new WorkBar(game, -WORK_PROGRESS_WIDTH / 2, ((this.height / 2) + 32), this.timeMultiplier));
+	this.job = new WorkBar(game, 0, 0, this.timeMultiplier);
 	this.addChild(this.job);
 
 	// Start with character as null
@@ -87,10 +87,12 @@ World.prototype.update = function() {
 	}
 
 	if(this.character == null) { // If no character,
-		this.job.sleep = true; // Turn off job progress
+		this.job.bar.sleep = true; // Turn off job progress
 	} else { // If there is a character,
 		this.job.efficiency = this.character.efficiency;
-		this.job.sleep = false; // Turn on job progress
+		if(!this.job.bar.complete) {
+			this.job.bar.sleep = false; // Turn on job progress
+		}
 		this.character.update(); // Run character's update function
 	}
 

@@ -11,6 +11,9 @@ function CircleBar(game, x, y, divisions, key, frame) {
 	this.progressMask = game.add.graphics();
 	this.addChild(this.progressMask);
 	this.mask = this.progressMask;
+
+	this.percent = 0;
+	this.setMask(0);
 }
 
 CircleBar.prototype = Object.create(Phaser.Sprite.prototype);

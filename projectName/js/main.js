@@ -54,6 +54,9 @@ MainMenu.prototype = {
 		}
 		mouseTheta = mouseTheta % (Math.PI * 2);
 		var startTheta = mouseTheta - (Math.PI / 4);
+		while(startTheta < 0) {
+			startTheta += Math.PI * 2;
+		}
 		while(mouseTheta < startTheta) {
 			mouseTheta += Math.PI * 2;
 		}
@@ -64,7 +67,6 @@ MainMenu.prototype = {
 		for(var i = 0; i < 10; i++) {
 			var newTheta = startTheta + ((i / 10) * (mouseTheta - startTheta));
 			var newRad = this.testCurve.y(newTheta);
-			console.log(newRad+" "+newTheta);
 			var newX = game.world.centerX + (newRad * Math.cos(newTheta));
 			var newY = game.world.centerY + (newRad * Math.sin(newTheta));
 			this.testLine.drawCircle(newX, newY, 10);

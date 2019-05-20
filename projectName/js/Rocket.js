@@ -37,7 +37,7 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 	game.add.existing(this);
 
 
-
+	/*
 	// Get the angle of the source
 	var x0 = this.source.orbitAngle;
 	while(x0 < 0) {
@@ -60,8 +60,16 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 
 	// Get the radius of the destination
 	var y1 = destinationPlanet.orbitRad;
+	*/
 
-	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
+	var x0 = this.source.orbitAngle;
+	var y0 = this.source.orbitRad;
+	var x1 = this.destination.orbitAngle;
+	var y1 = this.destination.orbitRad;
+
+	console.log(x0+" "+x1+" "+y0+" "+y1);
+
+	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE, false);
 	
 
 }

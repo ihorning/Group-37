@@ -1,12 +1,29 @@
 "use strict";
 
-function RocketCurve(x0, x1, y0, y1, shape, logBase) {
+function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 	this.x0 = x0;
 	this.x1 = x1;
 	this.y0 = y0;
 	this.y1 = y1;
 	this.shape = shape;
 	this.logBase = logBase;
+
+
+	while(this.x0 < 0) {
+		this.x0 += Math.PI * 2;
+	}
+	this.x0 = this.x0 % (Math.PI * 2);
+
+
+	while(this.x1 < 0) {
+		this.x1 += Math.PI * 2;
+	}
+	this.x1 = this.x1 % (Math.PI * 2);
+	while(this.x1 < this.x0) {
+		this.x1 += Math.PI * 2;
+	}
+	//console.log(this.x0+" "+this.x1+" "+this.y0+" "+this.y1);
+	
 
 	this.logBaseFactor = 1 / Math.log(this.logBase);
 	this.coefficient = (this.y1 - this.y0) / (this.logBaseFactor * Math.log(((this.x1 - this.x0) + this.shape) / this.shape));

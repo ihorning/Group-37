@@ -5,3 +5,4 @@
 *.wav
 .DS_Store
 # json files are included
+*.json

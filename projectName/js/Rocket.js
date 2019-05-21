@@ -69,7 +69,8 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 
 	//console.log(x0+" "+x1+" "+y0+" "+y1);
 
-	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE, false);
+	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
+	this.orbitAngle = this.curve.x0;
 	
 
 }
@@ -152,7 +153,8 @@ Rocket.prototype.update = function() {
 
 	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
 
-
+	delta = this.speed * delta / this.orbitRad;
+	//console.log(this.curve.yPrime(this.orbitAngle));
 
 	// Do the change
 	//this.orbitRad += radChange * delta;

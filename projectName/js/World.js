@@ -58,7 +58,7 @@ World.prototype.update = function() {
 	var delta = this.timeMultiplier * game.universalTime * game.time.elapsed / 1000;
 	this.currentTime += delta;
 
-	this.orbitRad -= delta / 5;
+	this.orbitRad -= delta * 2 / this.timeMultiplier;
 
 	this.orbit.clear();
 	this.orbit.lineStyle(2.2 - (1.3 * Math.sin(2 * this.currentTime)), 0xffffff, 0.2 + (0.05 * (Math.sin(2 * (this.currentTime + 1)))));

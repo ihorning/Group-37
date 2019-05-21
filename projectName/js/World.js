@@ -131,7 +131,7 @@ WorldSpin.prototype.constructor = WorldSpin;
 
 WorldSpin.prototype.update = function() {
 	//Scroll planet
-	this.tilePosition.x -= this.timeMultiplier;
+	this.tilePosition.x -= this.timeMultiplier * (game.universalTime / 0.3);
 	this.x = this.planet.x;
 	this.y = this.planet.y;
 	this.pmask.x = this.x;

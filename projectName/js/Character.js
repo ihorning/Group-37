@@ -134,11 +134,20 @@ Character.prototype.update = function() {
 		
 		this.line.beginFill(0xffffff);
 
-		for(var i = newCurve.x0; i < newCurve.x1; i += (newCurve.x1 - newCurve.x0) / 50) {
-			var newRad = newCurve.y(i);
-			var newX = game.world.centerX + (newRad * Math.cos(i));
-			var newY = game.world.centerY - (newRad * Math.sin(i));
-			this.line.drawCircle(newX, newY, 5);
+		if(!newCurve.reverse) {
+			for(var i = newCurve.x0; i < newCurve.x1; i += (newCurve.x1 - newCurve.x0) / 50) {
+				var newRad = newCurve.y(i);
+				var newX = game.world.centerX + (newRad * Math.cos(i));
+				var newY = game.world.centerY - (newRad * Math.sin(i));
+				this.line.drawCircle(newX, newY, 5);
+			}
+		} else {
+			for(var i = newCurve.x1; i < newCurve.x0; i += (newCurve.x0 - newCurve.x1) / 50) {
+				var newRad = newCurve.y(i);
+				var newX = game.world.centerX + (newRad * Math.cos(i));
+				var newY = game.world.centerY - (newRad * Math.sin(i));
+				this.line.drawCircle(newX, newY, 5);
+			}
 		}
 
 		this.line.beginFill(0x000000, 0);
@@ -274,7 +283,7 @@ Character.prototype.EndDrag = function() {
 		this.planet.character = null;
 		this.planet = null;
 	} else { // If not chosen valid planet,
-		console.log(minDistance);
+		//console.log(minDistance);
 		// Put this back on the planet it was on before
 		this.planet.addChild(this);
 	}

@@ -19,22 +19,50 @@ function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 		this.x1 += Math.PI * 2;
 	}
 	this.x1 = this.x1 % (Math.PI * 2);
-	while(this.x1 < this.x0) {
-		this.x1 += Math.PI * 2;
+
+
+	var x2 = this.x1;
+	while(x2 < this.x0) {
+		x2 += Math.PI * 2;
 	}
-	//console.log(this.x0+" "+this.x1+" "+this.y0+" "+this.y1);
+	if(x2 - this.x0 > Math.PI) {
+		this.reverse = true;
+	} else {
+		this.reverse = false;
+	}
+
+
+	if(!this.reverse) {
+		while(this.x1 < this.x0) {
+			this.x1 += Math.PI * 2;
+		}
+	} else {
+		while(this.x0 < this.x1) {
+			this.x0 += Math.PI * 2;
+		}
+	}
 	
 
 	this.logBaseFactor = 1 / Math.log(this.logBase);
-	this.coefficient = (this.y1 - this.y0) / (this.logBaseFactor * Math.log(((this.x1 - this.x0) + this.shape) / this.shape));
-	
+
+	if(!this.reverse) {
+		this.coefficient = (this.y1 - this.y0) / (this.logBaseFactor * Math.log(((this.x1 - this.x0) + this.shape) / this.shape));
+	} else {
+		this.coefficient = (this.y1 - this.y0) / (this.logBaseFactor * Math.log(((-this.x1 + this.x0) + this.shape) / this.shape));
+	}
 }
 
 RocketCurve.prototype = Object.create(Object.prototype);
 RocketCurve.prototype.constructor = RocketCurve;
 
 RocketCurve.prototype.y = function(x) {
-	return (this.coefficient * this.logBaseFactor * Math.log(((x - this.x0) + this.shape) / this.shape)) + this.y0;
+	var result;
+	if(!this.reverse) {
+		result = (this.coefficient * this.logBaseFactor * Math.log(((x - this.x0) + this.shape) / this.shape)) + this.y0;
+	} else {
+		result = (this.coefficient * this.logBaseFactor * Math.log(((-x + this.x0) + this.shape) / this.shape)) + this.y0;
+	}
+	return(result);
 };
 
 /*

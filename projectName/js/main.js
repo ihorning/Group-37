@@ -45,33 +45,6 @@ MainMenu.prototype = {
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 			game.state.start('Play');
 		}
-
-		var X = game.input.mousePointer.x;
-		var Y = game.input.mousePointer.y;
-		var mouseTheta = Math.atan2(Y - game.world.centerY, X - game.world.centerX);
-		while(mouseTheta < 0) {
-			mouseTheta += Math.PI * 2;
-		}
-		mouseTheta = mouseTheta % (Math.PI * 2);
-		var startTheta = mouseTheta - (Math.PI / 4);
-		while(startTheta < 0) {
-			startTheta += Math.PI * 2;
-		}
-		while(mouseTheta < startTheta) {
-			mouseTheta += Math.PI * 2;
-		}
-		var mouseRad = Math.pow(Math.pow(X - game.world.centerX, 2) + Math.pow(Y - game.world.centerY, 2), 0.5);
-		this.testCurve = new RocketCurve(startTheta, mouseTheta, 0, mouseRad, 0.25, 2);
-		this.testLine.clear();
-		this.testLine.beginFill("0xffffff", 1);
-		for(var i = 0; i < 10; i++) {
-			var newTheta = startTheta + ((i / 10) * (mouseTheta - startTheta));
-			var newRad = this.testCurve.y(newTheta);
-			var newX = game.world.centerX + (newRad * Math.cos(newTheta));
-			var newY = game.world.centerY + (newRad * Math.sin(newTheta));
-			this.testLine.drawCircle(newX, newY, 10);
-		}
-
 	}
 }
 

@@ -67,7 +67,7 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 	var x1 = this.destination.orbitAngle;
 	var y1 = this.destination.orbitRad;
 
-	console.log(x0+" "+x1+" "+y0+" "+y1);
+	//console.log(x0+" "+x1+" "+y0+" "+y1);
 
 	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE, false);
 	
@@ -150,15 +150,21 @@ Rocket.prototype.update = function() {
 
 	//console.log(x0+" "+x1+" "+y0+" "+y1);
 
-	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE, false);
+	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
 
 
 
 	// Do the change
 	//this.orbitRad += radChange * delta;
 	//this.orbitAngle += angleChange * delta;
-	this.orbitAngle += 2 * delta;
-	if(this.orbitAngle > this.curve.x1) {
+	if(!this.curve.reverse) {
+		this.orbitAngle += 2 * delta;
+	} else {
+		this.orbitAngle -= 2 * delta;
+	}
+	if(this.orbitAngle > this.curve.x1 && !this.curve.reverse) {
+		this.orbitAngle = this.curve.x1;
+	} else if(this.orbitAngle < this.curve.x1 && this.curve.reverse) {
 		this.orbitAngle = this.curve.x1;
 	}
 	this.orbitRad = this.curve.y(this.orbitAngle);

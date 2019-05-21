@@ -1,6 +1,6 @@
 "use strict";
 
-function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
+function RocketCurve(x0, x1, y0, y1, shape, logBase) {
 	this.x0 = x0;
 	this.x1 = x1;
 	this.y0 = y0;

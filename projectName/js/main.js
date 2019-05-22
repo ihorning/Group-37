@@ -53,6 +53,7 @@ Play.prototype = {
 
 	},
 	create: function() {
+		game.universalTime = 0.3;
 		// Put black hole on the screen
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);

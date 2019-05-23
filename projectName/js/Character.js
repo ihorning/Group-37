@@ -122,9 +122,43 @@ Character.prototype.update = function() {
 
 	this.line.clear();
 	if(this.drawLine) {
+		// this.line.lineStyle(4, 0xffffff, 0.5);
+		// this.line.moveTo(this.planet.x, this.planet.y);
+		// this.line.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
+
+		var orbitAngle = Math.atan2(game.world.centerY - game.input.mousePointer.y, game.input.mousePointer.x - game.world.centerX);
+		var orbitRad = Math.pow(Math.pow(game.world.centerX - game.input.mousePointer.x, 2) + Math.pow(game.world.centerY - game.input.mousePointer.y, 2), 0.5);
+
+		var x0 = this.planet.orbitAngle;
+		var x1 = orbitAngle;
+		var y0 = this.planet.orbitRad;
+		var y1 = orbitRad;
+
+		var newCurve = new RocketCurve(x0, x1, y0, y1, 0.8, 2);
+
+		if(!newCurve.reverse) {
+			for(var i = newCurve.x0; i < newCurve.x1; i += (newCurve.x1 - newCurve.x0) / 50) {
+				this.line.beginFill(0xffffff, (i - newCurve.x0) / (newCurve.x1 - newCurve.x0));
+				var newRad = newCurve.y(i);
+				var newX = game.world.centerX + (newRad * Math.cos(i));
+				var newY = game.world.centerY - (newRad * Math.sin(i));
+				this.line.drawCircle(newX, newY, 5);
+			}
+		} else {
+			for(var i = newCurve.x1; i < newCurve.x0; i += (newCurve.x0 - newCurve.x1) / 50) {
+				this.line.beginFill(0xffffff, (newCurve.x0 - i) / (newCurve.x0 - newCurve.x1));
+				var newRad = newCurve.y(i);
+				var newX = game.world.centerX + (newRad * Math.cos(i));
+				var newY = game.world.centerY - (newRad * Math.sin(i));
+				this.line.drawCircle(newX, newY, 5);
+			}
+		}
+
+		this.line.beginFill(0x000000, 0);
 		this.line.lineStyle(4, 0xffffff, 0.5);
-		this.line.moveTo(this.planet.x, this.planet.y);
-		this.line.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
+
+		this.line.beginFill(0x000000, 0);
+		this.line.lineStyle(4, 0xffffff, 0.5);
 
 		for(var i = 0; i < this.planetList.length; i++) {
 			if(this.planetList[i].character == null && !this.planetList[i].pendingArrival) {
@@ -245,7 +279,7 @@ Character.prototype.EndDrag = function() {
 		this.planetList[minInd].pendingArrival = true;
 
 		// Make a rocket
-		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 450, "rocketAtlas", "rocket");
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 300, "rocketAtlas", "rocket");
 		this.input.disableDrag();
 		// Add this as a child
 		newRocket.addChild(this);
@@ -256,7 +290,7 @@ Character.prototype.EndDrag = function() {
 		this.planet.character = null;
 		this.planet = null;
 	} else { // If not chosen valid planet,
-		console.log(minDistance);
+		//console.log(minDistance);
 		// Put this back on the planet it was on before
 		this.planet.addChild(this);
 	}

@@ -36,14 +36,15 @@ MainMenu.prototype = {
 
 		this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
 		this.toplay.anchor.setTo(0.5);
-		
+
+		this.testLine = game.add.graphics(0, 0);
+
 	},
 	update: function() {
 		// main menu logic
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 			game.state.start('Play');
 		}
-
 	}
 }
 

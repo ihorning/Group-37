@@ -30,7 +30,7 @@ function WorkBar(game, x, y, timeMultiplier) {
 	this.efficiency = 1;
 
 	// Add a text object to display %
-	this.displayText = this.addChild(game.make.text(0, 85, "0%", WORK_BAR_FONT));
+	this.displayText = this.addChild(game.make.text(0, 85, "0% Complete", WORK_BAR_FONT));
 	this.displayText.anchor.x = 0.5;
 	this.displayText.anchor.y = 0.25;
 
@@ -76,5 +76,5 @@ WorkBar.prototype.update = function() {
 	}
 
 	// Update displayText to current percent
-	this.displayText.text = " "+Math.floor(this.bar.percent)+"%";
+	this.displayText.text = " "+Math.floor(this.bar.percent)+"% Complete";
 }

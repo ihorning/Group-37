@@ -58,7 +58,15 @@ World.prototype.update = function() {
 	var delta = this.timeMultiplier * game.universalTime * game.time.elapsed / 1000;
 	this.currentTime += delta;
 
-	this.orbitRad -= delta * 2 / this.timeMultiplier;
+	var progressFactor = (75 - this.job.bar.percent) / 100;
+	if(progressFactor < 0) {
+		progressFactor = -Math.pow(progressFactor, 2);
+	}
+	this.orbitRad -= (delta / this.timeMultiplier) * progressFactor;
+	if(this.orbitRad < 0) {
+		this.orbitRad = 0;
+	}
+	this.timeMultiplier = (this.orbitRad / 400) / 0.66;
 
 	this.orbit.clear();
 	this.orbit.lineStyle(2.2 - (1.3 * Math.sin(2 * this.currentTime)), 0xffffff, 0.2 + (0.05 * (Math.sin(2 * (this.currentTime + 1)))));

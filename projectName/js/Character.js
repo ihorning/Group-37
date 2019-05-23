@@ -3,12 +3,12 @@
 function Character(game, planet, planetList, key, frame, audio, name) {
 
 	// Call Phaser.Sprite constructor
-	Phaser.Sprite.call(this, game, 68, 0, key, frame, 0);
+	Phaser.Sprite.call(this, game, 74, 0, key, frame, 0);
 
 	// Set anchor to middle
 	this.anchor.set(0.5);
 	// Set scale to 0.2
-	this.scale.set(0.2);
+	this.scale.set(0.275);
 
 	game.add.existing(this);
 
@@ -33,6 +33,8 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	this.ageBar.x = this.planet.x + this.x + this.width;
 	this.ageBar.y = this.planet.y + this.y;
 
+	this.ageBar.scale.set(1.25);
+
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
 	this.input.enableDrag();
@@ -47,6 +49,7 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	this.efficiency = 1;
 
 	this.debugText = this.addChild(game.make.text(80, -90, "faweion", {font: "80px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.debugText.scale.set(0.7);
 	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
@@ -173,7 +176,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.addChild(this);
 	this.planet.character = this;
 	this.planet.pendingArrival = false;
-	this.x = 68;
+	this.x = 74;
 	this.y = 0;
 	this.ageBar.visible = true;
 	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
@@ -217,7 +220,7 @@ Character.prototype.EndDrag = function() {
 	}
 
 	// Set x and y to default distance from planet
-	this.x = 68;
+	this.x = 74;
 	this.y = 0;
 
 	// If within range of valid planet...

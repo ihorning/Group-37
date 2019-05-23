@@ -17,6 +17,7 @@ MainMenu.prototype = {
 		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
 		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
+		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 
@@ -36,13 +37,19 @@ MainMenu.prototype = {
 
 		this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
 		this.toplay.anchor.setTo(0.5);
-		
+
+		this.popupTest = new Popup(game, game.world.centerX, game.world.centerY, 200, 300, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popupTest.anchor.x = 0.5;
+		this.popupTest.anchor.y = 0.5;
+
 	},
 	update: function() {
 		// main menu logic
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 			game.state.start('Play');
 		}
+
+		this.popupTest.Resize(this.popupTest.xSize + (game.time.elapsed / 100), this.popupTest.ySize + (game.time.elapsed / 100));
 
 	}
 }

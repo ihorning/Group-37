@@ -44,48 +44,48 @@ Popup.prototype.Resize = function(xSize, ySize) {
 	var xOffset = this.anchor.x * this.xSize;
 	var yOffset = this.anchor.y * this.ySize;
 
-	this.NW.x = 0 - xOffset;
-	this.NW.y = 0 - yOffset;
+	this.NW.x = -this.NWFrame.width - xOffset;
+	this.NW.y = -this.NWFrame.height - yOffset;
 	this.NW.width = this.NWFrame.width;
 	this.NW.height = this.NWFrame.height;
 
-	this.N.x = this.NWFrame.width - xOffset;
-	this.N.y = 0 - yOffset;
-	this.N.width = xSize - (this.NWFrame.width + this.NEFrame.width);
+	this.N.x = 0 - xOffset;
+	this.N.y = -this.NFrame.height - yOffset;
+	this.N.width = xSize;
 	this.N.height = this.NFrame.height;
 
-	this.NE.x = xSize - this.NEFrame.width - xOffset;
-	this.NE.y = 0 - yOffset;
+	this.NE.x = xSize - xOffset;
+	this.NE.y = -this.NEFrame.height - yOffset;
 	this.NE.width = this.NEFrame.width;
 	this.NE.height = this.NEFrame.height;
 
-	this.W.x = 0 - xOffset;
-	this.W.y = this.NWFrame.height - yOffset;
+	this.W.x = -this.WFrame.width - xOffset;
+	this.W.y = 0 - yOffset;
 	this.W.width = this.WFrame.width;
-	this.W.height = ySize - (this.NWFrame.height + this.SWFrame.height);
+	this.W.height = ySize;
 
-	this.C.x = this.WFrame.width - xOffset;
-	this.C.y = this.NFrame.height - yOffset;
-	this.C.width = xSize - (this.WFrame.width + this.EFrame.width);
-	this.C.height = ySize - (this.NFrame.height + this.SFrame.height);
+	this.C.x = 0 - xOffset;
+	this.C.y = 0 - yOffset;
+	this.C.width = xSize;
+	this.C.height = ySize;
 
-	this.E.x = xSize - this.EFrame.width - xOffset;
-	this.E.y = this.NEFrame.height - yOffset;
+	this.E.x = xSize - xOffset;
+	this.E.y = 0 - yOffset;
 	this.E.width = this.EFrame.width;
-	this.E.height = ySize - (this.NEFrame.height + this.SEFrame.height);
+	this.E.height = ySize;
 
-	this.SW.x = 0 - xOffset;
-	this.SW.y = ySize - this.SWFrame.height - yOffset;
+	this.SW.x = -this.SWFrame.width - xOffset;
+	this.SW.y = ySize - yOffset;
 	this.SW.width = this.SWFrame.width;
 	this.SW.height = this.SWFrame.height;
 
-	this.S.x = this.SWFrame.width - xOffset;
-	this.S.y = ySize - this.SFrame.height - yOffset;
-	this.S.width = xSize - (this.SWFrame.width + this.SEFrame.width);
+	this.S.x = 0 - xOffset;
+	this.S.y = ySize - yOffset;
+	this.S.width = xSize;
 	this.S.height = this.SFrame.height;
 
-	this.SE.x = xSize - this.SEFrame.width - xOffset;
-	this.SE.y = ySize - this.SEFrame.height - yOffset;
+	this.SE.x = xSize - xOffset;
+	this.SE.y = ySize - yOffset;
 	this.SE.width = this.SEFrame.width;
 	this.SE.height = this.SEFrame.height;
 

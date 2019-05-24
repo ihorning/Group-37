@@ -57,6 +57,7 @@ WorkBar.prototype.update = function() {
 			this.bar.percent = 100;
 			this.bar.sleep = true;
 			this.bar.complete = true;
+			this.bar.setMask(100);
 		}
 
 	} else if(!this.bar.complete) { // If sleeping,
@@ -76,8 +77,10 @@ WorkBar.prototype.update = function() {
 	}
 
 	// Update displayText to current percent
-	this.displayText.text = " "+Math.floor(this.bar.percent)+"% Complete";
-	if(this.bar.complete) {
-		this.displayText.tint = 0x00ff00;
+	
+	if(!this.bar.complete) {
+		this.displayText.text = " "+Math.floor(this.bar.percent)+"%";
+	} else {
+		this.displayText.text = "Complete";
 	}
 }

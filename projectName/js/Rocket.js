@@ -159,8 +159,10 @@ Rocket.prototype.update = function() {
 
 	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
 
-	delta = this.speed * delta / this.orbitRad;
 	//console.log(this.curve.yPrime(this.orbitAngle));
+	var deltaX = Math.pow(Math.pow(this.speed * delta, 2) / (1 + Math.pow(this.curve.derivative(this.orbitRad), 2)), 0.5);
+	console.log(deltaX);
+	delta = deltaX / this.orbitRad;
 
 	// Do the change
 	//this.orbitRad += radChange * delta;

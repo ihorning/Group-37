@@ -77,4 +77,7 @@ WorkBar.prototype.update = function() {
 
 	// Update displayText to current percent
 	this.displayText.text = " "+Math.floor(this.bar.percent)+"% Complete";
+	if(this.bar.complete) {
+		this.displayText.tint = 0x00ff00;
+	}
 }

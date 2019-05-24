@@ -5,7 +5,7 @@
 // Change these "constant" (not really) variables to whatever the default values for WorkBar should be.
 // I put these variables here instead of as parameters to reduce clutter.
 
-var WORK_BAR_DIVISIONS = 20;
+var WORK_BAR_DIVISIONS = 50;
 var WORK_BAR_KEY = "barAtlas";
 var WORK_BAR_FRAME = "circleBar";
 var WORK_BAR_BG_FRAME = "circleBarBG";

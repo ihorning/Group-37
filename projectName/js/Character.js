@@ -225,6 +225,8 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 }
 
 Character.prototype.BeginDrag = function() {
+	dragging = true;
+
 	this.drawLine = true;
 	//play the clickCharacter sound
 	this.audio[0].play('', 0, 1, false);
@@ -242,6 +244,8 @@ Character.prototype.BeginDrag = function() {
 }
 
 Character.prototype.EndDrag = function() {
+	dragging = false;
+	
 	//play the dropCharacter sound
 	this.audio[1].play('', 0, 1, false);
 

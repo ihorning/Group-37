@@ -8,6 +8,8 @@ game.universalTime = 0.3;
 
 var won;
 
+var dragging = false;
+
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
@@ -86,6 +88,8 @@ Play.prototype = {
 		this.leftKey.onDown.add(this.speedDown, this);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		this.rightKey.onDown.add(this.speedUp, this);
+
+		won = false;
 	},
 
 	update: function() {

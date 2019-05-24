@@ -112,7 +112,6 @@ World.prototype.currentTime = function() {
 function WorldSpin(game, key, frame, timeMultiplier, planet) {
 	// Call Phaser.TileSprite constructor
 	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
-	console.log("here?");
 
 	this.planet = planet;
 	this.timeMultiplier = timeMultiplier;

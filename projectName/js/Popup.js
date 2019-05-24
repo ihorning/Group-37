@@ -41,8 +41,8 @@ Popup.prototype.Resize = function(xSize, ySize) {
 	this.xSize = xSize;
 	this.ySize = ySize;
 
-	var xOffset = this.anchor.x * this.xSize;
-	var yOffset = this.anchor.y * this.ySize;
+	var xOffset = Math.floor(this.anchor.x * this.xSize);
+	var yOffset = Math.floor(this.anchor.y * this.ySize);
 
 	this.NW.x = -this.NWFrame.width - xOffset;
 	this.NW.y = -this.NWFrame.height - yOffset;

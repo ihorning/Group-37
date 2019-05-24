@@ -49,7 +49,7 @@ MainMenu.prototype = {
 			game.state.start('Play');
 		}
 
-		this.popupTest.Resize(this.popupTest.xSize + (game.time.elapsed / 100), this.popupTest.ySize + (game.time.elapsed / 100));
+		this.popupTest.Resize(this.popupTest.xSize + Math.ceil(game.time.elapsed / 100), this.popupTest.ySize + Math.ceil(game.time.elapsed / 100));
 
 	}
 }

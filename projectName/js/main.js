@@ -14,7 +14,7 @@ var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
-
+		game.load.atlas('menu', 'assets/img/menu.png', 'assets/img/menu.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
@@ -30,14 +30,21 @@ MainMenu.prototype = {
 		// console.log('MainMenu: create');
 		// add play button, for now using SPACEBAR
 		// this.playButton = new PlayButton(game, game.width/2, game.height/2, )
+		this.title = this.add.image(0, 0, 'menu', 'titleScreen');
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'menu', start, this, 'buttonUp', 'buttonDown', "PLAY");
+		this.play.anchor.setTo(0.5);
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'menu', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
+		this.tutorial.anchor.setTo(0.5);
+		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'menu', credits, this, 'buttonUp', 'buttonDown', "CREDITS");
+		this.credits.anchor.setTo(0.5);
 
-		this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
-		this.instruct1.anchor.setTo(0.5);
-		this.instruct2 = game.add.text(game.width/2, game.width/5, 'Keep them from dying and fill the productivity bars', { fontSize: '16px', fill: '#fff'});
-		this.instruct2.anchor.setTo(0.5);
+		// this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
+		// this.instruct1.anchor.setTo(0.5);
+		// this.instruct2 = game.add.text(game.width/2, game.width/5, 'Keep them from dying and fill the productivity bars', { fontSize: '16px', fill: '#fff'});
+		// this.instruct2.anchor.setTo(0.5);
 
-		this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
-		this.toplay.anchor.setTo(0.5);
+		// this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
+		// this.toplay.anchor.setTo(0.5);
 
 		this.testLine = game.add.graphics(0, 0);
 
@@ -49,7 +56,17 @@ MainMenu.prototype = {
 		}
 	}
 }
-
+var start = function(){
+	game.state.start('Play');
+}
+var tutorial = function(){
+	//game.state.start('Tutorial');
+	console.log('Tutorial');
+}
+var credits = function(){
+	//game.state.start('Credits');
+	console.log('Credits');
+}
 var Play = function(game) {};
 Play.prototype = {
 	preload: function() {

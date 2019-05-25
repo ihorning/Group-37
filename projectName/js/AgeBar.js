@@ -42,6 +42,8 @@ function AgeBar(game, x, y, person) {
 	this.displayText = this.addChild(game.make.text(AGE_BAR_WIDTH, 0, "0% Life", AGE_BAR_FONT));
 	this.displayText.scale.set(0.75);
 
+	AgeBar.prototype.update.call(this);
+
 }
 
 

@@ -20,6 +20,7 @@ MainMenu.prototype = {
 		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
 		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
+		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 
@@ -48,7 +49,6 @@ MainMenu.prototype = {
 		// this.toplay.anchor.setTo(0.5);
 
 		this.testLine = game.add.graphics(0, 0);
-
 	},
 	update: function() {
 		// main menu logic

@@ -30,10 +30,9 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 
 
 	// Add an AgeBar for this character
-	this.ageBar = game.add.existing(new AgeBar(game, this.width, 0, this));
-	// Set its location
-	this.ageBar.x = this.planet.x + this.x + this.width;
-	this.ageBar.y = this.planet.y + this.y;
+	this.ageBar = this.addChild(new AgeBar(game, 110, 0, this));
+
+	this.ageBar.scale.set(1 / this.scale.x);
 
 	this.ageBar.scale.set(1.25);
 
@@ -115,8 +114,8 @@ Character.prototype.update = function() {
 		}
 		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
 
-		this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
-		this.ageBar.y = this.planet.y + this.y;
+		this.ageBar.x = 110; // Update AgeBar x and y
+		this.ageBar.y = 0;
 	} else {
 		this.debugText.visible = false;
 		this.ageBar.visible = false;
@@ -175,6 +174,8 @@ Character.prototype.update = function() {
 
 	if(!this.alive) {
 		this.ageBar.visible = false;
+	} else {
+		this.ageBar.update();
 	}
 }
 
@@ -218,8 +219,8 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.x = 74;
 	this.y = 0;
 	this.ageBar.visible = true;
-	this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
-	this.ageBar.y = this.planet.y + this.y;
+	this.ageBar.x = 110; // Update AgeBar x and y
+	this.ageBar.y = 0;
 	console.log("new planet: "+this.planet);
 
 }

@@ -56,6 +56,8 @@ function ProgressBar(game, x, y, barWidth, barHeight, maxProgressWidth, progress
 	this.complete = false;
 
 	this.reversed = false;
+
+	ProgressBar.prototype.update.call(this);
 }
 
 // Set the prototype of Spike to be a copy of Phaser.Sprite.prototype

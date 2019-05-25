@@ -15,6 +15,7 @@ MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
 		game.load.atlas('menu', 'assets/img/menu.png', 'assets/img/menu.json');
+		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
@@ -74,6 +75,10 @@ Play.prototype = {
 	},
 	create: function() {
 		game.universalTime = 0.3;
+		//Escape button
+		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exit, this, 'exitOff', 'exitOn', "");
+		this.esc.anchor.setTo(1, 0);
+
 		// Put black hole on the screen
 		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
@@ -158,6 +163,9 @@ Play.prototype = {
 			game.universalTime = 0.25 * 0.3;
 		}
 	}
+}
+var exit = function(){
+	game.state.start('GameOver');
 }
 
 var GameOver = function(game) {};

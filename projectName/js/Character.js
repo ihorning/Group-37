@@ -50,7 +50,8 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.efficiency = 1;
 
 	this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
-	this.debugText.scale.set(0.7);
+	this.lifeText = this.addChild(game.make.text(-12, 20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	//this.debugText.scale.set(0.7);
 	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
@@ -91,6 +92,8 @@ Character.prototype.update = function() {
 	// Age self
 	this.life -= delta;
 
+	this.lifeText.text = Math.floor(this.life) + "%";
+
 	if(this.life < 0) { // If dead,
 		//Remove charcter
 		this.Die();
@@ -106,6 +109,7 @@ Character.prototype.update = function() {
 
 	if(!this.input.isDragged) { // If on a planet...
 		this.debugText.visible = true;
+		this.lifeText.visible = true;
 		//this.ageBar.visible = true;
 
 		var difference = Math.abs((100 - this.life) - this.home.currentTime);
@@ -113,14 +117,14 @@ Character.prototype.update = function() {
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
 			if(difference >=0 && difference < 2){
-				this.debugText.fill = "#ff0000";
+				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":)";
-				this.info.happiness.fill = "#ff0000";
+				this.info.happiness.fill = "#00ff00";
 			}
 			else if(difference > 9 && difference < 10){
-				this.debugText.fill = "#ff0000";
+				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":|";
-				this.info.happiness.fill = "#ff0000";
+				this.info.happiness.fill = "#00ff00";
 			}
 			else if(difference > 10) {
 				this.debugText.fill = "#ff0000";
@@ -134,14 +138,14 @@ Character.prototype.update = function() {
 		} else {
 			this.happiness += delta * (5 - difference);
 			if(difference >=0 && difference < 2){
-				this.debugText.fill = "#ff0000";
+				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":)";
-				this.info.happiness.fill = "#ff0000";
+				this.info.happiness.fill = "#00ff00";
 			}
 			else if(difference > 4 && difference < 5){
-				this.debugText.fill = "#ff0000";
+				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":|";
-				this.info.happiness.fill = "#ff0000";
+				this.info.happiness.fill = "#00ff00";
 			}
 			else if(difference > 5) {
 				this.debugText.fill = "#ff0000";
@@ -174,6 +178,7 @@ Character.prototype.update = function() {
 		//this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
+		this.lifeText.visible = false;
 		//this.ageBar.visible = false;
 
 		this.hideProfile();

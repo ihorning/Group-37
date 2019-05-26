@@ -1,6 +1,6 @@
 "use strict";
 
-function RocketCurve(x0, x1, y0, y1, shape, logBase) {
+function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 	this.x0 = x0;
 	this.x1 = x1;
 	this.y0 = y0;
@@ -21,14 +21,18 @@ function RocketCurve(x0, x1, y0, y1, shape, logBase) {
 	this.x1 = this.x1 % (Math.PI * 2);
 
 
-	var x2 = this.x1;
-	while(x2 < this.x0) {
-		x2 += Math.PI * 2;
-	}
-	if(x2 - this.x0 > Math.PI) {
-		this.reverse = true;
+	if(reverse === undefined) {
+		var x2 = this.x1;
+		while(x2 < this.x0) {
+			x2 += Math.PI * 2;
+		}
+		if(x2 - this.x0 > Math.PI) {
+			this.reverse = true;
+		} else {
+			this.reverse = false;
+		}
 	} else {
-		this.reverse = false;
+		this.reverse = reverse;
 	}
 
 

@@ -112,6 +112,13 @@ Character.prototype.update = function() {
 		this.lifeText.visible = true;
 		//this.ageBar.visible = true;
 
+		if(this.life < 11){
+			this.lifeText.fill = "#ff0000";
+		}
+		else if(this.life < 31){
+			this.lifeText.fill = "#FF9200";
+		}
+
 		var difference = Math.abs((100 - this.life) - this.home.currentTime);
 
 		if(this.planet === this.home) {

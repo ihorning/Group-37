@@ -242,7 +242,7 @@ Character.prototype.BeginDrag = function() {
 		}
 	}
 
-	this.picture.alpha = 1;
+	//this.picture.alpha = 1;
 
 	// Put this in the game world
 	game.add.existing(this);

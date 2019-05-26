@@ -102,18 +102,28 @@ Play.prototype = {
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
 		//Add profile pics
-		this.sProfile = this.add.sprite(0, game.height, 'chars', 'Cameron');
-		this.sProfile.anchor.setTo(0,1);
-		this.sProfile.scale.setTo(0.7);
-		this.sProfile.alpha = 0;
-		this.mProfile = this.add.sprite(0, game.height, 'chars', 'Abigail');
-		this.mProfile.anchor.setTo(0,1);
-		this.mProfile.scale.setTo(0.7);
-		this.mProfile.alpha = 0;
-		this.fProfile = this.add.sprite(0, game.height, 'chars', 'Henry');
-		this.fProfile.anchor.setTo(0,1);
-		this.fProfile.scale.setTo(0.7);
-		this.fProfile.alpha = 0;
+		this.sPic = this.add.sprite(0, game.height, 'chars', 'Cameron');
+		this.sPic.anchor.setTo(0,1);
+		this.sPic.scale.setTo(0.7);
+		this.sPic.alpha = 0;
+
+		this.mPic = this.add.sprite(0, game.height, 'chars', 'Abigail');
+		this.mPic.anchor.setTo(0,1);
+		this.mPic.scale.setTo(0.7);
+		this.mPic.alpha = 0;
+
+		this.fPic = this.add.sprite(0, game.height, 'chars', 'Henry');
+		this.fPic.anchor.setTo(0,1);
+		this.fPic.scale.setTo(0.7);
+		this.fPic.alpha = 0;
+
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		this.sWindow = new Popup(game, 0, game.height - 100, 200, 100, UIAtlas)
+
+		this.sProfile = {
+			window: this.sWindow;
+			picture: this.sPic;
+		}
 
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)

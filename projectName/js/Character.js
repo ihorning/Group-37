@@ -83,34 +83,25 @@ Character.prototype.update = function() {
 	}
 	//Update profile information
 	this.info.name.text = "" + this.name;
-	this.info.age.text = Math.floor(this.life) + " YEARS OLD";
+	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
 	
-	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness);
+	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness) + "%";
 	this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;
 
 	if(this.life < 0) { // If dead,
-
 		//Remove charcter
 		this.Die();
 	}
 
 	//If moused over character show profile
-	if(this.input.pointerOver()){
-		this.picture.alpha = 1;
-		this.popup.alpha = 1;
-		for(var property in this.info){
-			this.info[property].alpha = 1;
-		}	
+	if(this.input.pointerOver() && this.life > 0.1){
+		this.showProfile();	
 	}
 	else{
-		this.popup.alpha = 0;
-		this.picture.alpha = 0;
-		for(var property in this.info){
-			this.info[property].alpha = 0;
-		}
+		this.hideProfile();
 	}
 
 	if(!this.input.isDragged) { // If on a planet...
@@ -123,15 +114,19 @@ Character.prototype.update = function() {
 			this.happiness += delta * (10 - difference);
 			if(difference > 10) {
 				this.debugText.fill = "#ff0000";
+				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.info.happiness.fill = "#00ff00";
 			}
 		} else {
 			this.happiness += delta * (5 - difference);
 			if(difference > 5) {
 				this.debugText.fill = "#ff0000";
+				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.info.happiness.fill = "#00ff00";
 			}
 		}
 
@@ -156,11 +151,7 @@ Character.prototype.update = function() {
 		this.debugText.visible = false;
 		this.ageBar.visible = false;
 
-		this.popup.alpha = 0;
-		this.picture.alpha = 0;
-		for(var property in this.info){
-			this.info[property].alpha = 0;
-		}
+		this.hideProfile();
 	}
 
 	this.line.clear();
@@ -227,6 +218,7 @@ Character.prototype.Die = function() {
 	}
 	//this.line.clear();
 	//this.input.disableDrag();
+	this.hideProfile();
 	this.ageBar.kill();
 	this.kill();
 }
@@ -352,4 +344,19 @@ Character.prototype.EndDrag = function() {
 	// Stop drawing lines
 	this.line.clear();
 	this.drawLine = false;
+}
+
+Character.prototype.showProfile = function(){
+	this.popup.alpha = 1;
+	this.picture.alpha = 1;
+	for(var property in this.info){
+		this.info[property].alpha = 1;
+	}
+}
+Character.prototype.hideProfile = function(){
+	this.popup.alpha = 0;
+	this.picture.alpha = 0;
+	for(var property in this.info){
+		this.info[property].alpha = 0;
+	}
 }

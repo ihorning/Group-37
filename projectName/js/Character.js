@@ -2,7 +2,7 @@
 
 var CURVED_LINE = true;
 
-function Character(game, planet, planetList, key, frame, audio, name) {
+function Character(game, planet, planetList, key, frame, audio, name, profile) {
 
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 74, 0, key, frame, 0);
@@ -10,7 +10,7 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	// Set anchor to middle
 	this.anchor.set(0.5);
 	// Set scale to 0.2
-	this.scale.set(0.275);
+	//this.scale.set(0.55);
 
 	game.add.existing(this);
 
@@ -32,8 +32,8 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	// Add an AgeBar for this character
 	this.ageBar = this.addChild(new AgeBar(game, 110, 0, this));
 
-	this.ageBar.scale.set(1 / this.scale.x);
-
+	//this.ageBar.scale.set(1 / this.scale.x);
+	//1.25
 	this.ageBar.scale.set(1.25);
 
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
@@ -49,12 +49,14 @@ function Character(game, planet, planetList, key, frame, audio, name) {
 	this.happiness = 100;
 	this.efficiency = 1;
 
-	this.debugText = this.addChild(game.make.text(80, -90, "faweion", {font: "80px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
 	this.debugText.scale.set(0.7);
 	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
 	this.drawLine = false;
+
+	this.picture = profile;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -239,6 +241,8 @@ Character.prototype.BeginDrag = function() {
 			break;
 		}
 	}
+
+	this.picture.alpha = 1;
 
 	// Put this in the game world
 	game.add.existing(this);

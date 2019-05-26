@@ -16,6 +16,7 @@ MainMenu.prototype = {
 		// console.log('MainMenu: preload');
 		game.load.atlas('menu', 'assets/img/menu.png', 'assets/img/menu.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
+		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
 		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
@@ -30,9 +31,9 @@ MainMenu.prototype = {
 	},
 	create: function() {
 		// console.log('MainMenu: create');
-		// add play button, for now using SPACEBAR
-		// this.playButton = new PlayButton(game, game.width/2, game.height/2, )
+		// add title and play, tutorial, credits button
 		this.title = this.add.image(0, 0, 'menu', 'titleScreen');
+		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
 		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'menu', start, this, 'buttonUp', 'buttonDown', "PLAY");
 		this.play.anchor.setTo(0.5);
 		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'menu', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
@@ -68,6 +69,7 @@ var credits = function(){
 	//game.state.start('Credits');
 	console.log('Credits');
 }
+
 var Play = function(game) {};
 Play.prototype = {
 	preload: function() {
@@ -76,6 +78,7 @@ Play.prototype = {
 	create: function() {
 		game.universalTime = 0.3;
 		//Escape button
+		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
 		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exit, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
@@ -98,9 +101,25 @@ Play.prototype = {
 		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-		this.slowChar = new Character(game, this.slow, this.planetList, "spaceatlas", "SlowChar", this.audio, "slow");
-		this.medChar = new Character(game, this.medium, this.planetList, "spaceatlas", "MedChar", this.audio, "med");
-		this.fastChar = new Character(game, this.fast, this.planetList, "spaceatlas", "FastChar", this.audio, "fast");
+		//Add profile pics
+		this.sProfile = this.add.sprite(0, game.height, 'chars', 'Cameron');
+		this.sProfile.anchor.setTo(0,1);
+		this.sProfile.scale.setTo(0.7);
+		this.sProfile.alpha = 0;
+		this.mProfile = this.add.sprite(0, game.height, 'chars', 'Abigail');
+		this.mProfile.anchor.setTo(0,1);
+		this.mProfile.scale.setTo(0.7);
+		this.mProfile.alpha = 0;
+		this.fProfile = this.add.sprite(0, game.height, 'chars', 'Henry');
+		this.fProfile.anchor.setTo(0,1);
+		this.fProfile.scale.setTo(0.7);
+		this.fProfile.alpha = 0;
+
+		//Add characters
+		//Character(game, planet, planetList, key, frame, audio, name, profile)
+		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sProfile);
+		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mProfile);
+		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fProfile);
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];

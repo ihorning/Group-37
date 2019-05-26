@@ -30,11 +30,11 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 
 
 	// Add an AgeBar for this character
-	this.ageBar = this.addChild(new AgeBar(game, 110, 0, this));
+	this.ageBar = game.add.existing(new AgeBar(game, 110, 0, this));
 
 	//this.ageBar.scale.set(1 / this.scale.x);
 	//1.25
-	this.ageBar.scale.set(1.25);
+	//this.ageBar.scale.set(1.25);
 
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
@@ -116,8 +116,8 @@ Character.prototype.update = function() {
 		}
 		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
 
-		this.ageBar.x = 110; // Update AgeBar x and y
-		this.ageBar.y = 0;
+		this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+		this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
 		this.ageBar.visible = false;
@@ -221,8 +221,8 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.x = 74;
 	this.y = 0;
 	this.ageBar.visible = true;
-	this.ageBar.x = 110; // Update AgeBar x and y
-	this.ageBar.y = 0;
+	this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+	this.ageBar.y = this.world.y;
 	console.log("new planet: "+this.planet);
 
 }

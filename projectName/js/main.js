@@ -101,12 +101,6 @@ Play.prototype = {
 		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
-		
-
-		//Popup(game, x, y, xSize, ySize, key, frames)
-		//["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]
-		// this.charWindow = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
-		// this.charWindow.alpha = 0;
 		//Add profile pics
 		this.sPic = this.add.sprite(0, game.height, 'chars', 'Cameron');
 		this.sPic.anchor.setTo(0,1);
@@ -125,9 +119,9 @@ Play.prototype = {
 
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)
-		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sPic, this.charWindow);
-		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic, this.charWindow);
-		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fPic, this.charWindow);
+		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sPic);
+		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
+		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fPic);
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];

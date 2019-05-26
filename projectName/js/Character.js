@@ -2,7 +2,7 @@
 
 var CURVED_LINE = true;
 
-function Character(game, planet, planetList, key, frame, audio, name, profile, popup) {
+function Character(game, planet, planetList, key, frame, audio, name, profile) {
 
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 74, 0, key, frame, 0);
@@ -30,7 +30,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile, p
 
 
 	// Add an AgeBar for this character
-	this.ageBar = game.add.existing(new AgeBar(game, 110, 0, this));
+	//this.ageBar = game.add.existing(new AgeBar(game, 110, 0, this));
 
 	//this.ageBar.scale.set(1 / this.scale.x);
 	//1.25
@@ -106,26 +106,50 @@ Character.prototype.update = function() {
 
 	if(!this.input.isDragged) { // If on a planet...
 		this.debugText.visible = true;
-		this.ageBar.visible = true;
+		//this.ageBar.visible = true;
 
 		var difference = Math.abs((100 - this.life) - this.home.currentTime);
 
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
-			if(difference > 10) {
+			if(difference >=0 && difference < 2){
 				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":)";
+				this.info.happiness.fill = "#ff0000";
+			}
+			else if(difference > 9 && difference < 10){
+				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":|";
+				this.info.happiness.fill = "#ff0000";
+			}
+			else if(difference > 10) {
+				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":(";
 				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
 			}
 		} else {
 			this.happiness += delta * (5 - difference);
-			if(difference > 5) {
+			if(difference >=0 && difference < 2){
 				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":)";
+				this.info.happiness.fill = "#ff0000";
+			}
+			else if(difference > 4 && difference < 5){
+				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":|";
+				this.info.happiness.fill = "#ff0000";
+			}
+			else if(difference > 5) {
+				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":(";
 				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
 			}
 		}
@@ -142,14 +166,15 @@ Character.prototype.update = function() {
 		if((100 - this.life) - this.home.currentTime < 0) {
 			aheadBehind = "behind";
 		}
-		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
+		//this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
 		this.info.diff.text = "" + Math.floor(difference) + " " + aheadBehind;
+		//this.debugText.text = "";
 
-		this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
-		this.ageBar.y = this.world.y;
+		//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+		//this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
-		this.ageBar.visible = false;
+		//this.ageBar.visible = false;
 
 		this.hideProfile();
 	}
@@ -206,9 +231,9 @@ Character.prototype.update = function() {
 	}
 
 	if(!this.alive) {
-		this.ageBar.visible = false;
+		//this.ageBar.visible = false;
 	} else {
-		this.ageBar.update();
+		//this.ageBar.update();
 	}
 }
 
@@ -219,7 +244,7 @@ Character.prototype.Die = function() {
 	//this.line.clear();
 	//this.input.disableDrag();
 	this.hideProfile();
-	this.ageBar.kill();
+	//this.ageBar.kill();
 	this.kill();
 }
 
@@ -252,9 +277,9 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.pendingArrival = false;
 	this.x = 74;
 	this.y = 0;
-	this.ageBar.visible = true;
-	this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
-	this.ageBar.y = this.world.y;
+	//this.ageBar.visible = true;
+	//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+	//this.ageBar.y = this.world.y;
 	console.log("new planet: "+this.planet);
 
 }
@@ -306,7 +331,7 @@ Character.prototype.EndDrag = function() {
 	// If within range of valid planet...
 	if(minDistance < 100) {
 
-		this.ageBar.visible = false;
+		//this.ageBar.visible = false;
 
 		if(this.planetList[minInd] === this.home) {
 			console.log(this.name+" gains 10 points of happiness for going home");

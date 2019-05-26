@@ -3,7 +3,7 @@
 "use strict";
 
 // var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var game = new Phaser.Game(1000, 900, Phaser.AUTO);
+var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
 var won;
@@ -101,6 +101,12 @@ Play.prototype = {
 		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
+		
+
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		//["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]
+		// this.charWindow = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		// this.charWindow.alpha = 0;
 		//Add profile pics
 		this.sPic = this.add.sprite(0, game.height, 'chars', 'Cameron');
 		this.sPic.anchor.setTo(0,1);
@@ -117,19 +123,11 @@ Play.prototype = {
 		this.fPic.scale.setTo(0.7);
 		this.fPic.alpha = 0;
 
-		//Popup(game, x, y, xSize, ySize, key, frames)
-		this.sWindow = new Popup(game, 0, game.height - 100, 200, 100, UIAtlas)
-
-		this.sProfile = {
-			window: this.sWindow;
-			picture: this.sPic;
-		}
-
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)
-		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sProfile);
-		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mProfile);
-		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fProfile);
+		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sPic, this.charWindow);
+		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic, this.charWindow);
+		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fPic, this.charWindow);
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];

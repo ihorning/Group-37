@@ -2,7 +2,7 @@
 
 var CURVED_LINE = true;
 
-function Character(game, planet, planetList, key, frame, audio, name, profile) {
+function Character(game, planet, planetList, key, frame, audio, name, profile, popup) {
 
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, 74, 0, key, frame, 0);
@@ -56,7 +56,18 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.line = game.add.graphics();
 	this.drawLine = false;
 
+	//this.popup = popup;
+	this.popup = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
+	this.picture.bringToTop();
+	//text(x, y, text, {style});
+	this.info = {
+		name:      game.add.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"}),
+		age:       game.add.text(150, game.height - 130, "", {font: "25px Courier", fill: "#fff"}),
+		diff:      game.add.text(150, game.height - 100, "", {font: "20px Courier", fill: "#fff"}),
+		happiness: game.add.text(150, game.height - 80, "", {font: "20px Courier", fill: "#fff"}),
+		quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
+	}
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -70,6 +81,12 @@ Character.prototype.update = function() {
 	} else {
 		delta = 0;
 	}
+	//Update profile information
+	this.info.name.text = "" + this.name;
+	this.info.age.text = Math.floor(this.life) + " YEARS OLD";
+	
+	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness);
+	this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;
@@ -78,6 +95,22 @@ Character.prototype.update = function() {
 
 		//Remove charcter
 		this.Die();
+	}
+
+	//If moused over character show profile
+	if(this.input.pointerOver()){
+		this.picture.alpha = 1;
+		this.popup.alpha = 1;
+		for(var property in this.info){
+			this.info[property].alpha = 1;
+		}	
+	}
+	else{
+		this.popup.alpha = 0;
+		this.picture.alpha = 0;
+		for(var property in this.info){
+			this.info[property].alpha = 0;
+		}
 	}
 
 	if(!this.input.isDragged) { // If on a planet...
@@ -115,12 +148,19 @@ Character.prototype.update = function() {
 			aheadBehind = "behind";
 		}
 		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
+		this.info.diff.text = "" + Math.floor(difference) + " " + aheadBehind;
 
 		this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
 		this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
 		this.ageBar.visible = false;
+
+		this.popup.alpha = 0;
+		this.picture.alpha = 0;
+		for(var property in this.info){
+			this.info[property].alpha = 0;
+		}
 	}
 
 	this.line.clear();

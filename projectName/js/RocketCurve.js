@@ -65,15 +65,15 @@ RocketCurve.prototype.y = function(x) {
 	return(result);
 };
 
-RocketCurve.prototype.yPrime = function(x) {
+RocketCurve.prototype.derivative = function(x) {
 	var result;
 	if(!this.reverse) {
-		result = this.logBaseFactor * this.coefficient / ((x - this.x0) + this.shape);
+		result = (this.y1 - this.y0)/(Math.log((this.x1 - this.x0 + this.shape) / this.shape) * (x - this.x0 + this.shape));
 	} else {
-		result = this.logBaseFactor * this.coefficient / ((-x + this.x0) + this.shape);
+		result = -(this.y1 - this.y0)/(Math.log((-this.x1 + this.x0 + this.shape) / this.shape) * (-x + this.x0 + this.shape));
 	}
 	return result;
-}
+};
 
 /*
 	Here's how I got the formula:

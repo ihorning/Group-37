@@ -28,10 +28,6 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	//Store the audio for character interaction
 	this.audio = audio;
 
-
-	// Add an AgeBar for this character
-	//this.ageBar = game.add.existing(new AgeBar(game, 110, 0, this));
-
 	//this.ageBar.scale.set(1 / this.scale.x);
 	//1.25
 	//this.ageBar.scale.set(1.25);
@@ -61,13 +57,16 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.popup = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
 	this.picture.bringToTop();
+	// Add an AgeBar for this character
+	this.ageBar = game.add.existing(new AgeBar(game, 156, game.height - 100, this));
+	this.ageBar.scale.set(1.3);
 	//text(x, y, text, {style});
 	this.info = {
 		name:      game.add.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"}),
 		age:       game.add.text(150, game.height - 130, "", {font: "25px Courier", fill: "#fff"}),
-		diff:      game.add.text(150, game.height - 100, "", {font: "20px Courier", fill: "#fff"}),
-		happiness: game.add.text(150, game.height - 80, "", {font: "20px Courier", fill: "#fff"}),
-		quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
+		diff:      game.add.text(150, game.height - 80, "", {font: "20px Courier", fill: "#fff"}),
+		happiness: game.add.text(150, game.height - 60, "", {font: "20px Courier", fill: "#fff"}),
+		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
 	}
 }
 
@@ -87,12 +86,12 @@ Character.prototype.update = function() {
 	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
 	
 	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness) + "%";
-	this.info.quote.text = "YEET";
+	//this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;
 
-	this.lifeText.text = Math.floor(this.life) + "%";
+	this.lifeText.text = Math.floor(this.life)+1 + "%";
 
 	if(this.life < 0) { // If dead,
 		//Remove charcter
@@ -386,6 +385,7 @@ Character.prototype.EndDrag = function() {
 Character.prototype.showProfile = function(){
 	this.popup.alpha = 1;
 	this.picture.alpha = 1;
+	this.ageBar.visible = true;
 	for(var property in this.info){
 		this.info[property].alpha = 1;
 	}
@@ -393,6 +393,7 @@ Character.prototype.showProfile = function(){
 Character.prototype.hideProfile = function(){
 	this.popup.alpha = 0;
 	this.picture.alpha = 0;
+	this.ageBar.visible = false;
 	for(var property in this.info){
 		this.info[property].alpha = 0;
 	}

@@ -32,7 +32,8 @@ MainMenu.prototype = {
 	create: function() {
 		// console.log('MainMenu: create');
 		// add title and play, tutorial, credits button
-		this.title = this.add.image(0, 0, 'menu', 'titleScreen');
+		this.title = this.add.image(game.width/2, game.height/2, 'menu', 'titleScreen');
+		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
 		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'menu', start, this, 'buttonUp', 'buttonDown', "PLAY");
 		this.play.anchor.setTo(0.5);

@@ -68,12 +68,15 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 		happiness: game.add.text(150, game.height - 60, "", {font: "20px Courier", fill: "#fff"}),
 		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
 	}
+	this.aDifference = 0;
+	this.zDifference = 0;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
+	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	var delta;
 	if(this.planet != null) {
@@ -190,6 +193,13 @@ Character.prototype.update = function() {
 		this.hideProfile();
 	}
 
+	// if(this.aDifference < this.zDifference && Math.floor(this.aDifference) != 0){
+	// 	this.info.diff.text += " ∧";
+	// }
+	// else if(this.aDifference > this.zDifference && Math.floor(this.aDifference) != 0){
+	// 	this.info.diff.text += " ∨";
+	// }
+
 	this.line.clear();
 	if(this.drawLine) {
 		if(!CURVED_LINE) {
@@ -241,11 +251,7 @@ Character.prototype.update = function() {
 		}
 	}
 
-	if(!this.alive) {
-		//this.ageBar.visible = false;
-	} else {
-		//this.ageBar.update();
-	}
+	this.zDifference = (100 - this.life) - this.home.currentTime;
 }
 
 Character.prototype.Die = function() {

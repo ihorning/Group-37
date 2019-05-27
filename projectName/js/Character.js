@@ -28,10 +28,6 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	//Store the audio for character interaction
 	this.audio = audio;
 
-
-	// Add an AgeBar for this character
-	this.ageBar = game.add.existing(new AgeBar(game, 110, 0, this));
-
 	//this.ageBar.scale.set(1 / this.scale.x);
 	//1.25
 	//this.ageBar.scale.set(1.25);
@@ -50,19 +46,37 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.efficiency = 1;
 
 	this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
-	this.debugText.scale.set(0.7);
+	this.lifeText = this.addChild(game.make.text(-12, 20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	//this.debugText.scale.set(0.7);
 	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
 	this.drawLine = false;
 
+	//this.popup = popup;
+	this.popup = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
+	this.picture.bringToTop();
+	// Add an AgeBar for this character
+	this.ageBar = game.add.existing(new AgeBar(game, 156, game.height - 100, this));
+	this.ageBar.scale.set(1.3);
+	//text(x, y, text, {style});
+	this.info = {
+		name:      game.add.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"}),
+		age:       game.add.text(150, game.height - 130, "", {font: "25px Courier", fill: "#fff"}),
+		diff:      game.add.text(150, game.height - 80, "", {font: "20px Courier", fill: "#fff"}),
+		happiness: game.add.text(150, game.height - 60, "", {font: "20px Courier", fill: "#fff"}),
+		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
+	}
+	this.aDifference = 0;
+	this.zDifference = 0;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
 Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
+	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	var delta;
 	if(this.planet != null) {
@@ -70,35 +84,86 @@ Character.prototype.update = function() {
 	} else {
 		delta = 0;
 	}
+	//Update profile information
+	this.info.name.text = "" + this.name;
+	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
+	
+	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness) + "%";
+	//this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;
 
-	if(this.life < 0) { // If dead,
+	this.lifeText.text = Math.floor(this.life)+1 + "%";
 
+	if(this.life < 0) { // If dead,
 		//Remove charcter
 		this.Die();
 	}
 
+	//If moused over character show profile
+	if(this.input.pointerOver() && this.life > 0.1){
+		this.showProfile();	
+	}
+	else{
+		this.hideProfile();
+	}
+
 	if(!this.input.isDragged) { // If on a planet...
 		this.debugText.visible = true;
-		this.ageBar.visible = true;
+		this.lifeText.visible = true;
+		//this.ageBar.visible = true;
+
+		if(this.life < 11){
+			this.lifeText.fill = "#ff0000";
+		}
+		else if(this.life < 31){
+			this.lifeText.fill = "#FF9200";
+		}
 
 		var difference = Math.abs((100 - this.life) - this.home.currentTime);
 
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
-			if(difference > 10) {
+			if(difference >=0 && difference < 2){
+				this.debugText.fill = "#00ff00";
+				this.debugText.text = ":)";
+				this.info.happiness.fill = "#00ff00";
+			}
+			else if(difference > 9 && difference < 10){
+				this.debugText.fill = "#00ff00";
+				this.debugText.text = ":|";
+				this.info.happiness.fill = "#00ff00";
+			}
+			else if(difference > 10) {
 				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":(";
+				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.debugText.text = "";
+				this.info.happiness.fill = "#00ff00";
 			}
 		} else {
 			this.happiness += delta * (5 - difference);
-			if(difference > 5) {
+			if(difference >=0 && difference < 2){
+				this.debugText.fill = "#00ff00";
+				this.debugText.text = ":)";
+				this.info.happiness.fill = "#00ff00";
+			}
+			else if(difference > 4 && difference < 5){
+				this.debugText.fill = "#00ff00";
+				this.debugText.text = ":|";
+				this.info.happiness.fill = "#00ff00";
+			}
+			else if(difference > 5) {
 				this.debugText.fill = "#ff0000";
+				this.debugText.text = ":(";
+				this.info.happiness.fill = "#ff0000";
 			} else {
 				this.debugText.fill = "#00ff00";
+				this.debugText.text = "";
+				this.info.happiness.fill = "#00ff00";
 			}
 		}
 
@@ -114,14 +179,26 @@ Character.prototype.update = function() {
 		if((100 - this.life) - this.home.currentTime < 0) {
 			aheadBehind = "behind";
 		}
-		this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
+		//this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
+		this.info.diff.text = "" + Math.floor(difference) + " " + aheadBehind;
+		//this.debugText.text = "";
 
-		this.ageBar.x = this.planet.x + this.x + this.width; // Update AgeBar x and y
-		this.ageBar.y = this.planet.y + this.y;
+		//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+		//this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
-		this.ageBar.visible = false;
+		this.lifeText.visible = false;
+		//this.ageBar.visible = false;
+
+		this.hideProfile();
 	}
+
+	// if(this.aDifference < this.zDifference && Math.floor(this.aDifference) != 0){
+	// 	this.info.diff.text += " ∧";
+	// }
+	// else if(this.aDifference > this.zDifference && Math.floor(this.aDifference) != 0){
+	// 	this.info.diff.text += " ∨";
+	// }
 
 	this.line.clear();
 	if(this.drawLine) {
@@ -174,11 +251,7 @@ Character.prototype.update = function() {
 		}
 	}
 
-	if(!this.alive) {
-		this.ageBar.visible = false;
-	} else {
-		//this.ageBar.update();
-	}
+	this.zDifference = (100 - this.life) - this.home.currentTime;
 }
 
 Character.prototype.Die = function() {
@@ -187,7 +260,8 @@ Character.prototype.Die = function() {
 	}
 	//this.line.clear();
 	//this.input.disableDrag();
-	this.ageBar.kill();
+	this.hideProfile();
+	//this.ageBar.kill();
 	this.kill();
 }
 
@@ -220,8 +294,9 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.pendingArrival = false;
 	this.x = 74;
 	this.y = 0;
-	this.ageBar.x = this.planet.x + 74 + this.width; // Update AgeBar x and y
-	this.ageBar.y = this.planet.y + this.y;
+	//this.ageBar.visible = true;
+	//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
+	//this.ageBar.y = this.world.y;
 	console.log("new planet: "+this.planet);
 
 }
@@ -273,7 +348,7 @@ Character.prototype.EndDrag = function() {
 	// If within range of valid planet...
 	if(minDistance < 100) {
 
-		this.ageBar.visible = false;
+		//this.ageBar.visible = false;
 
 		if(this.planetList[minInd] === this.home) {
 			console.log(this.name+" gains 10 points of happiness for going home");
@@ -311,4 +386,21 @@ Character.prototype.EndDrag = function() {
 	// Stop drawing lines
 	this.line.clear();
 	this.drawLine = false;
+}
+
+Character.prototype.showProfile = function(){
+	this.popup.alpha = 1;
+	this.picture.alpha = 1;
+	this.ageBar.visible = true;
+	for(var property in this.info){
+		this.info[property].alpha = 1;
+	}
+}
+Character.prototype.hideProfile = function(){
+	this.popup.alpha = 0;
+	this.picture.alpha = 0;
+	this.ageBar.visible = false;
+	for(var property in this.info){
+		this.info[property].alpha = 0;
+	}
 }

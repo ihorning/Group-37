@@ -3,7 +3,7 @@
 "use strict";
 
 // var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var game = new Phaser.Game(1000, 900, Phaser.AUTO);
+var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
 var won;
@@ -32,7 +32,8 @@ MainMenu.prototype = {
 	create: function() {
 		// console.log('MainMenu: create');
 		// add title and play, tutorial, credits button
-		this.title = this.add.image(0, 0, 'menu', 'titleScreen');
+		this.title = this.add.image(game.width/2, game.height/2, 'menu', 'titleScreen');
+		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
 		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'menu', start, this, 'buttonUp', 'buttonDown', "PLAY");
 		this.play.anchor.setTo(0.5);
@@ -102,24 +103,26 @@ Play.prototype = {
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
 		//Add profile pics
-		this.sProfile = this.add.sprite(0, game.height, 'chars', 'Cameron');
-		this.sProfile.anchor.setTo(0,1);
-		this.sProfile.scale.setTo(0.7);
-		this.sProfile.alpha = 0;
-		this.mProfile = this.add.sprite(0, game.height, 'chars', 'Abigail');
-		this.mProfile.anchor.setTo(0,1);
-		this.mProfile.scale.setTo(0.7);
-		this.mProfile.alpha = 0;
-		this.fProfile = this.add.sprite(0, game.height, 'chars', 'Henry');
-		this.fProfile.anchor.setTo(0,1);
-		this.fProfile.scale.setTo(0.7);
-		this.fProfile.alpha = 0;
+		this.sPic = this.add.sprite(0, game.height, 'chars', 'Cameron');
+		this.sPic.anchor.setTo(0,1);
+		this.sPic.scale.setTo(0.7);
+		this.sPic.alpha = 0;
+
+		this.mPic = this.add.sprite(0, game.height, 'chars', 'Abigail');
+		this.mPic.anchor.setTo(0,1);
+		this.mPic.scale.setTo(0.7);
+		this.mPic.alpha = 0;
+
+		this.fPic = this.add.sprite(0, game.height, 'chars', 'Henry');
+		this.fPic.anchor.setTo(0,1);
+		this.fPic.scale.setTo(0.7);
+		this.fPic.alpha = 0;
 
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)
-		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sProfile);
-		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mProfile);
-		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fProfile);
+		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sPic);
+		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
+		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fPic);
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];

@@ -129,16 +129,19 @@ Character.prototype.update = function() {
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":)";
 				this.info.happiness.fill = "#00ff00";
+				this.picture.frameName = this.name;
 			}
 			else if(difference > 9 && difference < 10){
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":|";
 				this.info.happiness.fill = "#00ff00";
+				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 10) {
 				this.debugText.fill = "#ff0000";
 				this.debugText.text = ":(";
 				this.info.happiness.fill = "#ff0000";
+				this.picture.frameName = this.name + "Sad";
 			} else {
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = "";
@@ -150,16 +153,19 @@ Character.prototype.update = function() {
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":)";
 				this.info.happiness.fill = "#00ff00";
+				this.picture.frameName = this.name;
 			}
 			else if(difference > 4 && difference < 5){
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = ":|";
 				this.info.happiness.fill = "#00ff00";
+				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 5) {
 				this.debugText.fill = "#ff0000";
 				this.debugText.text = ":(";
 				this.info.happiness.fill = "#ff0000";
+				this.picture.frameName = this.name + "Sad";
 			} else {
 				this.debugText.fill = "#00ff00";
 				this.debugText.text = "";

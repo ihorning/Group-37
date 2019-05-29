@@ -14,7 +14,7 @@ var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
-		game.load.atlas('menu', 'assets/img/menu.png', 'assets/img/menu.json');
+		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
 		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
@@ -32,14 +32,16 @@ MainMenu.prototype = {
 	create: function() {
 		// console.log('MainMenu: create');
 		// add title and play, tutorial, credits button
-		this.title = this.add.image(game.width/2, game.height/2, 'menu', 'titleScreen');
+		this.blackHoleBG = this.add.image(game.width/2, game.height/2, 'title', 'titleBHole');
+		this.blackHoleBG.anchor.setTo(0.5);
+		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'menu', start, this, 'buttonUp', 'buttonDown', "PLAY");
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY");
 		this.play.anchor.setTo(0.5);
-		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'menu', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
 		this.tutorial.anchor.setTo(0.5);
-		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'menu', credits, this, 'buttonUp', 'buttonDown', "CREDITS");
+		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS");
 		this.credits.anchor.setTo(0.5);
 
 		// this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});

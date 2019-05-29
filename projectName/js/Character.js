@@ -100,7 +100,7 @@ Character.prototype.update = function() {
 		//Remove charcter
 		this.Die();
 	}
-
+											
 	//If moused over character show profile
 	if(this.input.pointerOver() && this.life > 0.1){
 		this.showProfile();	

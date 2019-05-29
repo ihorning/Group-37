@@ -36,8 +36,11 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.inputEnabled = true;
 	this.input.enableDrag();
 	this.input.useHandCursor = true;
+	this.events.onInputDown.add(this.showProfile, this);
 	this.events.onDragStart.add(this.BeginDrag, this);
 	this.events.onDragStop.add(this.EndDrag, this);
+
+	game.input.mouse.capture = true;
 
 	// Initialize life value to 100%
 	this.life = 100;
@@ -70,6 +73,8 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	}
 	this.aDifference = 0;
 	this.zDifference = 0;
+	this.hideProfile();
+	this.clicked = false;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -77,6 +82,11 @@ Character.prototype.constructor = Character;
 
 Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
+
+	if(game.input.activePointer.leftButton.isDown && this.clicked == false){
+		this.hideProfile();
+	}
+	//this.events.onInputDown.add(this.showProfile, this);
 
 	var delta;
 	if(this.planet != null) {
@@ -102,12 +112,12 @@ Character.prototype.update = function() {
 	}
 											
 	//If moused over character show profile
-	if(this.input.pointerOver() && this.life > 0.1){
-		this.showProfile();	
-	}
-	else{
-		this.hideProfile();
-	}
+	// if(this.input.pointerOver() && this.life > 0.1){
+	// 	this.showProfile();	
+	// }
+	// else{
+	// 	this.hideProfile();
+	// }
 
 	if(!this.input.isDragged) { // If on a planet...
 		this.debugText.visible = true;
@@ -196,7 +206,7 @@ Character.prototype.update = function() {
 		this.lifeText.visible = false;
 		//this.ageBar.visible = false;
 
-		this.hideProfile();
+		//this.hideProfile();
 	}
 
 	// if(this.aDifference < this.zDifference && Math.floor(this.aDifference) != 0){
@@ -309,6 +319,10 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 
 Character.prototype.BeginDrag = function() {
 	dragging = true;
+	this.clicked = true;
+
+	//Show this characters profile
+	//this.showProfile();
 
 	this.drawLine = true;
 	//play the clickCharacter sound
@@ -330,6 +344,7 @@ Character.prototype.BeginDrag = function() {
 
 Character.prototype.EndDrag = function() {
 	dragging = false;
+	this.clicked = false;
 	
 	//play the dropCharacter sound
 	this.audio[1].play('', 0, 1, false);

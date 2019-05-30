@@ -53,6 +53,9 @@ MainMenu.prototype = {
 		// this.toplay.anchor.setTo(0.5);
 
 		this.testLine = game.add.graphics(0, 0);
+
+		new Message(game, 200, 200, 400, 500, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"], "SHOWER INVITATION:", "Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join?");
+
 	},
 	update: function() {
 		// main menu logic

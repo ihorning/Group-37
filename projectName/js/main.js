@@ -30,6 +30,7 @@ MainMenu.prototype = {
 		
 	},
 	create: function() {
+		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
 		// add title and play, tutorial, credits button
 		this.blackHoleBG = this.add.image(game.width/2, game.height/2, 'title', 'titleBHole');

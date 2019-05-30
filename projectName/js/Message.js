@@ -23,12 +23,22 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message) {
 	this.underline.lineTo(this.titleDisplay.width, 0);
 	this.messageDisplay = this.addChild(game.make.text(0, this.titleDisplay.height + 20, message, style2));
 
+	this.closeButton = this.addChild(new PlayButton(game, xSize / 2, ySize, 'exit', this.Close, this, 'exitOff', 'exitOn', ""));
+	this.closeButton.scale.set(2);
+	this.closeButton.anchor.set(0.5);
+
 	game.add.existing(this);
 }
 
 Message.prototype = Object.create(Popup.prototype);
 Message.prototype.constructor = Message;
 
-Message.prototype.update = function(xSize, ySize) {
-
+Message.prototype.Close = function() {
+	var newX = this.closeButton.worldX;
+	var newY = this.closeButton.worldY;
+	game.add.existing(this.closeButton);
+	this.closeButton.x = newX;
+	this.closeButton.y = newY;
+	this.closeButton.pendingDestroy = true;
+	this.destroy();
 }

@@ -62,6 +62,10 @@ MainMenu.prototype = {
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 			game.state.start('Play');
 		}
+
+		if(Math.floor(game.time.time) % 13 == 0) {
+			new Message(game, Math.floor(Math.random() * game.world.width) - 400, Math.floor(Math.random() * game.world.height) - 500, 400, 500, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"], "SHOWER INVITATION:", "Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join? Harry is shower now, would you join?");
+		}
 	}
 }
 var start = function(){

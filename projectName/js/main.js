@@ -66,7 +66,7 @@ var start = function(){
 	game.state.start('Play');
 }
 var tutorial = function(){
-	game.state.start('Tutorial');
+	game.state.start('Tutorial', true, false, 0);
 	//console.log('Tutorial');
 }
 var credits = function(){
@@ -76,6 +76,9 @@ var credits = function(){
 
 var Tutorial = function(game) {};
 Tutorial.prototype = {
+	init: function(step) {
+		this.step = step; //pass score through to display
+	},
 	preload: function() {
 	},
 	create: function() {
@@ -118,9 +121,29 @@ Tutorial.prototype = {
 		this.leftKey.onDown.add(this.speedDown, this);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		this.rightKey.onDown.add(this.speedUp, this);
+
+		this.medChar.step = this.step;
 	},
 	update: function() {
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
+
+		// if statement going to end screen: check character's dead and planet progress bars
+		var allJobsDone = true;
+		if(!this.medChar.alive) {
+			won = false;
+			tutorial = true;
+			game.state.start('GameOver');
+		}
+		for (var i = 0; i < this.planetList.length; i++) {
+			if(!this.planetList[i].job.bar.complete) {
+				allJobsDone = false;
+				break;
+			}
+		}
+		if(allJobsDone) { // productivity has been completed
+			game.state.start('Play');
+		}
+
 		switch(this.medChar.step){
 			case 0:
 				this.instruction.text = "Click on the character icon to get more information about your worker.";
@@ -306,7 +329,12 @@ GameOver.prototype = {
 	update: function() {
 		// restart game
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-			game.state.start('Play');
+			if(tutorial === true){
+				game.state.start('Tutorial', true, false, 7);
+			}
+			else{
+				game.state.start('Play');
+			}
 		}
 
 	}

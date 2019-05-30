@@ -36,7 +36,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.inputEnabled = true;
 	this.input.enableDrag();
 	this.input.useHandCursor = true;
-	this.events.onInputDown.add(this.showProfile, this);
+	//this.events.onInputUp.add(this.showProfile, this);
 	this.events.onDragStart.add(this.BeginDrag, this);
 	this.events.onDragStop.add(this.EndDrag, this);
 
@@ -57,18 +57,18 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.drawLine = false;
 
 	//this.popup = popup;
-	this.popup = new Popup(game, 0, game.height - 115, 300, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
 	this.picture.bringToTop();
 	// Add an AgeBar for this character
-	this.ageBar = game.add.existing(new AgeBar(game, 156, game.height - 100, this));
-	this.ageBar.scale.set(1.3);
+	this.ageBar = game.add.existing(new AgeBar(game, 153, game.height - 95, this));
+	this.ageBar.scale.set(1.6);
 	//text(x, y, text, {style});
 	this.info = {
 		name:      game.add.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"}),
-		age:       game.add.text(150, game.height - 130, "", {font: "25px Courier", fill: "#fff"}),
-		diff:      game.add.text(150, game.height - 80, "", {font: "20px Courier", fill: "#fff"}),
-		happiness: game.add.text(150, game.height - 60, "", {font: "20px Courier", fill: "#fff"}),
+		age:       game.add.text(150, game.height - 123, "", {font: "25px Courier", fill: "#fff"}),
+		diff:      game.add.text(150, game.height - 63, "", {font: "17px Courier", fill: "#fff"}),
+		happiness: game.add.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"}),
 		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
 	}
 	this.aDifference = 0;
@@ -83,8 +83,14 @@ Character.prototype.constructor = Character;
 Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
-	if(game.input.activePointer.leftButton.isDown && this.clicked == false){
-		this.hideProfile();
+	if(game.input.activePointer.leftButton.isDown){
+		if(this.clicked == false){
+			//console.log("hide1");
+			this.hideProfile();
+		}
+		else{
+			this.showProfile();
+		}
 	}
 	//this.events.onInputDown.add(this.showProfile, this);
 
@@ -98,7 +104,7 @@ Character.prototype.update = function() {
 	this.info.name.text = "" + this.name;
 	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
 	
-	this.info.happiness.text = "Happiness: " + Math.floor(this.happiness) + "%";
+	this.info.happiness.text = "Efficiency: " + Math.floor(this.happiness) + "%";
 	//this.info.quote.text = "YEET";
 
 	// Age self
@@ -191,20 +197,21 @@ Character.prototype.update = function() {
 
 		this.efficiency = this.happiness / 100;
 
-		var aheadBehind = "ahead";
+		var aheadBehind = "ahead of";
 		if((100 - this.life) - this.home.currentTime < 0) {
 			aheadBehind = "behind";
 		}
-		//this.debugText.text = (":) "+Math.floor(this.happiness)+"%  "+Math.floor(difference)+" "+aheadBehind);
-		this.info.diff.text = "" + Math.floor(difference) + " " + aheadBehind;
+		if(Math.floor(difference) != 1){
+			this.info.diff.text = "" + Math.floor(difference) + " years " + aheadBehind + " family";
+		}
+		else{
+			this.info.diff.text = "" + Math.floor(difference) + " year " + aheadBehind + " family";
+		}
 		//this.debugText.text = "";
 
-		//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
-		//this.ageBar.y = this.world.y;
 	} else {
 		this.debugText.visible = false;
 		this.lifeText.visible = false;
-		//this.ageBar.visible = false;
 
 		//this.hideProfile();
 	}
@@ -277,12 +284,12 @@ Character.prototype.Die = function() {
 	//this.line.clear();
 	//this.input.disableDrag();
 	this.hideProfile();
-	//this.ageBar.kill();
 	this.kill();
 }
 
 Character.prototype.ExitPlanet = function() { // Remove this from the current planet (when drag starts)
 	this.drawLine = true;
+	this.clicked = false;
 	//play the clickCharacter sound
 	this.audio[0].play('', 0, 1, false);
 
@@ -310,9 +317,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.pendingArrival = false;
 	this.x = 74;
 	this.y = 0;
-	//this.ageBar.visible = true;
-	//this.ageBar.x = this.world.x + this.width; // Update AgeBar x and y
-	//this.ageBar.y = this.world.y;
+
 	console.log("new planet: "+this.planet);
 
 }
@@ -368,8 +373,6 @@ Character.prototype.EndDrag = function() {
 
 	// If within range of valid planet...
 	if(minDistance < 100) {
-
-		//this.ageBar.visible = false;
 
 		if(this.planetList[minInd] === this.home) {
 			console.log(this.name+" gains 10 points of happiness for going home");

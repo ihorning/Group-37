@@ -90,6 +90,16 @@ Rocket.prototype.update = function() {
 		this.destination.pendingArrival = false;
 	}
 
+	if(game.input.activePointer.leftButton.isDown){
+		if(this.character.clicked == false){
+			//console.log("hide1");
+			this.character.hideProfile();
+		}
+		else{
+			this.character.showProfile();
+		}
+	}
+
 	if(Math.pow(Math.pow(this.x - this.destination.x, 2) + Math.pow(this.y - this.destination.y, 2), 0.5) < 20) {
 		this.character.input.enableDrag();
 		this.character.scale.set(this.characterScale);

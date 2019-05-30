@@ -40,7 +40,7 @@ function AgeBar(game, x, y, person) {
 
 	// Make a text object to display %
 	this.displayText = this.addChild(game.make.text(AGE_BAR_WIDTH, 0, "0% Life", AGE_BAR_FONT));
-	this.displayText.scale.set(0.75);
+	this.displayText.scale.set(0.65);
 
 	AgeBar.prototype.update.call(this);
 
@@ -57,7 +57,7 @@ AgeBar.prototype.update = function() {
 	this.percent = this.person.life;
 
 	// Update the text to the life value
-	this.displayText.text = " "+Math.ceil(this.percent)+"% Life";
+	this.displayText.text = " "+Math.ceil(this.percent)+"% Life Left";
 
 	// Call the ProgressBar update function from here
 	ProgressBar.prototype.update.call(this);

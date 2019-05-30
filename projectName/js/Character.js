@@ -14,6 +14,9 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 
 	game.add.existing(this);
 
+	//step keeps track of where the character is in the tutorial;
+	this.step = 0;
+
 	this.name = name;
 		
 	// Set the planet:
@@ -87,9 +90,15 @@ Character.prototype.update = function() {
 		if(this.clicked == false){
 			//console.log("hide1");
 			this.hideProfile();
+			if(this.step == 1){
+				this.step = 2;
+			}
 		}
 		else{
 			this.showProfile();
+			if(this.step == 0){
+				this.step = 1;
+			}
 		}
 	}
 	//this.events.onInputDown.add(this.showProfile, this);
@@ -178,6 +187,9 @@ Character.prototype.update = function() {
 				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 5) {
+				if(this.step == 3){
+					this.step = 4;
+				}
 				this.debugText.fill = "#ff0000";
 				this.debugText.text = ":(";
 				this.info.happiness.fill = "#ff0000";
@@ -317,6 +329,18 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.pendingArrival = false;
 	this.x = 74;
 	this.y = 0;
+	if(this.step == 2 && this.planet.name == "purple"){
+		this.step = 3;
+	}
+	else if(this.step == 4 && this.planet.name == "blue"){
+		this.step = 5;
+	}
+	else if(this.step == 5 && this.planet.name == "green"){
+		this.step = 6;
+	}
+	else if(this.step == 6){
+		this.step = 7;
+	}
 
 	console.log("new planet: "+this.planet);
 

@@ -132,7 +132,7 @@ Tutorial.prototype = {
 				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow it's movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
 				break;
 			case 3:
-				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.";
+				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to spped the game up and\nthe left arrow key to slow it down.";
 				break;
 			case 4:
 				this.instruction.text = "Notice that Abigail's efficiency has started to drop now that she's 5 years ahead of her family.\nDrag her back to her home, the blue planet.";
@@ -141,10 +141,22 @@ Tutorial.prototype = {
 				this.instruction.text = "While a worker is on their home planet, their happiness will drop when they are 10 or more years\noff from their family. To make Abigail closer to her family's age again, she must go to a planet closer to the \nblack hole than her home planet. In this case the only planet slower than her home is the green planet.\nSend her there now.";
 				break;
 			case 6:
-				this.instruction.text = "You lose the game if all your worker's die. Complete each planet before the percentage below \nAbigail's icon gets to zero, which represents her remaining life to finish the tutorial and move on to the\nreal game where you will manage 3 workers and 5 planets.";
+				this.instruction.text = "You lose the game if all your worker's die. A worker will die if the percentage \nbelow their icon reaches 0%. This percentage represents the amount of life they have left. \nTo win, complete each planet. Make sure you do this before the planet gets consumed by the black hole! \nComplete all of the planets to finish the tutorial and move on to the real where you manage 5 planets \nand 3 workers.";
 				break;
 			case 7:
 				this.instruction.text = "";
+		}
+	},
+	speedUp: function() {
+		game.universalTime += 0.25 * 0.3;
+		if(game.universalTime > 3.0 * 0.3) {
+			game.universalTime = 3.0 * 0.3;
+		}
+	},
+	speedDown: function() {
+		game.universalTime -= 0.25 * 0.3;
+		if(game.universalTime < 0.25 * 0.3) {
+			game.universalTime = 0.25 * 0.3;
 		}
 	}
 }

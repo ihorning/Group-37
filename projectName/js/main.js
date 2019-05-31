@@ -44,21 +44,10 @@ MainMenu.prototype = {
 		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
 
-		// this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
-		// this.instruct1.anchor.setTo(0.5);
-		// this.instruct2 = game.add.text(game.width/2, game.width/5, 'Keep them from dying and fill the productivity bars', { fontSize: '16px', fill: '#fff'});
-		// this.instruct2.anchor.setTo(0.5);
-
-		// this.toplay = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to Play', { fontSize: '32px', fill: '#fff'});
-		// this.toplay.anchor.setTo(0.5);
-
 		this.testLine = game.add.graphics(0, 0);
 	},
 	update: function() {
 		// main menu logic
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-			game.state.start('Play');
-		}
 	}
 }
 var start = function(){
@@ -303,10 +292,6 @@ Play.prototype = {
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
 		}
-
-		// if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-		// 	game.state.start('GameOver');
-		// }
 
 
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";

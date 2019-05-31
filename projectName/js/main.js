@@ -293,11 +293,13 @@ Play.prototype = {
 		if(allCharactersDead) { // all characters have died
 			game.universalTime = 0;
 			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
 			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
 		}
@@ -311,13 +313,13 @@ Play.prototype = {
 
 	},
 	speedUp: function() {
-		game.universalTime += 5 * 0.3;
-		if(game.universalTime > 50.0 * 0.3) {
-			game.universalTime = 50.0 * 0.3;
+		game.universalTime += 0.25 * 0.3;
+		if(game.universalTime > 3.0 * 0.3) {
+			game.universalTime = 3.0 * 0.3;
 		}
 	},
 	speedDown: function() {
-		game.universalTime -= 5 * 0.3;
+		game.universalTime -= 0.25 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
 			game.universalTime = 0.25 * 0.3;
 		}
@@ -326,6 +328,7 @@ Play.prototype = {
 var exit = function(){
 	game.universalTime = 0;
 	this.esc.destroy();
+	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
@@ -416,6 +419,12 @@ GameOver.prototype = {
 		//always have a return to menu button
 		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'GObutton', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
 		this.return.anchor.setTo(0.5);
+
+		//hide mission report items until popup is full sized
+		this.missionReport = [this.report, this.content, this.numbersS, this.numbersC, this.retry, this.return];
+		for(var property in this.missionReport){
+			this.missionReport[property].alpha = 0;
+		}
 	},
 	update: function() {
 		//cool resize animation to make things snazzy
@@ -424,6 +433,13 @@ GameOver.prototype = {
 		}
 		if(this.popup.ySize < 600 && this.popup.xSize >= 450){
 			this.popup.Resize(this.popup.xSize, this.popup.ySize + 30);
+		}
+
+		//show mission report items now that popup is full sized
+		if(this.popup.xSize >=450 && this.popup.ySize >=600){
+			for(var property in this.missionReport){
+				this.missionReport[property].alpha = 1;
+			}
 		}
 
 	}

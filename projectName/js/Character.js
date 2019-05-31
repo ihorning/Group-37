@@ -35,9 +35,10 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	// https://phaser.io/examples/v2/input/drag-event-parameters#gv
 	this.inputEnabled = true;
 	this.input.enableDrag();
+	//this.input.dragDistanceThreshold = 5;
 	this.input.useHandCursor = true;
 	//this.events.onInputUp.add(this.showProfile, this);
-	this.events.onDragStart.add(this.BeginDrag, this);
+	this.events.onDragStart.add(this.WaitForDrag, this);
 	this.events.onDragStop.add(this.EndDrag, this);
 
 	game.input.mouse.capture = true;
@@ -75,6 +76,10 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.zDifference = 0;
 	this.hideProfile();
 	this.clicked = false;
+	this.waitingForDrag = false;
+	this.dragTimer = 0;
+	this.dragOffsetX = 0;
+	this.dragOffsetY = 0;
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -213,6 +218,11 @@ Character.prototype.update = function() {
 		this.debugText.visible = false;
 		this.lifeText.visible = false;
 
+		this.world.x = game.input.mousePointer.x;
+		this.world.y = game.input.mousePointer.y;
+		console.log("TEST");
+		console.log(this.world.x+" "+game.input.mousePointer.x);
+
 		//this.hideProfile();
 	}
 
@@ -275,6 +285,10 @@ Character.prototype.update = function() {
 	}
 
 	this.zDifference = (100 - this.life) - this.home.currentTime;
+
+	if(this.waitingForDrag) {
+		this.WaitForDrag();
+	}
 }
 
 Character.prototype.Die = function() {
@@ -322,6 +336,26 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 
 }
 
+Character.prototype.WaitForDrag = function() {
+	this.showProfile();
+	if(!this.waitingForDrag) {
+		this.dragOffsetX = game.input.mousePointer.x - this.world.x;
+		this.dragOffsetY = game.input.mousePointer.y - this.world.y;
+
+		//play the clickCharacter sound
+		this.audio[0].play('', 0, 1, false);
+	}
+	this.waitingForDrag = true;
+	this.dragTimer += game.time.elapsed / 1000;
+	var difference = Math.pow(Math.pow(game.input.mousePointer.x - (this.input.dragStartPoint.x + this.planet.x), 2) + Math.pow(game.input.mousePointer.y - (this.input.dragStartPoint.y + this.planet.y), 2), 0.5);
+	difference -= Math.pow(Math.pow(this.dragOffsetX, 2) + Math.pow(this.dragOffsetY, 2), 0.5);
+	if(this.dragTimer > 0.2 || difference > 7) {
+		this.waitingForDrag = false;
+		this.dragTimer = 0;
+		this.BeginDrag();
+	}
+}
+
 Character.prototype.BeginDrag = function() {
 	dragging = true;
 	this.clicked = true;
@@ -330,8 +364,6 @@ Character.prototype.BeginDrag = function() {
 	//this.showProfile();
 
 	this.drawLine = true;
-	//play the clickCharacter sound
-	this.audio[0].play('', 0, 1, false);
 
 	// Find and remove this from the planet's children
 	for(var i = 0; i < this.planet.children.length; i++) {
@@ -351,8 +383,13 @@ Character.prototype.EndDrag = function() {
 	dragging = false;
 	this.clicked = false;
 	
-	//play the dropCharacter sound
-	this.audio[1].play('', 0, 1, false);
+	if(!this.waitingForDrag) {
+		//play the dropCharacter sound
+		this.audio[1].play('', 0, 1, false);
+	} else {
+		this.waitingForDrag = false;
+		this.dragTimer = 0;
+	}
 
 	// Find the nearest planet...
 	var minDistance = Infinity;

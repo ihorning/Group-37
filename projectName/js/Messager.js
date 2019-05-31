@@ -42,3 +42,37 @@ var Messager = {
 var ShowMessage = function(game) {
 	game.add.existing(MessageQueue.shift());
 }
+
+
+
+function MessageButton() {
+
+	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "exit", null, null, "exitOff", "exitOn");
+
+	this.anchor.set(1);
+	this.onInputDown.add(function() {
+		if(MessageQueue.length > 0) {
+			game.add.existing(MessageQueue.shift());
+		} else {
+			console.log("No new messages");
+		}
+	}, this);
+
+	this.notificationNumber = this.addChild(game.make.text(0, -this.height, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.notificationNumber.anchor.set(0.5);
+
+	game.add.existing(this);
+}
+
+MessageButton.prototype = Object.create(Phaser.Button.prototype);
+
+MessageButton.prototype.constructor = MessageButton;
+
+MessageButton.prototype.update = function() {
+	this.notificationNumber.text = MessageQueue.length;
+	if(MessageQueue.length == 0) {
+		this.notificationNumber.visible = false;
+	} else {
+		this.notificationNumber.visible = true;
+	}
+}

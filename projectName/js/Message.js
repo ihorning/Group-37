@@ -17,7 +17,6 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message) {
 		wordWrapWidth: xSize
 	}
 	this.titleDisplay = this.addChild(game.make.text(0, 0, title, style1));
-	console.log(this.titleDisplay.height);
 	this.underline = this.titleDisplay.addChild(game.make.graphics(0, this.titleDisplay.height));
 	this.underline.lineStyle(5, 0xffffff, 1);
 	this.underline.lineTo(this.titleDisplay.width, 0);

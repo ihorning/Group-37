@@ -232,8 +232,6 @@ Character.prototype.update = function() {
 
 		this.world.x = game.input.mousePointer.x;
 		this.world.y = game.input.mousePointer.y;
-		console.log("TEST");
-		console.log(this.world.x+" "+game.input.mousePointer.x);
 
 		//this.hideProfile();
 	}
@@ -332,7 +330,6 @@ Character.prototype.ExitPlanet = function() { // Remove this from the current pl
 	this.planet = null;
 	// Put this in the main game group
 	game.add.existing(this);
-	//console.log("this should be null: "+this.planet);
 }
 
 Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest planet (when drag ends)
@@ -355,8 +352,6 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	else if(this.step == 6){
 		this.step = 7;
 	}
-
-	console.log("new planet: "+this.planet);
 
 }
 
@@ -466,7 +461,6 @@ Character.prototype.EndDrag = function() {
 		this.planet.character = null;
 		this.planet = null;
 	} else { // If not chosen valid planet,
-		//console.log(minDistance);
 		// Put this back on the planet it was on before
 		this.planet.addChild(this);
 	}

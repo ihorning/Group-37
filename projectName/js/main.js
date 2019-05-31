@@ -13,6 +13,7 @@ MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
 		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
 		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
@@ -36,11 +37,11 @@ MainMenu.prototype = {
 		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY");
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.play.anchor.setTo(0.5);
-		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.tutorial.anchor.setTo(0.5);
-		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS");
+		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
 
 		// this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
@@ -333,15 +334,22 @@ GameOver.prototype = {
 	preload: function() {
 		// console.log('GameOver: preload');
 		this.POPULATION = 6437289;
+		this.totalPlanets = 5;
 	},
 	create: function() {
 		this.outcome = "FAILURE";
 		this.s = 's';
 		this.partial = "\nAll planets saved.\n"
-		this.saved = 5 * this.POPULATION;
+		this.padding = '\n\n';
+		
 		//Popup(game, x, y, xSize, ySize, key, frames)
 		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 		this.popup.anchor.setTo(0.5);
+
+		if(this.tutor === true){
+			this.totalPlanets = 3;
+		}
+
 		if(this.won === 1){
 			this.outcome = "SUCCESS";
 		}
@@ -352,28 +360,41 @@ GameOver.prototype = {
 			this.s = '';
 		}
 
+		this.saved = this.totalPlanets * this.POPULATION;
+
 		if(this.numPlanets === 0){
 			this.partial = "";
+			this.padding = "";
 			this.saved = 0;
 		}
-		else if(this.numPlanets < 5){
-			this.partial = "\nThe destroyed planets were slowed enough \nto allow " + Math.floor(this.pLeft * 6437289) + " people to escape.\n";
+		else if(this.numPlanets < this.totalPlanets){
+			this.partial = "\nThe destroyed planets were slowed\ndown enough to allow \n" + Math.floor(this.pLeft * 6437289) + " people to escape.\n";
+			this.padding = '\n\n\n\n';
 			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
 		}
 		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
-		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: ' + this.saved + '\n\nTOTAL CASUALTIES: ' + (5 * this.POPULATION - this.saved), { font: '20px Courier', fill: '#fff'});
-		// check if player won or lost
-		// if(won === true){
-		// 	this.yay = game.add.text(game.width/2, game.height/6, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
-		// 	this.yay.anchor.setTo(0.5);
-		// }else {
-		// 	this.dang = game.add.text(game.width/2, game.height/6, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
-		// 	this.dang.anchor.setTo(0.5);
-		// }
+		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: \n\nTOTAL CASUALTIES: ', { font: '24px Courier', fill: '#fff'});
 
-		//this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
-		//this.retry.anchor.setTo(0.5);
+		this.numbersS = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n' + this.saved, { font: '24px Courier', fill: '#fff'});
+		this.numbersS.anchor.setTo(1, 0);
+		this.numbersC = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
+		this.numbersC.anchor.setTo(1, 0);
 		
+		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
+		if(this.tutor === true){
+			if(this.won === 1){
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
+			}
+			else{
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', tutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+			}
+		}
+		else{
+			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+		}
+		this.retry.anchor.setTo(0.5);
+		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'GObutton', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
+		this.return.anchor.setTo(0.5);
 	},
 	update: function() {
 		if(this.popup.xSize < 450){
@@ -393,6 +414,10 @@ GameOver.prototype = {
 		}
 
 	}
+}
+
+var toMenu = function(){
+	game.state.start('MainMenu');
 }
 
 //game.state.add("RocketTest", RocketTest);

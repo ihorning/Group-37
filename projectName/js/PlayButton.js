@@ -1,7 +1,7 @@
 "use strict";
 
 // Constructor
-function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text) {
+function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text, color1, color2, font) {
 
 	// Call the Phaser.Button constructor
 	Phaser.Button.call(this, game, x, y, key, callback, callbackContext, buttonOver, buttonFrame, buttonOver, buttonOver);
@@ -9,8 +9,12 @@ function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, but
 	// Add this sprite to the game
 	game.add.existing(this);
 
-	
-	this.text = this.addChild(game.make.text(0, 0, text, {font: "48px Helvetica", font: "48px sans-serif", fontWeight: "bold", fill: "#050505"}));
+	this.font = font;
+	this.color1 = color1;
+	this.color2 = color2;
+
+	//, font: "48px sans-serif"
+	this.text = this.addChild(game.make.text(0, 0, text, {font: this.font, fill: this.color2}));
 	this.text.anchor.set(0.5);
 	//this.text.x = this.width / 2;
 	//this.text.y = this.height / 2;
@@ -31,13 +35,13 @@ PlayButton.prototype.constructor = PlayButton;
 // Change tint when mouse is over
 function over() {
 	//this.tint = 0xDDDDFF;
-	this.text.fill = "#FAFAFA";
+	this.text.fill = this.color1;
 }
 
 // Change tint back when mouse leaves
 function out() {
 	//this.tint = 0xFFFFFF;
-	this.text.fill = "#050505";
+	this.text.fill = this.color2;
 }
 
 function down() {

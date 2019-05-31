@@ -196,7 +196,8 @@ Tutorial.prototype = {
 }
 var exitTutorial = function(){
 	game.universalTime = 0;
-	this.esc.destroy();
+	//this.esc.destroy();
+	this.esc.pendingDestroy = true;
 	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
@@ -292,13 +293,15 @@ Play.prototype = {
 		}
 		if(allCharactersDead) { // all characters have died
 			game.universalTime = 0;
-			this.esc.destroy();
+			//this.esc.destroy();
+			this.esc.pendingDestroy = true;
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
-			this.esc.destroy();
+			//this.esc.destroy();
+			this.esc.pendingDestroy = true;
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
@@ -327,7 +330,8 @@ Play.prototype = {
 }
 var exit = function(){
 	game.universalTime = 0;
-	this.esc.destroy();
+	//this.esc.destroy();
+	this.esc.pendingDestroy = true;
 	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }

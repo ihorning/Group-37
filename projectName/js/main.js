@@ -125,6 +125,16 @@ Tutorial.prototype = {
 
 		this.numPlanets = 0;
 		this.pLeft = 0;
+
+
+		// Add a MessageButton
+		new MessageButton();
+
+		// Clear the MessageQueue
+		MessageQueue = [];
+		// Add a test message
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+
 	},
 	update: function() {
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
@@ -267,6 +277,16 @@ Play.prototype = {
 		this.numPlanets = 0;
 
 		this.pLeft = 0;
+
+
+		// Add a MessageButton
+		new MessageButton();
+
+		// Clear the MessageQueue
+		MessageQueue = [];
+		// Add a test message
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+
 	},
 
 	update: function() {

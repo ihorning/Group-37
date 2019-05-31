@@ -53,7 +53,11 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.efficiency = 1;
 
 	this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.debugText.inputEnabled = true;
+	this.debugText.input.disableDrag();
 	this.lifeText = this.addChild(game.make.text(-12, 20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.lifeText.inputEnabled = true;
+	this.lifeText.input.disableDrag();
 	//this.debugText.scale.set(0.7);
 	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 

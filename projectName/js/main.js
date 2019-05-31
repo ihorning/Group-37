@@ -54,6 +54,18 @@ MainMenu.prototype = {
 
 		this.testLine = game.add.graphics(0, 0);
 
+		var MessageButton = game.add.button(game.world.width - 10, game.world.height - 10, 'exit', null, null, 'exitOff', 'exitOn');
+		MessageButton.anchor.set(1);
+		MessageButton.onInputDown.add(function() {
+			if(MessageQueue.length > 0) {
+				game.add.existing(MessageQueue.shift());
+			} else {
+				console.log("No new messages");
+			}
+		}, this);
+
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+
 	},
 	update: function() {
 		// main menu logic

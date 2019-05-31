@@ -28,6 +28,8 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message) {
 	this.closeButton.anchor.set(0.5);
 
 	game.add.existing(this);
+
+	this.Resize(this.xSize, this.ySize);
 }
 
 Message.prototype = Object.create(Popup.prototype);
@@ -41,4 +43,24 @@ Message.prototype.Close = function() {
 	this.closeButton.y = newY;
 	this.closeButton.pendingDestroy = true;
 	this.destroy();
+}
+
+Message.prototype.Resize = function(xSize, ySize) {
+	Popup.prototype.Resize.call(this, xSize, ySize);
+
+	var xOffset = Math.floor(this.anchor.x * this.xSize);
+	var yOffset = Math.floor(this.anchor.y * this.ySize);
+
+	if(this.titleDisplay) {
+		this.titleDisplay.x = -xOffset;
+		this.titleDisplay.y = -yOffset;
+	}
+	if(this.messageDisplay) {
+		this.messageDisplay.x = this.titleDisplay.x;
+		this.messageDisplay.y = this.titleDisplay.y + this.titleDisplay.height + 20;
+	}
+	if(this.closeButton) {
+		this.closeButton.x = Math.floor((0.5 - this.anchor.x) * this.xSize);
+		this.closeButton.y = this.ySize - yOffset;
+	}
 }

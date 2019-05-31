@@ -38,8 +38,8 @@ Popup.prototype.constructor = Popup;
 
 Popup.prototype.Resize = function(xSize, ySize) {
 
-	this.xSize = xSize;
-	this.ySize = ySize;
+	this.xSize = Math.round(xSize);
+	this.ySize = Math.round(ySize);
 
 	var xOffset = Math.floor(this.anchor.x * this.xSize);
 	var yOffset = Math.floor(this.anchor.y * this.ySize);
@@ -51,10 +51,10 @@ Popup.prototype.Resize = function(xSize, ySize) {
 
 	this.N.x = 0 - xOffset;
 	this.N.y = -this.NFrame.height - yOffset;
-	this.N.width = xSize;
+	this.N.width = this.xSize;
 	this.N.height = this.NFrame.height;
 
-	this.NE.x = xSize - xOffset;
+	this.NE.x = this.xSize - xOffset;
 	this.NE.y = -this.NEFrame.height - yOffset;
 	this.NE.width = this.NEFrame.width;
 	this.NE.height = this.NEFrame.height;
@@ -62,30 +62,30 @@ Popup.prototype.Resize = function(xSize, ySize) {
 	this.W.x = -this.WFrame.width - xOffset;
 	this.W.y = 0 - yOffset;
 	this.W.width = this.WFrame.width;
-	this.W.height = ySize;
+	this.W.height = this.ySize;
 
 	this.C.x = 0 - xOffset;
 	this.C.y = 0 - yOffset;
-	this.C.width = xSize;
-	this.C.height = ySize;
+	this.C.width = this.xSize;
+	this.C.height = this.ySize;
 
-	this.E.x = xSize - xOffset;
+	this.E.x = this.xSize - xOffset;
 	this.E.y = 0 - yOffset;
 	this.E.width = this.EFrame.width;
-	this.E.height = ySize;
+	this.E.height = this.ySize;
 
 	this.SW.x = -this.SWFrame.width - xOffset;
-	this.SW.y = ySize - yOffset;
+	this.SW.y = this.ySize - yOffset;
 	this.SW.width = this.SWFrame.width;
 	this.SW.height = this.SWFrame.height;
 
 	this.S.x = 0 - xOffset;
-	this.S.y = ySize - yOffset;
-	this.S.width = xSize;
+	this.S.y = this.ySize - yOffset;
+	this.S.width = this.xSize;
 	this.S.height = this.SFrame.height;
 
-	this.SE.x = xSize - xOffset;
-	this.SE.y = ySize - yOffset;
+	this.SE.x = this.xSize - xOffset;
+	this.SE.y = this.ySize - yOffset;
 	this.SE.width = this.SEFrame.width;
 	this.SE.height = this.SEFrame.height;
 

@@ -173,10 +173,10 @@ Tutorial.prototype = {
 				this.instruction.text = "Click anywhere else to get rid of Abigail's profile.";
 				break;
 			case 2:
-				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow it's movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
+				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow its movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
 				break;
 			case 3:
-				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to spped the game up and\nthe left arrow key to slow it down.";
+				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to speed the game up and\nthe left arrow key to slow it down.";
 				break;
 			case 4:
 				this.instruction.text = "Notice that Abigail's efficiency has started to drop now that she's 5 years ahead of her family.\nDrag her back to her home, the blue planet.";

@@ -337,7 +337,7 @@ GameOver.prototype = {
 	create: function() {
 		this.outcome = "FAILURE";
 		this.s = 's';
-		this.partial = "All planets saved."
+		this.partial = "\nAll planets saved.\n"
 		this.saved = 5 * this.POPULATION;
 		//Popup(game, x, y, xSize, ySize, key, frames)
 		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
@@ -357,11 +357,11 @@ GameOver.prototype = {
 			this.saved = 0;
 		}
 		else if(this.numPlanets < 5){
-			this.partial = "The destroyed planets slowed enough to save\n" + Math.floor(this.pLeft * 6437289) + " lives.";
+			this.partial = "\nThe destroyed planets were slowed enough \nto allow " + Math.floor(this.pLeft * 6437289) + " people to escape.\n";
 			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
 		}
 		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
-		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\n\nTotal lives saved: ' + this.saved, { font: '20px Courier', fill: '#fff'});
+		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: ' + this.saved + '\n\nTOTAL CASUALTIES: ' + (5 * this.POPULATION - this.saved), { font: '20px Courier', fill: '#fff'});
 		// check if player won or lost
 		// if(won === true){
 		// 	this.yay = game.add.text(game.width/2, game.height/6, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
@@ -371,8 +371,8 @@ GameOver.prototype = {
 		// 	this.dang.anchor.setTo(0.5);
 		// }
 
-		this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
-		this.retry.anchor.setTo(0.5);
+		//this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
+		//this.retry.anchor.setTo(0.5);
 		
 	},
 	update: function() {

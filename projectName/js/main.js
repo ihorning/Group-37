@@ -6,6 +6,8 @@
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
+game.background = null;
+
 var dragging = false;
 
 var MainMenu = function(game) {};
@@ -81,6 +83,8 @@ Tutorial.prototype = {
 	preload: function() {
 	},
 	create: function() {
+		game.background = game.add.group();
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -218,6 +222,8 @@ Play.prototype = {
 
 	},
 	create: function() {
+		game.background = game.add.group();
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)

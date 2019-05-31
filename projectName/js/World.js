@@ -20,7 +20,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.orbitSpeed = orbitSpeed;
 
 
-	this.orbit = game.add.graphics();
+	this.orbit = game.background.add(game.make.graphics());
 
 
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));

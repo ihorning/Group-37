@@ -309,8 +309,13 @@ Character.prototype.Die = function() {
 	if(this.planet) {
 		this.planet.character = null;
 	}
-	//this.line.clear();
-	//this.input.disableDrag();
+
+	this.waitingForDrag = false;
+
+	this.drawLine = false;
+	this.line.clear();
+	this.input.disableDrag();
+
 	this.hideProfile();
 	this.kill();
 }

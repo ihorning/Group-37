@@ -6,13 +6,14 @@ for(var i = 0; i < circleDetail; i++) {
 	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
 }
 
-function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier) {
+function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier, name) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, -1000, -1000);
 
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
 
+	this.name = name;
 
 	this.orbitRad = orbitRad;
 	this.orbitAngle = orbitAngle;

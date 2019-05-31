@@ -387,6 +387,9 @@ Character.prototype.BeginDrag = function() {
 	//Show this characters profile
 	//this.showProfile();
 
+	this.x = game.input.mousePointer.x;
+	this.y = game.input.mousePointer.y;
+
 	this.drawLine = true;
 
 	// Find and remove this from the planet's children

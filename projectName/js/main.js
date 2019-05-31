@@ -6,8 +6,6 @@
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
-var won;
-
 var dragging = false;
 
 var MainMenu = function(game) {};
@@ -15,6 +13,7 @@ MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
 		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
 		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
 		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
@@ -38,11 +37,11 @@ MainMenu.prototype = {
 		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY");
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.play.anchor.setTo(0.5);
-		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL");
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.tutorial.anchor.setTo(0.5);
-		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS");
+		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
 
 		// this.instruct1 = game.add.text(game.width/2, game.width/6, 'Click and Drag Characters to the different planets', { fontSize: '16px', fill: '#fff'});
@@ -123,25 +122,37 @@ Tutorial.prototype = {
 		this.rightKey.onDown.add(this.speedUp, this);
 
 		this.medChar.step = this.step;
+
+		this.numPlanets = 0;
+		this.pLeft = 0;
 	},
 	update: function() {
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
+		this.numPlanets = 0;
+		this.pLeft = 0;
 
 		// if statement going to end screen: check character's dead and planet progress bars
 		var allJobsDone = true;
-		if(!this.medChar.alive) {
-			won = false;
-			tutorial = true;
-			game.state.start('GameOver');
-		}
 		for (var i = 0; i < this.planetList.length; i++) {
 			if(!this.planetList[i].job.bar.complete) {
 				allJobsDone = false;
-				break;
+				this.pLeft += this.planetList[i].job.bar.percent; 
+			}
+			else{
+				this.numPlanets++;
 			}
 		}
+		if(!this.medChar.alive) {
+			game.universalTime = 0;
+			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, true);
+		}
 		if(allJobsDone) { // productivity has been completed
-			game.state.start('Play');
+			game.universalTime = 0;
+			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
 
 		switch(this.medChar.step){
@@ -184,7 +195,10 @@ Tutorial.prototype = {
 	}
 }
 var exitTutorial = function(){
-	game.state.start('MainMenu');
+	game.universalTime = 0;
+	this.esc.destroy();
+	//(won, numPlanets, pLeft, tutor)
+	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
 
 var Play = function(game) {};
@@ -249,7 +263,9 @@ Play.prototype = {
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		this.rightKey.onDown.add(this.speedUp, this);
 
-		won = false;
+		this.numPlanets = 0;
+
+		this.pLeft = 0;
 	},
 
 	update: function() {
@@ -257,6 +273,8 @@ Play.prototype = {
 		// if statement going to end screen: check character's dead and planet progress bars
 		var allCharactersDead = true;
 		var allJobsDone = true;
+		this.numPlanets = 0;
+		this.pLeft = 0;
 		for (var i = 0; i < this.characterList.length; i++) {
 			if(this.characterList[i].alive) {
 				allCharactersDead = false;
@@ -266,24 +284,29 @@ Play.prototype = {
 		for (var i = 0; i < this.ProgressBarList.length; i++) {
 			if(!this.ProgressBarList[i].bar.complete) {
 				allJobsDone = false;
-				break;
+				this.pLeft += this.planetList[i].job.bar.percent; 
+			}
+			else{
+				this.numPlanets++;
 			}
 		}
 		if(allCharactersDead) { // all characters have died
-
-			won = false;
-			game.state.start('GameOver');
+			game.universalTime = 0;
+			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
-
-			won = true;
-			game.state.start('GameOver');
+			game.universalTime = 0;
+			this.esc.destroy();
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
 		}
 
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-			game.state.start('GameOver');
-		}
+		// if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+		// 	game.state.start('GameOver');
+		// }
 
 
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
@@ -303,41 +326,127 @@ Play.prototype = {
 	}
 }
 var exit = function(){
-	game.state.start('GameOver');
+	game.universalTime = 0;
+	this.esc.destroy();
+	//(won, numPlanets, pLeft, tutor)
+	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
 var GameOver = function(game) {};
 GameOver.prototype = {
+	init: function(won, numPlanets, pLeft, tutor) {
+		this.won = won;
+		this.numPlanets = numPlanets;
+		this.pLeft = pLeft/100;
+		this.tutor = tutor;
+	},
 	preload: function() {
 		// console.log('GameOver: preload');
-
+		this.POPULATION = 6437289;
+		this.totalPlanets = 5;
 	},
 	create: function() {
-		// check if player won or lost
-		if(won === true){
-			this.yay = game.add.text(game.width/2, game.width/5, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
-			this.yay.anchor.setTo(0.5);
-		}else {
-			this.dang = game.add.text(game.width/2, game.width/5, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
-			this.dang.anchor.setTo(0.5);
+		//set outcome to fail by default
+		this.outcome = "FAILURE";
+		//the s in case you only save one planet not planets
+		this.s = 's';
+		//set the partial credit to all planets at 100% by default
+		this.partial = "\nAll planets saved.\n"
+		//default padding for the amount saved and casualties text
+		this.padding = '\n\n';
+		
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup.anchor.setTo(0.5);
+
+		//if from the tutorial, total planets is 3
+		if(this.tutor === true){
+			this.totalPlanets = 3;
 		}
 
-		this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
-		this.retry.anchor.setTo(0.5);
+		//won: 1 = all saved, 2 = pressed escape, 0 = failed
+		if(this.won === 1){
+			this.outcome = "SUCCESS";
+		}
+		else if(this.won === 2){
+			this.outcome = "ABORTED";
+		}
+
+		//remove s if only one planet saved
+		if(this.numPlanets === 1){
+			this.s = '';
+		}
+
+		//set saved to max by default
+		this.saved = this.totalPlanets * this.POPULATION;
+
+		if(this.numPlanets === 0){ //no planets saved :(
+			this.partial = "";
+			this.padding = "";
+			this.saved = 0;
+		}
+		else if(this.numPlanets < this.totalPlanets){  //not all but some planets saved
+			this.partial = "\nThe destroyed planets were slowed\ndown enough to allow \n" + Math.floor(this.pLeft * 6437289) + " people to escape.\n";
+			this.padding = '\n\n\n\n';
+			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
+		}
+
+		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
+		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: \n\nTOTAL CASUALTIES: ', { font: '24px Courier', fill: '#fff'});
+
+		//amount saved
+		this.numbersS = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n' + this.saved, { font: '24px Courier', fill: '#fff'});
+		this.numbersS.anchor.setTo(1, 0);
+		//amount dead
+		this.numbersC = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
+		this.numbersC.anchor.setTo(1, 0);
 		
+		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
+		if(this.tutor === true){ //if from the tutorial
+			//if they beat the tutorial let them continue to game
+			if(this.won === 1){
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
+			}
+			else{ //if they lose the tutorial let them retry the tutorial
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', tutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+			}
+		}
+		else{ //not from tutorial, can only try again
+			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+		}
+		this.retry.anchor.setTo(0.5);
+
+		//always have a return to menu button
+		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'GObutton', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
+		this.return.anchor.setTo(0.5);
+
+		//hide mission report items until popup is full sized
+		this.missionReport = [this.report, this.content, this.numbersS, this.numbersC, this.retry, this.return];
+		for(var property in this.missionReport){
+			this.missionReport[property].alpha = 0;
+		}
 	},
 	update: function() {
-		// restart game
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-			if(tutorial === true){
-				game.state.start('Tutorial', true, false, 7);
-			}
-			else{
-				game.state.start('Play');
+		//cool resize animation to make things snazzy
+		if(this.popup.xSize < 450){
+			this.popup.Resize(this.popup.xSize + 30, this.popup.ySize);
+		}
+		if(this.popup.ySize < 600 && this.popup.xSize >= 450){
+			this.popup.Resize(this.popup.xSize, this.popup.ySize + 30);
+		}
+
+		//show mission report items now that popup is full sized
+		if(this.popup.xSize >=450 && this.popup.ySize >=600){
+			for(var property in this.missionReport){
+				this.missionReport[property].alpha = 1;
 			}
 		}
 
 	}
+}
+
+var toMenu = function(){
+	game.state.start('MainMenu');
 }
 
 //game.state.add("RocketTest", RocketTest);

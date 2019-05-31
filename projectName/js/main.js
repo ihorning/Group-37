@@ -6,6 +6,8 @@
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
+game.background = null;
+
 var dragging = false;
 
 var MainMenu = function(game) {};
@@ -21,6 +23,7 @@ MainMenu.prototype = {
 		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
 		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
 		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
+		game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 
@@ -70,6 +73,8 @@ Tutorial.prototype = {
 	preload: function() {
 	},
 	create: function() {
+		game.background = game.add.group();
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -114,6 +119,16 @@ Tutorial.prototype = {
 
 		this.numPlanets = 0;
 		this.pLeft = 0;
+
+
+		// Add a MessageButton
+		new MessageButton();
+
+		// Clear the MessageQueue
+		MessageQueue = [];
+		// Add a test message
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+
 	},
 	update: function() {
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
@@ -152,10 +167,10 @@ Tutorial.prototype = {
 				this.instruction.text = "Click anywhere else to get rid of Abigail's profile.";
 				break;
 			case 2:
-				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow it's movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
+				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow its movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
 				break;
 			case 3:
-				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to spped the game up and\nthe left arrow key to slow it down.";
+				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to speed the game up and\nthe left arrow key to slow it down.";
 				break;
 			case 4:
 				this.instruction.text = "Notice that Abigail's efficiency has started to drop now that she's 5 years ahead of her family.\nDrag her back to her home, the blue planet.";
@@ -185,7 +200,8 @@ Tutorial.prototype = {
 }
 var exitTutorial = function(){
 	game.universalTime = 0;
-	this.esc.destroy();
+	//this.esc.destroy();
+	this.esc.pendingDestroy = true;
 	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
@@ -196,6 +212,8 @@ Play.prototype = {
 
 	},
 	create: function() {
+		game.background = game.add.group();
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -255,6 +273,16 @@ Play.prototype = {
 		this.numPlanets = 0;
 
 		this.pLeft = 0;
+
+
+		// Add a MessageButton
+		new MessageButton();
+
+		// Clear the MessageQueue
+		MessageQueue = [];
+		// Add a test message
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+
 	},
 
 	update: function() {
@@ -281,13 +309,15 @@ Play.prototype = {
 		}
 		if(allCharactersDead) { // all characters have died
 			game.universalTime = 0;
-			this.esc.destroy();
+			//this.esc.destroy();
+			this.esc.pendingDestroy = true;
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
-			this.esc.destroy();
+			//this.esc.destroy();
+			this.esc.pendingDestroy = true;
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
@@ -312,7 +342,8 @@ Play.prototype = {
 }
 var exit = function(){
 	game.universalTime = 0;
-	this.esc.destroy();
+	//this.esc.destroy();
+	this.esc.pendingDestroy = true;
 	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }

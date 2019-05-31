@@ -52,10 +52,20 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.happiness = 100;
 	this.efficiency = 1;
 
-	this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	//this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	//this.debugText.inputEnabled = true;
+	//this.debugText.input.disableDrag();
+	this.emote = this.addChild(game.make.sprite(30, 0, "emoteAtlas", "happy"));
+	this.emote.scale.set(0.25);
+	this.emote.anchor.set(0.5);
+	this.emote.inputEnabled = true;
+	this.emote.input.disableDrag();
+
 	this.lifeText = this.addChild(game.make.text(-12, 20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.lifeText.inputEnabled = true;
+	this.lifeText.input.disableDrag();
 	//this.debugText.scale.set(0.7);
-	console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
+	//console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
 	this.drawLine = false;
@@ -140,7 +150,8 @@ Character.prototype.update = function() {
 	// }
 
 	if(!this.input.isDragged) { // If on a planet...
-		this.debugText.visible = true;
+		//this.debugText.visible = true;
+		this.emote.visible = true;
 		this.lifeText.visible = true;
 		//this.ageBar.visible = true;
 
@@ -156,38 +167,44 @@ Character.prototype.update = function() {
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
 			if(difference >=0 && difference < 2){
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = ":)";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = ":)";
+				this.emote.frameName = "happy";
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name;
 			}
 			else if(difference > 9 && difference < 10){
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = ":|";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = ":|";
+				this.emote.frameName = "fine";
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 10) {
-				this.debugText.fill = "#ff0000";
-				this.debugText.text = ":(";
+				//this.debugText.fill = "#ff0000";
+				//this.debugText.text = ":(";
+				this.emote.frameName = "unhappy";
+				this.emote.frameName = "sad";
 				this.info.happiness.fill = "#ff0000";
 				this.picture.frameName = this.name + "Sad";
 			} else {
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = "";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
 			}
 		} else {
 			this.happiness += delta * (5 - difference);
 			if(difference >=0 && difference < 2){
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = ":)";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = ":)";
+				this.emote.frameName = "happy";
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name;
 			}
 			else if(difference > 4 && difference < 5){
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = ":|";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = ":|";
+				this.emote.frameName = "fine";
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name + "Meh";
 			}
@@ -195,13 +212,15 @@ Character.prototype.update = function() {
 				if(this.step == 3){
 					this.step = 4;
 				}
-				this.debugText.fill = "#ff0000";
-				this.debugText.text = ":(";
+				//this.debugText.fill = "#ff0000";
+				//this.debugText.text = ":(";
+				this.emote.frameName = "unhappy";
+				this.emote.frameName = "sad";
 				this.info.happiness.fill = "#ff0000";
 				this.picture.frameName = this.name + "Sad";
 			} else {
-				this.debugText.fill = "#00ff00";
-				this.debugText.text = "";
+				//this.debugText.fill = "#00ff00";
+				//this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
 			}
 		}
@@ -227,7 +246,8 @@ Character.prototype.update = function() {
 		//this.debugText.text = "";
 
 	} else {
-		this.debugText.visible = false;
+		//this.debugText.visible = false;
+		this.emote.visible = false;
 		this.lifeText.visible = false;
 
 		this.world.x = game.input.mousePointer.x;
@@ -305,8 +325,13 @@ Character.prototype.Die = function() {
 	if(this.planet) {
 		this.planet.character = null;
 	}
-	//this.line.clear();
-	//this.input.disableDrag();
+
+	this.waitingForDrag = false;
+
+	this.drawLine = false;
+	this.line.clear();
+	this.input.disableDrag();
+
 	this.hideProfile();
 	this.kill();
 }

@@ -144,11 +144,13 @@ Tutorial.prototype = {
 		}
 		if(!this.medChar.alive) {
 			game.universalTime = 0;
+			this.esc.destroy();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, true);
 		}
 		if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
+			this.esc.destroy();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
@@ -194,6 +196,7 @@ Tutorial.prototype = {
 }
 var exitTutorial = function(){
 	game.universalTime = 0;
+	this.esc.destroy();
 	//(won, numPlanets, pLeft, tutor)
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
@@ -289,10 +292,12 @@ Play.prototype = {
 		}
 		if(allCharactersDead) { // all characters have died
 			game.universalTime = 0;
+			this.esc.destroy();
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
+			this.esc.destroy();
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
 		}
@@ -320,6 +325,7 @@ Play.prototype = {
 }
 var exit = function(){
 	game.universalTime = 0;
+	this.esc.destroy();
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
@@ -337,80 +343,87 @@ GameOver.prototype = {
 		this.totalPlanets = 5;
 	},
 	create: function() {
+		//set outcome to fail by default
 		this.outcome = "FAILURE";
+		//the s in case you only save one planet not planets
 		this.s = 's';
+		//set the partial credit to all planets at 100% by default
 		this.partial = "\nAll planets saved.\n"
+		//default padding for the amount saved and casualties text
 		this.padding = '\n\n';
 		
 		//Popup(game, x, y, xSize, ySize, key, frames)
 		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 		this.popup.anchor.setTo(0.5);
 
+		//if from the tutorial, total planets is 3
 		if(this.tutor === true){
 			this.totalPlanets = 3;
 		}
 
+		//won: 1 = all saved, 2 = pressed escape, 0 = failed
 		if(this.won === 1){
 			this.outcome = "SUCCESS";
 		}
 		else if(this.won === 2){
 			this.outcome = "ABORTED";
 		}
+
+		//remove s if only one planet saved
 		if(this.numPlanets === 1){
 			this.s = '';
 		}
 
+		//set saved to max by default
 		this.saved = this.totalPlanets * this.POPULATION;
 
-		if(this.numPlanets === 0){
+		if(this.numPlanets === 0){ //no planets saved :(
 			this.partial = "";
 			this.padding = "";
 			this.saved = 0;
 		}
-		else if(this.numPlanets < this.totalPlanets){
+		else if(this.numPlanets < this.totalPlanets){  //not all but some planets saved
 			this.partial = "\nThe destroyed planets were slowed\ndown enough to allow \n" + Math.floor(this.pLeft * 6437289) + " people to escape.\n";
 			this.padding = '\n\n\n\n';
 			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
 		}
+
 		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
 		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: \n\nTOTAL CASUALTIES: ', { font: '24px Courier', fill: '#fff'});
 
+		//amount saved
 		this.numbersS = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n' + this.saved, { font: '24px Courier', fill: '#fff'});
 		this.numbersS.anchor.setTo(1, 0);
+		//amount dead
 		this.numbersC = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
 		this.numbersC.anchor.setTo(1, 0);
 		
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		if(this.tutor === true){
+		if(this.tutor === true){ //if from the tutorial
+			//if they beat the tutorial let them continue to game
 			if(this.won === 1){
 				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
 			}
-			else{
+			else{ //if they lose the tutorial let them retry the tutorial
 				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', tutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 			}
 		}
-		else{
+		else{ //not from tutorial, can only try again
 			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 		}
 		this.retry.anchor.setTo(0.5);
+
+		//always have a return to menu button
 		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'GObutton', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
 		this.return.anchor.setTo(0.5);
 	},
 	update: function() {
+		//cool resize animation to make things snazzy
 		if(this.popup.xSize < 450){
 			this.popup.Resize(this.popup.xSize + 30, this.popup.ySize);
 		}
 		if(this.popup.ySize < 600 && this.popup.xSize >= 450){
 			this.popup.Resize(this.popup.xSize, this.popup.ySize + 30);
-		}
-		// restart game
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-			if(this.tutor === true){
-				game.state.start('Tutorial', true, false, 7);
-			}
-			else{
-				game.state.start('Play');
-			}
 		}
 
 	}

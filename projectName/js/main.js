@@ -6,8 +6,6 @@
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
-var won;
-
 var dragging = false;
 
 var MainMenu = function(game) {};
@@ -123,25 +121,35 @@ Tutorial.prototype = {
 		this.rightKey.onDown.add(this.speedUp, this);
 
 		this.medChar.step = this.step;
+
+		this.numPlanets = 0;
+		this.pLeft = 0;
 	},
 	update: function() {
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
+		this.numPlanets = 0;
+		this.pLeft = 0;
 
 		// if statement going to end screen: check character's dead and planet progress bars
 		var allJobsDone = true;
-		if(!this.medChar.alive) {
-			won = false;
-			tutorial = true;
-			game.state.start('GameOver');
-		}
 		for (var i = 0; i < this.planetList.length; i++) {
 			if(!this.planetList[i].job.bar.complete) {
 				allJobsDone = false;
-				break;
+				this.pLeft += this.planetList[i].job.bar.percent; 
+			}
+			else{
+				this.numPlanets++;
 			}
 		}
+		if(!this.medChar.alive) {
+			game.universalTime = 0;
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, true);
+		}
 		if(allJobsDone) { // productivity has been completed
-			game.state.start('Play');
+			game.universalTime = 0;
+			//(won, numPlanets, pLeft, tutor)
+			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
 
 		switch(this.medChar.step){
@@ -184,7 +192,9 @@ Tutorial.prototype = {
 	}
 }
 var exitTutorial = function(){
-	game.state.start('MainMenu');
+	game.universalTime = 0;
+	//(won, numPlanets, pLeft, tutor)
+	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
 
 var Play = function(game) {};
@@ -249,7 +259,9 @@ Play.prototype = {
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		this.rightKey.onDown.add(this.speedUp, this);
 
-		won = false;
+		this.numPlanets = 0;
+
+		this.pLeft = 0;
 	},
 
 	update: function() {
@@ -257,6 +269,8 @@ Play.prototype = {
 		// if statement going to end screen: check character's dead and planet progress bars
 		var allCharactersDead = true;
 		var allJobsDone = true;
+		this.numPlanets = 0;
+		this.pLeft = 0;
 		for (var i = 0; i < this.characterList.length; i++) {
 			if(this.characterList[i].alive) {
 				allCharactersDead = false;
@@ -266,70 +280,111 @@ Play.prototype = {
 		for (var i = 0; i < this.ProgressBarList.length; i++) {
 			if(!this.ProgressBarList[i].bar.complete) {
 				allJobsDone = false;
-				break;
+				this.pLeft += this.planetList[i].job.bar.percent; 
+			}
+			else{
+				this.numPlanets++;
 			}
 		}
 		if(allCharactersDead) { // all characters have died
-
-			won = false;
-			game.state.start('GameOver');
+			game.universalTime = 0;
+			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
 		}else if(allJobsDone) { // productivity has been completed
-
-			won = true;
-			game.state.start('GameOver');
+			game.universalTime = 0;
+			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 
 		}
 
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-			game.state.start('GameOver');
-		}
+		// if(game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+		// 	game.state.start('GameOver');
+		// }
 
 
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 
 	},
 	speedUp: function() {
-		game.universalTime += 0.25 * 0.3;
-		if(game.universalTime > 3.0 * 0.3) {
-			game.universalTime = 3.0 * 0.3;
+		game.universalTime += 5 * 0.3;
+		if(game.universalTime > 50.0 * 0.3) {
+			game.universalTime = 50.0 * 0.3;
 		}
 	},
 	speedDown: function() {
-		game.universalTime -= 0.25 * 0.3;
+		game.universalTime -= 5 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
 			game.universalTime = 0.25 * 0.3;
 		}
 	}
 }
 var exit = function(){
-	game.state.start('GameOver');
+	game.universalTime = 0;
+	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
 var GameOver = function(game) {};
 GameOver.prototype = {
+	init: function(won, numPlanets, pLeft, tutor) {
+		this.won = won;
+		this.numPlanets = numPlanets;
+		this.pLeft = pLeft/100;
+		this.tutor = tutor;
+	},
 	preload: function() {
 		// console.log('GameOver: preload');
-
+		this.POPULATION = 6437289;
 	},
 	create: function() {
-		// check if player won or lost
-		if(won === true){
-			this.yay = game.add.text(game.width/2, game.width/5, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
-			this.yay.anchor.setTo(0.5);
-		}else {
-			this.dang = game.add.text(game.width/2, game.width/5, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
-			this.dang.anchor.setTo(0.5);
+		this.outcome = "FAILURE";
+		this.s = 's';
+		this.partial = "All planets saved."
+		this.saved = 5 * this.POPULATION;
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup.anchor.setTo(0.5);
+		if(this.won === 1){
+			this.outcome = "SUCCESS";
 		}
+		else if(this.won === 2){
+			this.outcome = "ABORTED";
+		}
+		if(this.numPlanets === 1){
+			this.s = '';
+		}
+
+		if(this.numPlanets === 0){
+			this.partial = "";
+			this.saved = 0;
+		}
+		else if(this.numPlanets < 5){
+			this.partial = "The destroyed planets slowed enough to save\n" + Math.floor(this.pLeft * 6437289) + " lives.";
+			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
+		}
+		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
+		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\n\nTotal lives saved: ' + this.saved, { font: '20px Courier', fill: '#fff'});
+		// check if player won or lost
+		// if(won === true){
+		// 	this.yay = game.add.text(game.width/2, game.height/6, 'Congratulations! You completed the mission!', { fontSize: '32px', fill: '#fff'});
+		// 	this.yay.anchor.setTo(0.5);
+		// }else {
+		// 	this.dang = game.add.text(game.width/2, game.height/6, 'Mission Not Completed', { fontSize: '32px', fill: '#fff'});
+		// 	this.dang.anchor.setTo(0.5);
+		// }
 
 		this.retry = game.add.text(game.width/2, game.width/3, 'Press SPACEBAR to try again', { fontSize: '32px', fill: '#fff'});
 		this.retry.anchor.setTo(0.5);
 		
 	},
 	update: function() {
+		if(this.popup.xSize < 450){
+			this.popup.Resize(this.popup.xSize + 30, this.popup.ySize);
+		}
+		if(this.popup.ySize < 600 && this.popup.xSize >= 450){
+			this.popup.Resize(this.popup.xSize, this.popup.ySize + 30);
+		}
 		// restart game
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-			if(tutorial === true){
+			if(this.tutor === true){
 				game.state.start('Tutorial', true, false, 7);
 			}
 			else{

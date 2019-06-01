@@ -405,6 +405,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 
 Character.prototype.WaitForDrag = function() {
 	this.showProfile();
+	this.clicked = true;
 	if(this.step == 0){
 		this.step = 1;
 	}

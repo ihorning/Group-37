@@ -115,8 +115,12 @@ Tutorial.prototype = {
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
 
+		//Pop-up for instructions
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		this.popup = new Popup(game, -1000, -1000, 0, 0, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+
 		//Instruction text
-		this.instruction = game.add.text(10, 15, "", { fontSize: '20px', fill: '#fff'});
+		this.instruction = game.add.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
 
 		//Add Abigail
 		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
@@ -171,30 +175,54 @@ Tutorial.prototype = {
 			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
 
+		this.instruction.x = this.popup.x - 30;
+		this.instruction.y = this.popup.y - 30;
+		//this.medChar.step = 6;
+
 		switch(this.medChar.step){
 			case 0:
-				this.instruction.text = "Click on the character icon to get more information about your worker.";
+				this.popup.x = 750;
+				this.popup.y = 700;
+				this.popup.Resize(200, 50);
+				this.instruction.text = "Click on the character \nicon to get more \ninformation about \nyour worker.";
 				break;
 			case 1:
-				this.instruction.text = "Click anywhere else to get rid of Abigail's profile.";
+				this.popup.Resize(160, 20);
+				this.instruction.text = "Click anywhere else \nto get rid of \nAbigail's profile.";
 				break;
 			case 2:
-				this.instruction.text = "Planets will slowly move towards the black hole. When stationed at a planet, \nworkers will increase the percentage below each planet to slow its movement inward. \nOnce it reaches 100% the planet will no longer be pulled by the black hole!\nClick and drag Abigail's icon to the purple planet to move her there.";
+				this.popup.x = 100;
+				this.popup.y = 350;
+				this.popup.Resize(330, 220);
+				this.instruction.text = "Planets will slowly move towards \nthe black hole. When stationed at \na planet, workers will increase \nthe percentage below each planet \nto slow its movement inward. Once \nit reaches 100% the planet will \nno longer be pulled by the black \nhole! Click and drag Abigail's \nicon to the purple planet to \nmove her there.";
 				break;
 			case 3:
-				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field.\nThis means that workers on planets further from the black hole age and work faster\nthan on planets closer to the black hole. It also means that the workers will age at \ndifferent speeds than their family back on their home planet. \nOpen Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.\n\nUse the right arrow key to speed the game up and\nthe left arrow key to slow it down.";
+				this.popup.x = 570;
+				this.popup.y = 100;
+				this.popup.Resize(440, 330);
+				this.instruction.text = "Time moves faster for someone the further \nthey are from a strong gravitational \nfield. This means that workers on planets \nfurther from the black hole age and work \nfaster than on planets closer to the \nblack hole. It also means that the workers \nwill age at different speeds than their \nfamily back on their home planet. Open \nAbigail's profile and watch what happens \nwhen she gets 5 or more years ahead \nof her family.\n\nUse the right arrow key to speed the game \nup and the left arrow key to slow it down.";
 				break;
 			case 4:
-				this.instruction.text = "Notice that Abigail's efficiency has started to drop now that she's 5 years ahead of her family.\nDrag her back to her home, the blue planet.";
+				this.popup.x = 560;
+				this.popup.y = 770;
+				this.popup.Resize(450, 50);
+				this.instruction.text = "Notice that Abigail's efficiency has \nstarted to drop now that she's 5 years \nahead of her family.\nDrag her back to her home, the blue planet.";
 				break;
 			case 5:
-				this.instruction.text = "While a worker is on their home planet, their happiness will drop when they are 10 or more years\noff from their family. To make Abigail closer to her family's age again, she must go to a planet closer to the \nblack hole than her home planet. In this case the only planet slower than her home is the green planet.\nSend her there now.";
+				this.popup.x = 100;
+				this.popup.y = 100;
+				this.popup.Resize(350, 250);
+				this.instruction.text = "While a worker is on their home \nplanet, their happiness will drop \nwhen they are 10 or more years off \nfrom their family. To make Abigail \ncloser to her family's age again, \nshe must go to a planet closer to \nthe black hole than her home planet. \nIn this case the only planet slower \nthan her home is the green planet. \n\nSend her there now.";
 				break;
 			case 6:
-				this.instruction.text = "You lose the game if all your worker's die. A worker will die if the percentage \nbelow their icon reaches 0%. This percentage represents the amount of life they have left. \nTo win, complete each planet. Make sure you do this before the planet gets consumed by the black hole! \nComplete all of the planets to finish the tutorial and move on to the real where you manage 5 planets \nand 3 workers.";
+				this.popup.x = 100;
+				this.popup.y = 100;
+				this.popup.Resize(900, 75);
+				this.instruction.text = "You lose the game if all your worker's die. A worker will die if the percentage \nbelow their icon reaches 0%. This percentage represents the amount of life they \nhave left. To win, complete each planet. Make sure you do this before the planet \ngets consumed by the black hole! Complete all of the planets to finish the \ntutorial and move on to the real game where you manage 5 planets and 3 workers.";
 				break;
 			case 7:
 				this.instruction.text = "";
+				this.popup.destroy();
 		}
 	},
 	speedUp: function() {

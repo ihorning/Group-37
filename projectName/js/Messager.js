@@ -27,7 +27,8 @@ var Messager = {
 	],
 
 
-	PushMessage: function(game, receiver, list, messageQueue) {
+	PushMessage: function(game, receiver, list, audio, messageQueue) {
+		audio.play('', 0, 1, false);
 		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[Math.round(Math.random() * (list.length - 1))]);
 		message.anchor.set(0.5);
 		message.Resize(message.xSize, message.ySize);

@@ -26,6 +26,12 @@ MainMenu.prototype = {
 		game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
+		game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
+		game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
+		game.load.audio("message", "assets/audio/message1.mp3");
+		game.load.audio("buttonClick", "assets/audio/button.mp3");
+		game.load.audio("progressComplete", "assets/audio/progressComplete.mp3");
+		game.load.audio("hover", "assets/audio/hover.mp3");
 
 		// grab keyboard manager
 		var cursors = game.input.keyboard.createCursorKeys();
@@ -93,7 +99,13 @@ Tutorial.prototype = {
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
 		this.dropCharacter = game.add.audio('dropCharacter');
-		this.audio = [this.clickCharacter, this.dropCharacter];
+		this.characterDiesGood = game.add.audio("characterDiesGood");
+		this.characterDiesBad = game.add.audio("characterDiesBad");
+		this.message = game.add.audio("message");
+		this.buttonClick = game.add.audio("buttonClick");
+		this.progressComplete = game.add.audio("progressComplete");
+		this.hover = game.add.audio("hover");
+		this.audio = [this.clickCharacter, this.dropCharacter, characterDiesGood, characterDiesBad, message, buttonClick, progressComplete, hover];
 
 		this.planetList = [this.reallySlow, this.medium, this.reallyFast];
 
@@ -127,7 +139,7 @@ Tutorial.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 		// Add a test message
-		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
 	},
 	update: function() {
@@ -234,7 +246,11 @@ Play.prototype = {
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
 		this.dropCharacter = game.add.audio('dropCharacter');
-		this.audio = [this.clickCharacter, this.dropCharacter];
+		this.characterDiesGood = game.add.audio("characterDiesGood");
+		this.characterDiesBad = game.add.audio("characterDiesBad");
+		this.message = game.add.audio("message");
+		this.progressComplete = game.add.audio("progressComplete");
+		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad];
 
 		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
@@ -281,7 +297,7 @@ Play.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 		// Add a test message
-		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, true);
+		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
 	},
 
@@ -416,6 +432,9 @@ GameOver.prototype = {
 		//amount dead
 		this.numbersC = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
 		this.numbersC.anchor.setTo(1, 0);
+
+		this.buttonClick = game.add.audio("buttonClick");
+		this.hover = game.add.audio("hover");
 		
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
 		if(this.tutor === true){ //if from the tutorial

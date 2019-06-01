@@ -25,6 +25,9 @@ function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, but
 	this.onInputOut.add(out, this);
 	this.onInputDown.add(down, this);
 	this.onInputUp.add(up, this);
+
+	this.buttonClick = game.add.audio("buttonClick");
+	this.hover = game.add.audio("hover");
 }
 
 // Set the prototype of PlayButton to be a copy of Phaser.Button.prototype
@@ -36,6 +39,7 @@ PlayButton.prototype.constructor = PlayButton;
 function over() {
 	//this.tint = 0xDDDDFF;
 	this.text.fill = this.color1;
+	this.hover.play("", 0, 1, false);
 }
 
 // Change tint back when mouse leaves
@@ -45,7 +49,7 @@ function out() {
 }
 
 function down() {
-
+	this.buttonClick.play("", 0, 1, false);
 }
 
 function up() {

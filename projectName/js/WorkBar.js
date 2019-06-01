@@ -34,6 +34,8 @@ function WorkBar(game, x, y, timeMultiplier) {
 	this.displayText.anchor.x = 0.5;
 	this.displayText.anchor.y = 0.25;
 
+	this.completeAudio = game.add.audio("progressComplete");
+
 	game.add.existing(this);
 }
 
@@ -57,6 +59,7 @@ WorkBar.prototype.update = function() {
 			this.bar.percent = 100;
 			this.bar.sleep = true;
 			this.bar.complete = true;
+			this.completeAudio.play("", 0, 1, false);
 			this.bar.setMask(100);
 		}
 

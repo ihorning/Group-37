@@ -343,6 +343,12 @@ Character.prototype.Die = function() {
 		this.planet.character = null;
 	}
 
+	if(this.happiness > 60) {
+		this.audio[2].play('', 0, 1, false);
+	} else {
+		this.audio[3].play('', 0, 1, false);
+	}
+
 	this.waitingForDrag = false;
 
 	this.drawLine = false;

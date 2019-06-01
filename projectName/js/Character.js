@@ -399,6 +399,9 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 
 Character.prototype.WaitForDrag = function() {
 	this.showProfile();
+	if(this.step == 0){
+		this.step = 1;
+	}
 	if(!this.waitingForDrag) {
 		this.dragOffsetX = game.input.mousePointer.x - this.world.x;
 		this.dragOffsetY = game.input.mousePointer.y - this.world.y;

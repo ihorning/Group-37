@@ -514,8 +514,6 @@ Character.prototype.EndDrag = function() {
 
 Character.prototype.showEmote = function(){
 	if(this.emote.scale.x === 0.001){
-		this.emote.scale.setTo(0);
-		//this.emote.alpha = 1;
 		game.add.tween(this.emote.scale).to({
 			x: 1,
 			y: 1
@@ -525,7 +523,6 @@ Character.prototype.showEmote = function(){
 
 Character.prototype.hideEmote = function(){
 	if(this.emote.scale.x === 1){
-		this.emote.scale.setTo(1);
 		game.add.tween(this.emote.scale).to({
 			x: 0.001,
 			y: 0.001

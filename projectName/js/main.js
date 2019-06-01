@@ -66,6 +66,7 @@ var tutorial = function(){
 	game.state.start('Tutorial', true, false, 0);
 	//console.log('Tutorial');
 }
+
 var credits = function(){
 	//game.state.start('Credits');
 	console.log('Credits');
@@ -105,7 +106,7 @@ Tutorial.prototype = {
 		this.buttonClick = game.add.audio("buttonClick");
 		this.progressComplete = game.add.audio("progressComplete");
 		this.hover = game.add.audio("hover");
-		this.audio = [this.clickCharacter, this.dropCharacter, characterDiesGood, characterDiesBad, message, buttonClick, progressComplete, hover];
+		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad, this.message, this.buttonClick, this.progressComplete, this.hover];
 
 		this.planetList = [this.reallySlow, this.medium, this.reallyFast];
 

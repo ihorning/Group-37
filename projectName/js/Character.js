@@ -226,6 +226,9 @@ Character.prototype.update = function() {
 				//this.debugText.text = ":(";
 				//this.emote.frameName = "unhappy";
 				this.emote.frameName = "sad";
+				// game.add.tween(this.emote).to({
+				// 	rotation: Math.PI/4,
+				// }, 200, Phaser.Easing.Linear.None, true, 0, true, true);
 				this.showEmote();
 				this.info.happiness.fill = "#ff0000";
 				this.picture.frameName = this.name + "Sad";
@@ -510,7 +513,7 @@ Character.prototype.EndDrag = function() {
 }
 
 Character.prototype.showEmote = function(){
-	if(this.emote.scale.x === 0){
+	if(this.emote.scale.x === 0.001){
 		this.emote.scale.setTo(0);
 		//this.emote.alpha = 1;
 		game.add.tween(this.emote.scale).to({
@@ -524,10 +527,9 @@ Character.prototype.hideEmote = function(){
 	if(this.emote.scale.x === 1){
 		this.emote.scale.setTo(1);
 		game.add.tween(this.emote.scale).to({
-			x: 0,
-			y: 0
+			x: 0.001,
+			y: 0.001
 		}, 200, Phaser.Easing.Linear.None, true);
-		//this.emote.alpha = 0;
 	}
 }
 

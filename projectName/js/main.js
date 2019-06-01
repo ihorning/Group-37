@@ -207,7 +207,7 @@ Tutorial.prototype = {
 				break;
 			case 4:
 				this.popup.x = 560;
-				this.popup.y = 770;
+				this.popup.y = 700;
 				this.popup.Resize(450, 50);
 				this.instruction.text = "Notice that Abigail's efficiency has \nstarted to drop now that she's 5 years \nahead of her family.\nDrag her back to her home, the blue planet.";
 				break;

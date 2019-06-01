@@ -22,7 +22,7 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message) {
 	this.underline.lineTo(this.titleDisplay.width, 0);
 	this.messageDisplay = this.addChild(game.make.text(0, this.titleDisplay.height + 20, message, style2));
 
-	this.closeButton = this.addChild(new PlayButton(game, xSize / 2, ySize, 'exitMessage', this.Close, this, 'exitMessageOn', 'exitMessageOff', ""));
+	this.closeButton = this.addChild(new PlayButton(game, xSize / 2, ySize, 'exitMessage', this.Close, this, 'exitMessageOff', 'exitMessageOn', ""));
 	this.closeButton.scale.set(2);
 	this.closeButton.anchor.set(0.5);
 

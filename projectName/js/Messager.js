@@ -41,14 +41,16 @@ var Messager = {
 		message.Resize(message.xSize, message.ySize);
 
 		if(messageQueue) {
-			game.world.remove(message);
+			message.kill();
 			MessageQueue.push(message);
 		}
 	}
 }
 
 var ShowMessage = function(game) {
-	game.add.existing(MessageQueue.shift());
+	var message = MessageQueue.shift();
+	message.revive();
+	console.log(message.alive);
 }
 
 
@@ -60,7 +62,7 @@ function MessageButton() {
 	this.anchor.set(1);
 	this.onInputDown.add(function() {
 		if(MessageQueue.length > 0) {
-			game.add.existing(MessageQueue.shift());
+			ShowMessage();
 		} else {
 			console.log("No new messages");
 		}

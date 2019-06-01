@@ -29,31 +29,41 @@ var Messager = {
 
 	PushMessage: function(game, receiver, list, audio, messageQueue) {
 		audio.play('', 0, 1, false);
-		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[Math.round(Math.random() * (list.length - 1))]);
+		var chosen = Math.round(Math.random() * (list.length - 1));
+		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
+
+		if(list != Messager.FAMILY_HAPPY && list != Messager.FAMILY_UNHAPPY && list != Messager.FAMILY_OLDER && list != Messager.FAMILY_YOUNGER) {
+			list.splice(chosen, 1);
+		} else {
+			console.log("Did not remove item");
+		}
+
 		message.anchor.set(0.5);
 		message.Resize(message.xSize, message.ySize);
 
 		if(messageQueue) {
-			game.world.remove(message);
+			message.kill();
 			MessageQueue.push(message);
 		}
 	}
 }
 
 var ShowMessage = function(game) {
-	game.add.existing(MessageQueue.shift());
+	var message = MessageQueue.shift();
+	message.revive();
+	console.log(message.alive);
 }
 
 
 
 function MessageButton() {
 
-	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "exit", null, null, "exitOff", "exitOn");
+	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "mail", null, null, "mailOpen", "mailClosed");
 
 	this.anchor.set(1);
 	this.onInputDown.add(function() {
 		if(MessageQueue.length > 0) {
-			game.add.existing(MessageQueue.shift());
+			ShowMessage();
 		} else {
 			console.log("No new messages");
 		}

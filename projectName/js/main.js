@@ -24,6 +24,8 @@ MainMenu.prototype = {
 		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
 		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
 		game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
+		game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
+		game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
 		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 		game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");

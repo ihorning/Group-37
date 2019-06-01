@@ -55,8 +55,8 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	//this.debugText = this.addChild(game.make.text(15, -20, "faweion", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
 	//this.debugText.inputEnabled = true;
 	//this.debugText.input.disableDrag();
-	this.emote = this.addChild(game.make.sprite(30, 0, "emoteAtlas", "happy"));
-	this.emote.scale.set(0.25);
+	this.emote = this.addChild(game.make.sprite(23, -20, "emoteAtlas", "happy"));
+	//this.emote.scale.set(0.25);
 	this.emote.anchor.set(0.5);
 	this.emote.inputEnabled = true;
 	this.emote.input.disableDrag();
@@ -166,10 +166,12 @@ Character.prototype.update = function() {
 
 		if(this.planet === this.home) {
 			this.happiness += delta * (10 - difference);
+			//this.emote.alpha = 1;
 			if(difference >=0 && difference < 2){
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = ":)";
 				this.emote.frameName = "happy";
+				this.showEmote();
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name;
 			}
@@ -177,27 +179,34 @@ Character.prototype.update = function() {
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = ":|";
 				this.emote.frameName = "fine";
+				this.showEmote();
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 10) {
 				//this.debugText.fill = "#ff0000";
 				//this.debugText.text = ":(";
-				this.emote.frameName = "unhappy";
+				//this.emote.frameName = "unhappy";
 				this.emote.frameName = "sad";
+				this.showEmote();
 				this.info.happiness.fill = "#ff0000";
 				this.picture.frameName = this.name + "Sad";
 			} else {
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
+				//this.emote.alpha = 0;
+				this.hideEmote();
+				this.picture.frameName = this.name + "Meh";
 			}
 		} else {
+			//this.emote.alpha = 1;
 			this.happiness += delta * (5 - difference);
 			if(difference >=0 && difference < 2){
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = ":)";
 				this.emote.frameName = "happy";
+				this.showEmote();
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name;
 			}
@@ -205,6 +214,7 @@ Character.prototype.update = function() {
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = ":|";
 				this.emote.frameName = "fine";
+				this.showEmote();
 				this.info.happiness.fill = "#00ff00";
 				this.picture.frameName = this.name + "Meh";
 			}
@@ -214,14 +224,18 @@ Character.prototype.update = function() {
 				}
 				//this.debugText.fill = "#ff0000";
 				//this.debugText.text = ":(";
-				this.emote.frameName = "unhappy";
+				//this.emote.frameName = "unhappy";
 				this.emote.frameName = "sad";
+				this.showEmote();
 				this.info.happiness.fill = "#ff0000";
 				this.picture.frameName = this.name + "Sad";
 			} else {
 				//this.debugText.fill = "#00ff00";
 				//this.debugText.text = "";
 				this.info.happiness.fill = "#00ff00";
+				//this.emote.alpha = 0;
+				this.hideEmote();
+				this.picture.frameName = this.name + "Meh";
 			}
 		}
 
@@ -493,6 +507,28 @@ Character.prototype.EndDrag = function() {
 	// Stop drawing lines
 	this.line.clear();
 	this.drawLine = false;
+}
+
+Character.prototype.showEmote = function(){
+	if(this.emote.scale.x === 0){
+		this.emote.scale.setTo(0);
+		//this.emote.alpha = 1;
+		game.add.tween(this.emote.scale).to({
+			x: 1,
+			y: 1
+		}, 200, Phaser.Easing.Linear.None, true);
+	}
+}
+
+Character.prototype.hideEmote = function(){
+	if(this.emote.scale.x === 1){
+		this.emote.scale.setTo(1);
+		game.add.tween(this.emote.scale).to({
+			x: 0,
+			y: 0
+		}, 200, Phaser.Easing.Linear.None, true);
+		//this.emote.alpha = 0;
+	}
 }
 
 Character.prototype.showProfile = function(){

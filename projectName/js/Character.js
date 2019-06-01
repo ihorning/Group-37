@@ -279,9 +279,9 @@ Character.prototype.update = function() {
 			this.timeSinceLastMessage = 0;
 
 			if((100 - this.life) - this.home.currentTime > 0) {
-				Messager.PushMessage(game, this.name, this.familyYoungerMessages, true);
+				Messager.PushMessage(game, this.name, this.familyYoungerMessages, this.audio[4], true);
 			} else {
-				Messager.PushMessage(game, this.name, this.familyOlderMessages, true);
+				Messager.PushMessage(game, this.name, this.familyOlderMessages, this.audio[4], true);
 			}
 
 		} else if(this.timeSinceLastMessage > 30 && (this.happiness < 60 || this.happiness == 100)) {
@@ -289,9 +289,9 @@ Character.prototype.update = function() {
 			this.timeSinceLastMessage = 0;
 
 			if(this.happiness > 60) {
-				Messager.PushMessage(game, this.name, this.familyHappyMessages, true);
+				Messager.PushMessage(game, this.name, this.familyHappyMessages, this.audio[4], true);
 			} else {
-				Messager.PushMessage(game, this.name, this.familyUnhappyMessages, true);
+				Messager.PushMessage(game, this.name, this.familyUnhappyMessages, this.audio[4], true);
 			}
 
 		} else {

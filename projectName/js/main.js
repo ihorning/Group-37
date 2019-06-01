@@ -108,7 +108,7 @@ Tutorial.prototype = {
 		this.buttonClick = game.add.audio("buttonClick");
 		this.progressComplete = game.add.audio("progressComplete");
 		this.hover = game.add.audio("hover");
-		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad, this.message, this.buttonClick, this.progressComplete, this.hover];
+		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad, this.message];
 
 		this.planetList = [this.reallySlow, this.medium, this.reallyFast];
 
@@ -281,7 +281,7 @@ Play.prototype = {
 		this.characterDiesBad = game.add.audio("characterDiesBad");
 		this.message = game.add.audio("message");
 		this.progressComplete = game.add.audio("progressComplete");
-		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad];
+		this.audio = [this.clickCharacter, this.dropCharacter, this.characterDiesGood, this.characterDiesBad, this.message];
 
 		
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];

@@ -93,6 +93,12 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.dragTimer = 0;
 	this.dragOffsetX = 0;
 	this.dragOffsetY = 0;
+
+	this.timeSinceLastMessage = 0;
+	this.familyHappyMessages = Array.from(Messager.FAMILY_HAPPY);
+	this.familyUnhappyMessages = Array.from(Messager.FAMILY_UNHAPPY);
+	this.familyYoungerMessages = Array.from(Messager.FAMILY_YOUNGER);
+	this.familyOlderMessages = Array.from(Messager.FAMILY_OLDER);
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -261,6 +267,37 @@ Character.prototype.update = function() {
 			this.info.diff.text = "" + Math.floor(difference) + " year " + aheadBehind + " family";
 		}
 		//this.debugText.text = "";
+
+
+		if(this.planet === this.home) {
+			this.timeSinceLastMessage = 0;
+		}
+
+
+		if(this.timeSinceLastMessage > 20 && difference >= 5) {
+
+			this.timeSinceLastMessage = 0;
+
+			if((100 - this.life) - this.home.currentTime > 0) {
+				Messager.PushMessage(game, this.name, this.familyYoungerMessages, true);
+			} else {
+				Messager.PushMessage(game, this.name, this.familyOlderMessages, true);
+			}
+
+		} else if(this.timeSinceLastMessage > 30 && (this.happiness < 60 || this.happiness == 100)) {
+
+			this.timeSinceLastMessage = 0;
+
+			if(this.happiness > 60) {
+				Messager.PushMessage(game, this.name, this.familyHappyMessages, true);
+			} else {
+				Messager.PushMessage(game, this.name, this.familyUnhappyMessages, true);
+			}
+
+		} else {
+			this.timeSinceLastMessage += (game.universalTime / 0.3) * this.home.timeMultiplier * (game.time.elapsed / 1000);
+		}
+
 
 	} else {
 		//this.debugText.visible = false;

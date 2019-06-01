@@ -28,7 +28,15 @@ var Messager = {
 
 
 	PushMessage: function(game, receiver, list, messageQueue) {
-		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[Math.round(Math.random() * (list.length - 1))]);
+		var chosen = Math.round(Math.random() * (list.length - 1));
+		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
+
+		if(list != Messager.FAMILY_HAPPY && list != Messager.FAMILY_UNHAPPY && list != Messager.FAMILY_OLDER && list != Messager.FAMILY_YOUNGER) {
+			list.splice(chosen, 1);
+		} else {
+			console.log("Did not remove item");
+		}
+
 		message.anchor.set(0.5);
 		message.Resize(message.xSize, message.ySize);
 
@@ -47,7 +55,7 @@ var ShowMessage = function(game) {
 
 function MessageButton() {
 
-	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "exit", null, null, "exitOff", "exitOn");
+	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "mail", null, null, "mailOpen", "mailClosed");
 
 	this.anchor.set(1);
 	this.onInputDown.add(function() {

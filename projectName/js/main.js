@@ -103,8 +103,12 @@ Tutorial.prototype = {
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
 
+		//Pop-up for instructions
+		//Popup(game, x, y, xSize, ySize, key, frames)
+		this.popup = new Popup(game, 0, 0, 0, 0, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+
 		//Instruction text
-		this.instruction = game.add.text(10, 15, "", { fontSize: '20px', fill: '#fff'});
+		this.instruction = game.add.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
 
 		//Add Abigail
 		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
@@ -159,9 +163,15 @@ Tutorial.prototype = {
 			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
 
+		this.instruction.x = this.popup.x - 30;
+		this.instruction.y = this.popup.y - 30;
+
 		switch(this.medChar.step){
 			case 0:
-				this.instruction.text = "Click on the character icon to get more information about your worker.";
+				this.popup.x = 750;
+				this.popup.y = 700;
+				this.popup.Resize(200, 50);
+				this.instruction.text = "Click on the character \nicon to get more \ninformation about \nyour worker.";
 				break;
 			case 1:
 				this.instruction.text = "Click anywhere else to get rid of Abigail's profile.";

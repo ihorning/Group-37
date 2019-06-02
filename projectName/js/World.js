@@ -85,9 +85,6 @@ World.prototype.update = function() {
 	
 
 	if(Math.pow(this.x - game.world.centerX, 2) + Math.pow(this.y - game.world.centerY, 2) <= 5184){
-		if(this.character != null){
-			this.character.Die();
-		}
 		if(this.death === false){
 			this.death = true;
 			this.death = game.add.tween(this).to({
@@ -129,6 +126,9 @@ World.prototype.die = function(){
 	console.log("dead");
 	this.x = 10000000;
 	this.y = 10000000;
+	if(this.character != null){
+			this.character.Die();
+	}
 }
 
 World.prototype.currentTime = function() {

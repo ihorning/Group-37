@@ -44,7 +44,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.events.onDragStart.add(this.WaitForDrag, this);
 	this.events.onDragStop.add(this.EndDrag, this);
 
-	game.input.mouse.capture = true;
+	//game.input.mouse.capture = true;
 
 	// Initialize life value to 100%
 	this.life = 100;
@@ -319,8 +319,8 @@ Character.prototype.update = function() {
 		this.emote.visible = false;
 		this.lifeText.visible = false;
 
-		this.world.x = game.input.mousePointer.x;
-		this.world.y = game.input.mousePointer.y;
+		this.world.x = game.input.x;
+		this.world.y = game.input.y;
 
 		//this.hideProfile();
 	}
@@ -338,12 +338,12 @@ Character.prototype.update = function() {
 
 			this.line.lineStyle(4, 0xffffff, 0.5);
 			this.line.moveTo(this.planet.x, this.planet.y);
-			this.line.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
+			this.line.lineTo(game.input.x, game.input.y);
 
 		} else if(CURVED_LINE) {
 
-			var orbitAngle = Math.atan2(game.world.centerY - game.input.mousePointer.y, game.input.mousePointer.x - game.world.centerX);
-			var orbitRad = Math.pow(Math.pow(game.world.centerX - game.input.mousePointer.x, 2) + Math.pow(game.world.centerY - game.input.mousePointer.y, 2), 0.5);
+			var orbitAngle = Math.atan2(game.world.centerY - this.world.y, this.world.x - game.world.centerX);
+			var orbitRad = Math.pow(Math.pow(game.world.centerX - this.world.x, 2) + Math.pow(game.world.centerY - this.world.y, 2), 0.5);
 
 			var x0 = this.planet.orbitAngle;
 			var x1 = orbitAngle;
@@ -462,15 +462,15 @@ Character.prototype.WaitForDrag = function() {
 		this.step = 1;
 	}
 	if(!this.waitingForDrag) {
-		this.dragOffsetX = game.input.mousePointer.x - this.world.x;
-		this.dragOffsetY = game.input.mousePointer.y - this.world.y;
+		this.dragOffsetX = game.input.x - this.world.x;
+		this.dragOffsetY = game.input.y - this.world.y;
 
 		//play the clickCharacter sound
 		this.audio[0].play('', 0, 1, false);
 	}
 	this.waitingForDrag = true;
 	this.dragTimer += game.time.elapsed / 1000;
-	var difference = Math.pow(Math.pow(game.input.mousePointer.x - (this.input.dragStartPoint.x + this.planet.x), 2) + Math.pow(game.input.mousePointer.y - (this.input.dragStartPoint.y + this.planet.y), 2), 0.5);
+	var difference = Math.pow(Math.pow(game.input.x - (this.input.dragStartPoint.x + this.planet.x), 2) + Math.pow(game.input.y - (this.input.dragStartPoint.y + this.planet.y), 2), 0.5);
 	difference -= Math.pow(Math.pow(this.dragOffsetX, 2) + Math.pow(this.dragOffsetY, 2), 0.5);
 	if(this.dragTimer > 0.2 || difference > 7) {
 		this.waitingForDrag = false;
@@ -486,8 +486,8 @@ Character.prototype.BeginDrag = function() {
 	//Show this characters profile
 	//this.showProfile();
 
-	this.x = game.input.mousePointer.x;
-	this.y = game.input.mousePointer.y;
+	this.x = game.input.x;
+	this.y = game.input.y;
 
 	this.drawLine = true;
 

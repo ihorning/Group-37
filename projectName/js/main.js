@@ -406,7 +406,7 @@ GameOver.prototype = {
 	},
 	preload: function() {
 		// console.log('GameOver: preload');
-		this.POPULATION = 6437289;
+		this.POPULATION = 7469377;
 		this.totalPlanets = 5;
 	},
 	create: function() {

@@ -74,11 +74,14 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
 	this.picture.bringToTop();
+
+	//Add oldness filter but initialize it as invisible
 	this.old = game.add.sprite(0, game.height, 'chars', this.name+"Old");
 	this.old.anchor.setTo(0, 1);
 	this.old.scale.setTo(0.7);
 	this.old.bringToTop();
 	this.oldalph = 0;
+
 	// Add an AgeBar for this character
 	this.ageBar = game.add.existing(new AgeBar(game, 153, game.height - 95, this));
 	this.ageBar.scale.set(1.6);
@@ -128,6 +131,7 @@ Character.prototype.update = function() {
 		}
 	}
 	
+	//if character is over 35 start to fade in the oldness filter
 	if(20 + (100 - this.life)*.6 > 35){
 		this.oldalph = ((20 + (100 - this.life)*.6)-35)/45;
 		if(this.picture.alpha != 0){

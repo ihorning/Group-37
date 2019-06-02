@@ -36,6 +36,10 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 Popup.prototype = Object.create(Phaser.Sprite.prototype);
 Popup.prototype.constructor = Popup;
 
+Popup.prototype.makeTransparent = function() {
+	this.alpha = 0.8;
+}
+
 Popup.prototype.Resize = function(xSize, ySize) {
 
 	this.xSize = Math.round(xSize);

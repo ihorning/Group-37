@@ -34,7 +34,7 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 	this.goalYSize = this.ySize;
 
 	this.opening = false;
-	this.openTime = 0.35;
+	this.openTime = 0.3;
 
 	this.textElements = [];
 
@@ -102,7 +102,11 @@ Popup.prototype.Resize = function(xSize, ySize) {
 
 }
 
-Popup.prototype.Open = function() {
+Popup.prototype.Open = function(time) {
+	if(time) {
+		this.openTime = time;
+	}
+
 	this.opening = true;
 	for(var element in this.textElements) {
 		this.textElements[element].alpha = 0;
@@ -121,11 +125,11 @@ Popup.prototype.update = function() {
 			newY += ((game.time.elapsed / 1000) / this.openTime) * (this.goalYSize - 10);
 		}
 
-		if(this.xSize > this.goalXSize) {
-			this.xSize = this.goalXSize;
+		if(newX > this.goalXSize) {
+			newX = this.goalXSize;
 		}
-		if(this.ySize > this.goalYSize) {
-			this.ySize = this.goalYSize;
+		if(newY > this.goalYSize) {
+			newY = this.goalYSize;
 		}
 
 		if(this.xSize == this.goalXSize && this.ySize == this.goalYSize) {

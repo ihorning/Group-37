@@ -51,6 +51,7 @@ var Messager = {
 var ShowMessage = function(game) {
 	var message = MessageQueue.shift();
 	message.revive();
+	message.Open(0.25);
 	console.log(message.alive);
 }
 

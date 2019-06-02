@@ -48,7 +48,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.character = null;
 	this.pendingArrival = null;
 
-	this.dead = false;
+	this.death = false;
 
 	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
@@ -82,15 +82,24 @@ World.prototype.update = function() {
 
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
 	this.orbitAngle = this.orbitAngle % (Math.PI * 2);
-	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
-	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+	
 
-	if(Math.pow(this.x - game.world.centerX, 2)+Math.pow(this.y - game.world.centerY, 2) <= 5184){
+	if(Math.pow(this.x - game.world.centerX, 2) + Math.pow(this.y - game.world.centerY, 2) <= 5184){
 		if(this.character != null){
 			this.character.Die();
 		}
-		this.x = 10000000;
-		this.y = 10000000;
+		if(this.death === false){
+			this.death = true;
+			this.death = game.add.tween(this).to({
+				x: game.world.centerX,
+				y: game.world.centerY
+			}, 100, Phaser.Easing.Linear.None, true);
+			this.death.onComplete.add(this.die, this);	
+		}
+	}
+	else if(this.death === false){
+		this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
+		this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 	}
 
 	// Get the number to be displayed (1 decimal)
@@ -114,6 +123,12 @@ World.prototype.update = function() {
 
 	// Run job's update function
 	this.job.update();
+}
+
+World.prototype.die = function(){
+	console.log("dead");
+	this.x = 10000000;
+	this.y = 10000000;
 }
 
 World.prototype.currentTime = function() {

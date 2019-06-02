@@ -420,7 +420,7 @@ GameOver.prototype = {
 		this.padding = '\n\n';
 		
 		//Popup(game, x, y, xSize, ySize, key, frames)
-		this.popup = new Popup(game, game.width/2, game.height/2, 300, 10, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup = new Popup(game, game.width/2, game.height/2, 450, 600, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 		this.popup.anchor.setTo(0.5);
 
 		//if from the tutorial, total planets is 3
@@ -489,25 +489,27 @@ GameOver.prototype = {
 
 		//hide mission report items until popup is full sized
 		this.missionReport = [this.report, this.content, this.numbersS, this.numbersC, this.retry, this.return];
-		for(var property in this.missionReport){
+		this.popup.textElements = this.missionReport;
+		/*for(var property in this.missionReport){
 			this.missionReport[property].alpha = 0;
-		}
+		}*/
+		this.popup.Open();
 	},
 	update: function() {
-		//cool resize animation to make things snazzy
+		/*//cool resize animation to make things snazzy
 		if(this.popup.xSize < 450){
 			this.popup.Resize(this.popup.xSize + 30, this.popup.ySize);
 		}
 		if(this.popup.ySize < 600 && this.popup.xSize >= 450){
 			this.popup.Resize(this.popup.xSize, this.popup.ySize + 30);
-		}
+		}*/
 
 		//show mission report items now that popup is full sized
-		if(this.popup.xSize >=450 && this.popup.ySize >=600){
+		/*if(this.popup.xSize >=450 && this.popup.ySize >=600){
 			for(var property in this.missionReport){
 				this.missionReport[property].alpha = 1;
 			}
-		}
+		}*/
 
 	}
 }

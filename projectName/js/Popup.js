@@ -29,6 +29,14 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 
 	this.Resize(this.xSize, this.ySize);
 
+	this.goalXSize = this.xSize;
+	this.goalYSize = this.ySize;
+
+	this.opening = false;
+	this.openTime = 0.35;
+
+	this.textElements = [];
+
 	game.add.existing(this);
 
 }
@@ -93,4 +101,42 @@ Popup.prototype.Resize = function(xSize, ySize) {
 	this.SE.width = this.SEFrame.width;
 	this.SE.height = this.SEFrame.height;
 
+}
+
+Popup.prototype.Open = function() {
+	this.opening = true;
+	for(var element in this.textElements) {
+		this.textElements[element].alpha = 0;
+	}
+	this.Resize(300, 10);
+}
+
+Popup.prototype.update = function() {
+	if(this.opening) {
+		var newX = this.xSize;
+		var newY = this.ySize;
+		if(this.xSize < this.goalXSize) {
+			newX += ((game.time.elapsed / 1000) / this.openTime) * (this.goalXSize - 300);
+		}
+		if(this.ySize < this.goalYSize) {
+			newY += ((game.time.elapsed / 1000) / this.openTime) * (this.goalYSize - 10);
+		}
+
+		if(this.xSize > this.goalXSize) {
+			this.xSize = this.goalXSize;
+		}
+		if(this.ySize > this.goalYSize) {
+			this.ySize = this.goalYSize;
+		}
+
+		if(this.xSize == this.goalXSize && this.ySize == this.goalYSize) {
+			this.opening = false;
+			for(var element in this.textElements) {
+				this.textElements[element].alpha = 1;
+			}
+			console.log("TEST");
+		} else {
+			this.Resize(newX, newY);
+		}
+	}
 }

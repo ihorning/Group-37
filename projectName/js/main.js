@@ -90,14 +90,14 @@ Tutorial.prototype = {
 		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exitTutorial, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
-		// Put black hole on the screen
-		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
-		this.blackHole.anchor.setTo(0.5);
-
 		// Add in the planets
 		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'planets', 'RSlowP', 1.5, "green");
 		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'planets', 'MedP', 2.5, "blue");
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 4, "purple");
+
+		// Put black hole on the screen
+		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
+		this.blackHole.anchor.setTo(0.5);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
@@ -264,16 +264,16 @@ Play.prototype = {
 		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exit, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
-		// Put black hole on the screen
-		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
-		this.blackHole.anchor.setTo(0.5);
-
 		// Add in the planets
 		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'planets', 'RSlowP', 0.5, "green");
 		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 8, 'planets', 'SlowP', 0.75, "yellow");
 		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'planets', 'MedP', 1, "blue");
 		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 7, 'planets', 'FastP', 1.25, "red");
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 1.75, "purple");
+
+		// Put black hole on the screen
+		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
+		this.blackHole.anchor.setTo(0.5);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');

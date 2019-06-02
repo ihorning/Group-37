@@ -48,6 +48,8 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.character = null;
 	this.pendingArrival = null;
 
+	this.dead = false;
+
 	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
 
@@ -82,6 +84,14 @@ World.prototype.update = function() {
 	this.orbitAngle = this.orbitAngle % (Math.PI * 2);
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
+
+	if(Math.pow(this.x - game.world.centerX, 2)+Math.pow(this.y - game.world.centerY, 2) <= 5184){
+		if(this.character != null){
+			this.character.Die();
+		}
+		this.x = 10000000;
+		this.y = 10000000;
+	}
 
 	// Get the number to be displayed (1 decimal)
 	var numberToDisplay = Math.floor(this.currentTime * 10) / 10;

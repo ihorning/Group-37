@@ -376,13 +376,13 @@ Play.prototype = {
 
 	},
 	speedUp: function() {
-		game.universalTime += 0.25 * 0.3;
-		if(game.universalTime > 3.0 * 0.3) {
-			game.universalTime = 3.0 * 0.3;
+		game.universalTime += 5 * 0.3;
+		if(game.universalTime > 30.0 * 0.3) {
+			game.universalTime = 30.0 * 0.3;
 		}
 	},
 	speedDown: function() {
-		game.universalTime -= 0.25 * 0.3;
+		game.universalTime -= 5 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
 			game.universalTime = 0.25 * 0.3;
 		}

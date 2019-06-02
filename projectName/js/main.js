@@ -121,7 +121,6 @@ Tutorial.prototype = {
 		//Pop-up for instructions
 		//Popup(game, x, y, xSize, ySize, key, frames)
 		this.popup = new Popup(game, -1000, -1000, 0, 0, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
-		this.popup.makeTransparent();
 
 		//Instruction text
 		this.instruction = game.add.text(10, 15, "", { font: '20px Courier', fill: '#fff'});

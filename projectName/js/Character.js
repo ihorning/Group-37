@@ -593,7 +593,7 @@ Character.prototype.hideEmote = function(){
 }
 
 Character.prototype.showProfile = function(){
-	this.popup.alpha = 1;
+	this.popup.alpha = 0.8;
 	this.picture.alpha = 1;
 	this.old.alpha = this.oldalph;
 	this.ageBar.visible = true;

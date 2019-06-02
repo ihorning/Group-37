@@ -29,6 +29,7 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 
 	this.Resize(this.xSize, this.ySize);
 
+
 	this.goalXSize = this.xSize;
 	this.goalYSize = this.ySize;
 
@@ -37,16 +38,14 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 
 	this.textElements = [];
 
+	this.alpha = 0.8;
+
 	game.add.existing(this);
 
 }
 
 Popup.prototype = Object.create(Phaser.Sprite.prototype);
 Popup.prototype.constructor = Popup;
-
-Popup.prototype.makeTransparent = function() {
-	this.alpha = 0.8;
-}
 
 Popup.prototype.Resize = function(xSize, ySize) {
 

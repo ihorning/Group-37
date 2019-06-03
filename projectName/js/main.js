@@ -15,6 +15,7 @@ MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
 		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+		game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
 		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
 		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
@@ -128,11 +129,16 @@ Tutorial.prototype = {
 		//Add Abigail
 		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
 
-		this.timeControlDisplay = game.add.text(0, 0, '1x speed', { fontSize: '15px', fill: '#fff'});
-		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-		this.leftKey.onDown.add(this.speedDown, this);
-		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-		this.rightKey.onDown.add(this.speedUp, this);
+		this.timeControlDisplay = game.add.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+
+		this.arrows = [];
+		
+		//Add arrows for time speed UI
+		//SpeedUp(game, key, frame, arrows, value, index)
+		for(i = 0; i < 5; i++){
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+		}
+		this.arrows[0].recent = 1;
 
 		this.medChar.step = this.step;
 
@@ -150,6 +156,23 @@ Tutorial.prototype = {
 
 	},
 	update: function() {
+		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
+		for(var a in this.arrows){
+			if(this.arrows[a].recent === 1){
+				for(var r in this.arrows){
+					if(this.arrows[r].index <= this.arrows[a].index){
+						this.arrows[r].frame = 0;
+					}
+					else{
+						this.arrows[r].frame = 1;
+					}
+				}
+				game.universalTime = this.arrows[a].value;
+				this.arrows[a].recent = 0;
+				
+			}
+		}
+
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 		this.numPlanets = 0;
 		this.pLeft = 0;
@@ -203,7 +226,7 @@ Tutorial.prototype = {
 				this.popup.x = 570;
 				this.popup.y = 100;
 				this.popup.Resize(440, 330);
-				this.instruction.text = "Time moves faster for someone the further \nthey are from a strong gravitational \nfield. This means that workers on planets \nfurther from the black hole age and work \nfaster than on planets closer to the \nblack hole. It also means that the workers \nwill age at different speeds than their \nfamily back on their home planet. Open \nAbigail's profile and watch what happens \nwhen she gets 5 or more years ahead \nof her family.\n\nUse the right arrow key to speed the game \nup and the left arrow key to slow it down.";
+				this.instruction.text = "Time moves faster for someone the further \nthey are from a strong gravitational \nfield. This means that workers on planets \nfurther from the black hole age and work \nfaster than on planets closer to the \nblack hole. It also means that the workers \nwill age at different speeds than their \nfamily back on their home planet. Open \nAbigail's profile and watch what happens \nwhen she gets 5 or more years ahead \nof her family.\n\nClick the arrows in the top right to change \nthe speed of the game";
 				break;
 			case 4:
 				this.popup.x = 560;
@@ -311,11 +334,16 @@ Play.prototype = {
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
 
-		this.timeControlDisplay = game.add.text(0, 0, '1x speed', { fontSize: '15px', fill: '#fff'});
-		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-		this.leftKey.onDown.add(this.speedDown, this);
-		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-		this.rightKey.onDown.add(this.speedUp, this);
+		this.timeControlDisplay = game.add.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+
+		this.arrows = [];
+
+		//Add arrows for time speed UI
+		//SpeedUp(game, key, frame, arrows, value, index)
+		for(i = 0; i < 5; i++){
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+		}
+		this.arrows[0].recent = 1;
 
 		this.numPlanets = 0;
 
@@ -334,6 +362,24 @@ Play.prototype = {
 
 	update: function() {
 		// run game loop
+
+		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
+		for(var a in this.arrows){
+			if(this.arrows[a].recent === 1){
+				for(var r in this.arrows){
+					if(this.arrows[r].index <= this.arrows[a].index){
+						this.arrows[r].frame = 0;
+					}
+					else{
+						this.arrows[r].frame = 1;
+					}
+				}
+				game.universalTime = this.arrows[a].value;
+				this.arrows[a].recent = 0;
+				
+			}
+		}
+
 		// if statement going to end screen: check character's dead and planet progress bars
 		var allCharactersDead = true;
 		var allJobsDone = true;

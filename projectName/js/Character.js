@@ -115,7 +115,7 @@ Character.prototype.constructor = Character;
 Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
-	if(game.input.activePointer.leftButton.isDown){
+	if(game.input.activePointer.isDown){
 		if(this.clicked == false){
 			//console.log("hide1");
 			this.hideProfile();

@@ -70,8 +70,12 @@ function MessageButton() {
 		}
 	}, this);
 
-	this.notificationNumber = this.addChild(game.make.text(0, -this.height, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.notificationNumber = this.addChild(game.make.text(-60, -this.height + 15, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
 	this.notificationNumber.anchor.set(0.5);
+	this.bubble = game.add.graphics(0, 0);
+	this.bubble.beginFill(0xff0000);
+	this.bubble.drawCircle(1030, 837, 25);
+	this.bubble.endFill();
 
 	game.add.existing(this);
 }
@@ -83,8 +87,10 @@ MessageButton.prototype.constructor = MessageButton;
 MessageButton.prototype.update = function() {
 	this.notificationNumber.text = MessageQueue.length;
 	if(MessageQueue.length == 0) {
+		this.bubble.alpha = 0;
 		this.notificationNumber.visible = false;
 	} else {
+		this.bubble.alpha = 1;
 		this.notificationNumber.visible = true;
 	}
 }

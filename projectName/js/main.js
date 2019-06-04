@@ -56,9 +56,7 @@ MainMenu.prototype = {
 
 		if(music === undefined) {
 			music = game.add.audio("music");
-			console.log(music);
-		} else if(music.volume > 0) {
-			music.fadeOut(500);
+			music.fadeIn(5000, true);
 		}
 
 		// add title and play, tutorial, credits button
@@ -103,7 +101,9 @@ Tutorial.prototype = {
 	create: function() {
 		game.background = game.add.group();
 
-		music.fadeIn(5000, true);
+		if(music.volume < 1) {
+			music.fadeTo(5000 * (1 - music.volume), 1);
+		}
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -300,7 +300,9 @@ Play.prototype = {
 	create: function() {
 		game.background = game.add.group();
 
-		music.fadeIn(5000, true);
+		if(music.volume < 1) {
+			music.fadeTo(5000 * (1 - music.volume), 1);
+		}
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -470,7 +472,6 @@ GameOver.prototype = {
 		this.numPlanets = numPlanets;
 		this.pLeft = pLeft/100;
 		this.tutor = tutor;
-		music.fadeOut(5000);
 	},
 	preload: function() {
 		// console.log('GameOver: preload');

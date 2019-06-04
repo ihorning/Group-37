@@ -10,39 +10,57 @@ game.background = null;
 
 var dragging = false;
 
+var music;
+
+var preloadedAssets = false;
+
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
-		// console.log('MainMenu: preload');
-		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
-		game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
-		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
-		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
-		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
-		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
-		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
-		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
-		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
-		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
-		game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
-		game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
-		game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
-		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
-		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
-		game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
-		game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
-		game.load.audio("message", "assets/audio/message1.mp3");
-		game.load.audio("buttonClick", "assets/audio/button.mp3");
-		game.load.audio("progressComplete", "assets/audio/progressComplete.mp3");
-		game.load.audio("hover", "assets/audio/hover.mp3");
 
-		// grab keyboard manager
-		var cursors = game.input.keyboard.createCursorKeys();
+		if(!preloadedAssets) {
+			// console.log('MainMenu: preload');
+			game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+			game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
+			game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
+			game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
+			game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
+			game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
+			game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
+			game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
+			game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
+			game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
+			game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
+			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
+			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
+			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
+			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
+			game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
+			game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
+			game.load.audio("message", "assets/audio/message1.mp3");
+			game.load.audio("buttonClick", "assets/audio/button.mp3");
+			game.load.audio("progressComplete", "assets/audio/progressComplete.mp3");
+			game.load.audio("hover", "assets/audio/hover.mp3");
+			game.load.audio("music", "assets/audio/ambient_space_extra_2.mp3");
+
+			// grab keyboard manager
+			var cursors = game.input.keyboard.createCursorKeys();
+
+			preloadedAssets = true;
+		}
 		
 	},
 	create: function() {
 		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
+
+		if(music === undefined) {
+			music = game.add.audio("music");
+			console.log(music);
+		} else if(music.volume > 0) {
+			music.fadeOut(500);
+		}
+
 		// add title and play, tutorial, credits button
 		this.blackHoleBG = this.add.image(game.width/2, game.height/2, 'title', 'titleBHole');
 		this.blackHoleBG.anchor.setTo(0.5);
@@ -84,6 +102,8 @@ Tutorial.prototype = {
 	},
 	create: function() {
 		game.background = game.add.group();
+
+		music.play("", 0, 1, true);
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -280,6 +300,8 @@ Play.prototype = {
 	create: function() {
 		game.background = game.add.group();
 
+		music.play("", 0, 1, true);
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -448,6 +470,7 @@ GameOver.prototype = {
 		this.numPlanets = numPlanets;
 		this.pLeft = pLeft/100;
 		this.tutor = tutor;
+		music.fadeOut(5000);
 	},
 	preload: function() {
 		// console.log('GameOver: preload');

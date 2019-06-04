@@ -77,7 +77,7 @@ function MessageButton() {
 	this.bubble.drawCircle(1030, 837, 25);
 	this.bubble.endFill();
 
-	game.add.existing(this);
+	game.foreground.add(this);
 }
 
 MessageButton.prototype = Object.create(Phaser.Button.prototype);

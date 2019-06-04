@@ -40,7 +40,7 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 
 	this.alpha = 0.8;
 
-	game.add.existing(this);
+	game.foreground.add(this);
 
 }
 

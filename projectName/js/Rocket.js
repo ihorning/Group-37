@@ -34,8 +34,13 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 	this.timer = game.time.create(false);
 	this.timer.start();
 
-	game.add.existing(this);
-
+	game.world.add(this);
+	game.world.moveDown(this);
+	game.world.moveDown(this);
+	game.world.moveDown(this);
+	game.world.moveDown(this);
+	console.log(game.foreground);
+	console.log(this);
 
 	/*
 	// Get the angle of the source

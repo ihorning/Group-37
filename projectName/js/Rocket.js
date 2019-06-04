@@ -39,8 +39,6 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 	game.world.moveDown(this);
 	game.world.moveDown(this);
 	game.world.moveDown(this);
-	console.log(game.foreground);
-	console.log(this);
 
 	/*
 	// Get the angle of the source

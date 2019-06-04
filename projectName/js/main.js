@@ -7,6 +7,7 @@ var game = new Phaser.Game(1100, 900, Phaser.AUTO);
 game.universalTime = 0.3;
 
 game.background = null;
+game.foreground = null;
 
 var dragging = false;
 
@@ -55,8 +56,6 @@ MainMenu.prototype = {
 		this.tutorial.anchor.setTo(0.5);
 		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
-
-		this.testLine = game.add.graphics(0, 0);
 	},
 	update: function() {
 		// main menu logic
@@ -84,6 +83,7 @@ Tutorial.prototype = {
 	},
 	create: function() {
 		game.background = game.add.group();
+		game.foreground = game.add.group();
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -97,8 +97,9 @@ Tutorial.prototype = {
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 4, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole'));
 		this.blackHole.anchor.setTo(0.5);
+		game.background.sendToBack(this.blackHole);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
@@ -118,18 +119,21 @@ Tutorial.prototype = {
 		this.mPic.anchor.setTo(0,1);
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
+		game.foreground.add(this.mPic);
 
 		//Pop-up for instructions
 		//Popup(game, x, y, xSize, ySize, key, frames)
 		this.popup = new Popup(game, -1000, -1000, 0, 0, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 
 		//Instruction text
-		this.instruction = game.add.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
+		this.instruction = game.make.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
+		game.foreground.add(this.instruction);
 
 		//Add Abigail
 		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
 
-		this.timeControlDisplay = game.add.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+		this.timeControlDisplay = game.make.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+		game.foreground.add(this.timeControlDisplay);
 
 		this.arrows = [];
 		
@@ -154,6 +158,7 @@ Tutorial.prototype = {
 		// Add a test message
 		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
+		game.world.bringToTop(game.foreground);
 	},
 	update: function() {
 		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
@@ -279,6 +284,7 @@ Play.prototype = {
 	},
 	create: function() {
 		game.background = game.add.group();
+		game.foreground = game.add.group();
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -294,8 +300,9 @@ Play.prototype = {
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 1.75, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole'));
 		this.blackHole.anchor.setTo(0.5);
+		game.background.sendToBack(this.blackHole);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');
@@ -314,16 +321,19 @@ Play.prototype = {
 		this.sPic.anchor.setTo(0,1);
 		this.sPic.scale.setTo(0.7);
 		this.sPic.alpha = 0;
+		game.foreground.add(this.sPic);
 
 		this.mPic = this.add.sprite(0, game.height, 'chars', 'Abigail');
 		this.mPic.anchor.setTo(0,1);
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
+		game.foreground.add(this.mPic);
 
 		this.fPic = this.add.sprite(0, game.height, 'chars', 'Henry');
 		this.fPic.anchor.setTo(0,1);
 		this.fPic.scale.setTo(0.7);
 		this.fPic.alpha = 0;
+		game.foreground.add(this.fPic);
 
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)
@@ -334,7 +344,8 @@ Play.prototype = {
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
 
-		this.timeControlDisplay = game.add.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+		this.timeControlDisplay = game.make.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
+		game.foreground.add(this.timeControlDisplay);
 
 		this.arrows = [];
 
@@ -358,6 +369,7 @@ Play.prototype = {
 		// Add a test message
 		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
+		game.world.bringToTop(game.foreground);
 	},
 
 	update: function() {
@@ -500,15 +512,19 @@ GameOver.prototype = {
 			this.saved = Math.floor(this.numPlanets * this.POPULATION + this.pLeft * this.POPULATION);
 		}
 
-		this.report = game.add.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
-		this.content = game.add.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: \n\nTOTAL CASUALTIES: ', { font: '24px Courier', fill: '#fff'});
+		this.report = game.make.text(game.width/2 - 250, game.height/6- 40, 'Mission Report: ' + this.outcome, { font: '32px Courier', fill: '#fff'});
+		game.foreground.add(this.report);
+		this.content = game.make.text(game.width/2 - 250, game.height/5, this.numPlanets + ' planet' + this.s + ' stabilized resulting in\n' + this.numPlanets * this.POPULATION + ' lives saved.\n' + this.partial + '\nTOTAL SAVED: \n\nTOTAL CASUALTIES: ', { font: '24px Courier', fill: '#fff'});
+		game.foreground.add(this.content);
 
 		//amount saved
-		this.numbersS = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n' + this.saved, { font: '24px Courier', fill: '#fff'});
+		this.numbersS = game.make.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n' + this.saved, { font: '24px Courier', fill: '#fff'});
 		this.numbersS.anchor.setTo(1, 0);
+		game.foreground.add(this.numbersS);
 		//amount dead
-		this.numbersC = game.add.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
+		this.numbersC = game.make.text(game.width/2 + 250, game.height/5, this.padding + '\n\n\n\n\n' + (this.totalPlanets * this.POPULATION - this.saved), { font: '24px Courier', fill: '#fff'});
 		this.numbersC.anchor.setTo(1, 0);
+		game.foreground.add(this.numbersC);
 
 		this.buttonClick = game.add.audio("buttonClick");
 		this.hover = game.add.audio("hover");

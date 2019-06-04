@@ -87,11 +87,23 @@ World.prototype.update = function() {
 	if(Math.pow(this.x - game.world.centerX, 2) + Math.pow(this.y - game.world.centerY, 2) <= 5184){
 		if(this.death === false){
 			this.death = true;
-			this.death = game.add.tween(this).to({
+			this.shrink = game.add.tween(this.scale).to({
+				x: 0.01,
+				y: 0.01
+			}, 100, Phaser.Easing.Linear.None, true);
+			this.shrinkSpin = game.add.tween(this.spin.scale).to({
+				x: 0.01,
+				y: 0.01
+			}, 100, Phaser.Easing.Linear.None, true);
+			this.shrinkSpinMask = game.add.tween(this.spin.mask.scale).to({
+				x: 0.01,
+				y: 0.01
+			}, 100, Phaser.Easing.Linear.None, true);
+			this.zoom = game.add.tween(this).to({
 				x: game.world.centerX,
 				y: game.world.centerY
 			}, 100, Phaser.Easing.Linear.None, true);
-			this.death.onComplete.add(this.die, this);	
+			this.zoom.onComplete.add(this.die, this);	
 		}
 	}
 	else if(this.death === false){

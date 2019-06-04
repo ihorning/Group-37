@@ -1,5 +1,7 @@
 var MESSAGE_ATAS = "UIAtlas";
 var MESSAGE_FRAMES = ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"];
+
+var currentMessage;
 	
 var MessageQueue = [];
 
@@ -30,7 +32,7 @@ var Messager = {
 	PushMessage: function(game, receiver, list, audio, messageQueue) {
 		audio.play('', 0, 1, false);
 		var chosen = Math.round(Math.random() * (list.length - 1));
-		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 700, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
+		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
 
 		if(list != Messager.FAMILY_HAPPY && list != Messager.FAMILY_UNHAPPY && list != Messager.FAMILY_OLDER && list != Messager.FAMILY_YOUNGER) {
 			list.splice(chosen, 1);
@@ -49,10 +51,15 @@ var Messager = {
 }
 
 var ShowMessage = function(game) {
+	if(currentMessage) {
+		currentMessage.Close();
+	}
+
 	var message = MessageQueue.shift();
 	message.revive();
 	message.Open(0.25);
 	console.log(message.alive);
+	currentMessage = message;
 }
 
 
@@ -70,14 +77,15 @@ function MessageButton() {
 		}
 	}, this);
 
-	this.notificationNumber = this.addChild(game.make.text(-60, -this.height + 15, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
-	this.notificationNumber.anchor.set(0.5);
-	this.bubble = game.add.graphics(0, 0);
+	this.bubble = this.addChild(game.make.graphics(0, 0));
 	this.bubble.beginFill(0xff0000);
-	this.bubble.drawCircle(1030, 837, 25);
+	this.bubble.drawCircle(-60, -53, 25);
 	this.bubble.endFill();
 
-	game.add.existing(this);
+	this.notificationNumber = this.addChild(game.make.text(-60, -this.height + 15, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
+	this.notificationNumber.anchor.set(0.5);
+
+	game.foreground.add(this);
 }
 
 MessageButton.prototype = Object.create(Phaser.Button.prototype);

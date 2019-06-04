@@ -83,14 +83,14 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.oldalph = 0;
 
 	// Add an AgeBar for this character
-	this.ageBar = game.add.existing(new AgeBar(game, 153, game.height - 95, this));
+	this.ageBar = game.foreground.add(new AgeBar(game, 153, game.height - 95, this));
 	this.ageBar.scale.set(1.6);
 	//text(x, y, text, {style});
 	this.info = {
-		name:      game.add.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"}),
-		age:       game.add.text(150, game.height - 123, "", {font: "25px Courier", fill: "#fff"}),
-		diff:      game.add.text(150, game.height - 63, "", {font: "17px Courier", fill: "#fff"}),
-		happiness: game.add.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"}),
+		name:      game.foreground.add(game.make.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"})),
+		age:       game.foreground.add(game.make.text(150, game.height - 123, "", {font: "25px Courier", fill: "#fff"})),
+		diff:      game.foreground.add(game.make.text(150, game.height - 63, "", {font: "17px Courier", fill: "#fff"})),
+		happiness: game.foreground.add(game.make.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"})),
 		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
 	}
 	this.aDifference = 0;
@@ -503,6 +503,10 @@ Character.prototype.BeginDrag = function() {
 
 	// Put this in the game world
 	game.add.existing(this);
+	game.world.moveDown(this);
+	game.world.moveDown(this);
+	//game.world.moveDown(this);
+	//game.world.moveDown(this);
 }
 
 Character.prototype.EndDrag = function() {

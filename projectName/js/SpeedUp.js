@@ -9,7 +9,8 @@ function SpeedUp(game, key, frame, text, value, index){
 	this.input.useHandCursor = true;
 	this.events.onInputUp.add(this.setSpeed, this);
 
-	game.add.existing(this);
+	//game.add.existing(this);
+	game.foreground.add(this);
 }
 
 SpeedUp.prototype = Object.create(Phaser.Sprite.prototype);

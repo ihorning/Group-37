@@ -503,6 +503,10 @@ Character.prototype.BeginDrag = function() {
 
 	// Put this in the game world
 	game.add.existing(this);
+	game.world.moveDown(this);
+	game.world.moveDown(this);
+	//game.world.moveDown(this);
+	//game.world.moveDown(this);
 }
 
 Character.prototype.EndDrag = function() {

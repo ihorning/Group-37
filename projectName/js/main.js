@@ -97,8 +97,9 @@ Tutorial.prototype = {
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 4, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = this.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
+		this.blackHole = game.background.add.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole');
 		this.blackHole.anchor.setTo(0.5);
+		game.background.sendToBack(this.blackHole);
 
 		//add audio to be sent to character prefab
 		this.clickCharacter = game.add.audio('clickCharacter');

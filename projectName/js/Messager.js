@@ -1,5 +1,7 @@
 var MESSAGE_ATAS = "UIAtlas";
 var MESSAGE_FRAMES = ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"];
+
+var currentMessage;
 	
 var MessageQueue = [];
 
@@ -49,10 +51,15 @@ var Messager = {
 }
 
 var ShowMessage = function(game) {
+	if(currentMessage) {
+		currentMessage.Close();
+	}
+
 	var message = MessageQueue.shift();
 	message.revive();
 	message.Open(0.25);
 	console.log(message.alive);
+	currentMessage = message;
 }
 
 

@@ -115,7 +115,10 @@ World.prototype.update = function() {
 		if(!this.job.bar.complete) {
 			this.job.bar.sleep = false; // Turn on job progress
 		}
-		this.character.update(); // Run character's update function
+		// Update the character, but not if it is being updated in the world (coincides with drawLine)
+		if(!this.character.drawLine) {
+			this.character.update(); // Run character's update function
+		}
 	}
 
 	// Run job's update function

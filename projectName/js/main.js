@@ -103,7 +103,7 @@ Tutorial.prototype = {
 	create: function() {
 		game.background = game.add.group();
 
-		music.play("", 0, 1, true);
+		music.fadeIn(5000, true);
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -300,7 +300,7 @@ Play.prototype = {
 	create: function() {
 		game.background = game.add.group();
 
-		music.play("", 0, 1, true);
+		music.fadeIn(5000, true);
 
 		game.universalTime = 0.3;
 		//Escape button

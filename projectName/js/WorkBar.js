@@ -13,7 +13,7 @@ var WORK_BAR_TINT = "0x909090"; // Tint when sleeping
 var WORK_BAR_FONT = {font: "20px Courier", font: "20px Lucida Console", fontWeight: "bold", fill: "#fff"};
 
 // Constructor
-function WorkBar(game, x, y, timeMultiplier) {
+function WorkBar(game, x, y, planet) {
 
 	// Call CircleBar constructor
 	Phaser.Sprite.call(this, game, x, y, null, null, 0);
@@ -26,13 +26,18 @@ function WorkBar(game, x, y, timeMultiplier) {
 	this.bar = this.addChild(new CircleBar(game, 0, 0, WORK_BAR_DIVISIONS, WORK_BAR_KEY, WORK_BAR_FRAME));
 
 	// Store timeMultiplier
-	this.timeMultiplier = timeMultiplier;
+	this.planet = planet;
+	this.timeMultiplier = this.planet.timeMultiplier;
 	this.efficiency = 1;
 
 	// Add a text object to display %
 	this.displayText = this.addChild(game.make.text(0, 85, "0% Complete", WORK_BAR_FONT));
 	this.displayText.anchor.x = 0.5;
 	this.displayText.anchor.y = 0.25;
+
+	this.progressIcon = this.planet.addChild(game.make.text(0, 0, "...", {font: "30px Courier", font: "20px Lucida Console", fontWeight: "bold", fill: "#fff"}));
+	this.progressIcon.anchor.set(0.5);
+	this.progressIconStart = 0;
 
 	this.completeAudio = game.add.audio("progressComplete");
 
@@ -50,6 +55,23 @@ WorkBar.prototype.update = function() {
 	var delta = game.universalTime * game.time.elapsed * this.timeMultiplier * this.efficiency / 1000;
 
 	if(!this.bar.sleep) { // If not sleeping...
+
+		if(this.progressIconStart === 0) {
+			this.progressIconStart = this.planet.currentTime;
+		}
+
+		var progressPhase = Math.round(5 * (this.planet.currentTime - this.progressIconStart));
+
+		if(progressPhase % 4 === 0) {
+			this.progressIcon.text = "   ";
+		} else if(progressPhase % 4 === 1) {
+			this.progressIcon.text = ".  ";
+		} else if(progressPhase % 4 === 2) {
+			this.progressIcon.text = ".. ";
+		} else {
+			this.progressIcon.text = "...";
+		}
+
 		// Change percent and make sure tint is normal
 		this.bar.percent += 2.2 * delta;
 		this.bar.setMask(this.bar.percent);
@@ -68,6 +90,10 @@ WorkBar.prototype.update = function() {
 		this.bar.tint = WORK_BAR_TINT;
 	} else {
 		this.bar.tint = 0xeeffee;
+	}
+
+	if(this.bar.sleep) {
+		this.progressIcon.text = "";
 	}
 
 

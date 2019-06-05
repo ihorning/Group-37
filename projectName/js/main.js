@@ -16,6 +16,7 @@ MainMenu.prototype = {
 	preload: function() {
 		// console.log('MainMenu: preload');
 		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+		game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
 		game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
 		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
 		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
@@ -45,8 +46,10 @@ MainMenu.prototype = {
 		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
 		// add title and play, tutorial, credits button
-		this.blackHoleBG = this.add.image(game.width/2, game.height/2, 'title', 'titleBHole');
+		this.blackHoleBG = this.add.sprite(game.width/2, game.height/2, 'hole', 'blackHole01');
 		this.blackHoleBG.anchor.setTo(0.5);
+		this.blackHoleBG.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
+		this.blackHoleBG.animations.play('swirl');
 		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -97,8 +100,11 @@ Tutorial.prototype = {
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 4, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole'));
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'hole', 'blackHole01'));
 		this.blackHole.anchor.setTo(0.5);
+		this.blackHole.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
+		this.blackHole.animations.play('swirl');
+		this.blackHole.scale.setTo(0.09);
 		game.background.sendToBack(this.blackHole);
 
 		//add audio to be sent to character prefab
@@ -173,6 +179,7 @@ Tutorial.prototype = {
 					}
 				}
 				game.universalTime = this.arrows[a].value;
+				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3;
 				this.arrows[a].recent = 0;
 				
 			}
@@ -300,8 +307,11 @@ Play.prototype = {
 		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 1.75, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'spaceatlas', 'BlackHole'));
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'hole', 'blackHole01'));
 		this.blackHole.anchor.setTo(0.5);
+		this.blackHole.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
+		this.blackHole.animations.play('swirl');
+		this.blackHole.scale.setTo(0.09);
 		game.background.sendToBack(this.blackHole);
 
 		//add audio to be sent to character prefab
@@ -387,6 +397,7 @@ Play.prototype = {
 					}
 				}
 				game.universalTime = this.arrows[a].value;
+				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3;
 				this.arrows[a].recent = 0;
 				
 			}

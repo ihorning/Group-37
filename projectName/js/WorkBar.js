@@ -20,8 +20,8 @@ function WorkBar(game, x, y, planet) {
 	this.anchor.set(0.5);
 	this.scale.set(0.8);
 
-	this.BG = this.addChild(new Phaser.Sprite(game, 0, 0, WORK_BAR_KEY, WORK_BAR_BG_FRAME, 0));
-	this.BG.anchor.set(0.5);
+	//this.BG = this.addChild(new Phaser.Sprite(game, 0, 0, WORK_BAR_KEY, WORK_BAR_BG_FRAME, 0));
+	this.BG = this.addChild(new CircleBar(game, 0, 0, WORK_BAR_DIVISIONS, WORK_BAR_KEY, WORK_BAR_BG_FRAME));
 
 	this.bar = this.addChild(new CircleBar(game, 0, 0, WORK_BAR_DIVISIONS, WORK_BAR_KEY, WORK_BAR_FRAME));
 
@@ -98,8 +98,14 @@ WorkBar.prototype.update = function() {
 
 
 	if(!dragging && Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * 0.5) {
-		this.BG.visible = true;
+		//this.BG.visible = true;
+		this.BG.setMask(100);
 		this.displayText.scale.set(1.15);
+	} else if(!this.bar.sleep) {
+		//this.BG.visible = false;
+		this.BG.setMask(6);
+		this.BG.mask.angle = Math.round(this.planet.currentTime * 720) + 0.5;
+		this.displayText.scale.set(1);
 	} else {
 		this.BG.visible = false;
 		this.displayText.scale.set(1);

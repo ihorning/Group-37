@@ -177,8 +177,6 @@ Tutorial.prototype = {
 
 		// Clear the MessageQueue
 		MessageQueue = [];
-		// Add a test message
-		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
 	},
 	update: function() {

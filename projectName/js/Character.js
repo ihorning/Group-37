@@ -76,7 +76,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.picture.bringToTop();
 
 	//Add oldness filter but initialize it as invisible
-	this.old = game.add.sprite(0, game.height, 'chars', this.name+"Old");
+	this.old = game.foreground.add(game.make.sprite(0, game.height, 'chars', this.name+"Old"));
 	this.old.anchor.setTo(0, 1);
 	this.old.scale.setTo(0.7);
 	this.old.bringToTop();

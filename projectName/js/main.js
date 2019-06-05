@@ -39,8 +39,14 @@ MainMenu.prototype = {
 			game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
 			game.load.audio("message", "assets/audio/message1.mp3");
 			game.load.audio("buttonClick", "assets/audio/button.mp3");
-			game.load.audio("progressComplete", "assets/audio/progressComplete.mp3");
-			game.load.audio("hover", "assets/audio/hover.mp3");
+			game.load.audio("progressComplete", "assets/audio/betterComplete.mp3");
+			game.load.audio("hover", "assets/audio/betterHover.mp3");
+			game.load.audio("blackHole", "assets/audio/hole.mp3");
+			game.load.audio("speed1", "assets/audio/speed1.mp3");
+			game.load.audio("speed2", "assets/audio/speed2.mp3");
+			game.load.audio("speed3", "assets/audio/speed3.mp3");
+			game.load.audio("speed4", "assets/audio/speed4.mp3");
+			game.load.audio("speed5", "assets/audio/speed5.mp3");
 			game.load.audio("music", "assets/audio/ambient_space_extra_2.mp3");
 
 			// grab keyboard manager
@@ -156,7 +162,7 @@ Tutorial.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 
@@ -365,7 +371,7 @@ Play.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 

@@ -85,7 +85,10 @@ MainMenu.prototype = {
 		this.credits.anchor.setTo(0.5);
 	},
 	update: function() {
-		// main menu logic
+		if(game.sound.context.state === "suspended") {
+			music.play("", 0, 0, true);
+			music.fadeTo(5000, 0.6);
+		}
 	}
 }
 var start = function(){

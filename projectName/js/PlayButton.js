@@ -39,7 +39,9 @@ PlayButton.prototype.constructor = PlayButton;
 function over() {
 	//this.tint = 0xDDDDFF;
 	this.text.fill = this.color1;
-	this.hover.play("", 0, 1, false);
+	if(game.sound.context.state !== "suspended") {
+		this.hover.play("", 0, 1, false);
+	}
 }
 
 // Change tint back when mouse leaves

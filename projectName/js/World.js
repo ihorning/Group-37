@@ -49,6 +49,7 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	this.pendingArrival = null;
 
 	this.death = false;
+	this.deathSound = game.add.audio("blackHole");
 
 	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
@@ -139,6 +140,7 @@ World.prototype.update = function() {
 
 World.prototype.die = function(){
 	console.log("dead");
+	this.deathSound.play("", 0, 1, false);
 	this.x = 10000000;
 	this.y = 10000000;
 	if(this.character != null){

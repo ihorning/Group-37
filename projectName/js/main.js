@@ -11,40 +11,64 @@ game.foreground = null;
 
 var dragging = false;
 
+var music;
+
+var preloadedAssets = false;
+
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
-		// console.log('MainMenu: preload');
-		game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
-		game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
-		game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
-		game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
-		game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
-		game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
-		game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
-		game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
-		game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
-		game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
-		game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
-		game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
-		game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
-		game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
-		game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
-		game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
-		game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
-		game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
-		game.load.audio("message", "assets/audio/message1.mp3");
-		game.load.audio("buttonClick", "assets/audio/button.mp3");
-		game.load.audio("progressComplete", "assets/audio/progressComplete.mp3");
-		game.load.audio("hover", "assets/audio/hover.mp3");
 
-		// grab keyboard manager
-		var cursors = game.input.keyboard.createCursorKeys();
+		if(!preloadedAssets) {
+			// console.log('MainMenu: preload');
+			game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
+			game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
+			game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
+			game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
+			game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
+			game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
+			game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
+			game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
+			game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
+			game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
+			game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
+			game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
+			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
+			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
+			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
+			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
+			game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
+			game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
+			game.load.audio("message", "assets/audio/message1.mp3");
+			game.load.audio("buttonClick", "assets/audio/button.mp3");
+			game.load.audio("progressComplete", "assets/audio/betterComplete.mp3");
+			game.load.audio("hover", "assets/audio/betterHover.mp3");
+			game.load.audio("blackHole", "assets/audio/hole.mp3");
+			game.load.audio("speed1", "assets/audio/speed1.mp3");
+			game.load.audio("speed2", "assets/audio/speed2.mp3");
+			game.load.audio("speed3", "assets/audio/speed3.mp3");
+			game.load.audio("speed4", "assets/audio/speed4.mp3");
+			game.load.audio("speed5", "assets/audio/speed5.mp3");
+			game.load.audio("music", "assets/audio/ambient_space_extra_2.mp3");
+
+			// grab keyboard manager
+			var cursors = game.input.keyboard.createCursorKeys();
+
+			preloadedAssets = true;
+		}
 		
 	},
 	create: function() {
 		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
+
+		if(music === undefined) {
+			music = game.add.audio("music");
+			//music.fadeIn(5000, true);
+			music.play("", 0, 0, true);
+			music.fadeTo(5000, 0.6);
+		}
+
 		// add title and play, tutorial, credits button
 		this.blackHoleBG = this.add.sprite(game.width/2, game.height/2, 'hole', 'blackHole01');
 		this.blackHoleBG.anchor.setTo(0.5);
@@ -87,6 +111,10 @@ Tutorial.prototype = {
 	create: function() {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
+
+		if(music.volume < 1) {
+			music.fadeTo(5000 * (1 - music.volume), 0.6);
+		}
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -146,7 +174,7 @@ Tutorial.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 
@@ -161,8 +189,6 @@ Tutorial.prototype = {
 
 		// Clear the MessageQueue
 		MessageQueue = [];
-		// Add a test message
-		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
 		game.world.bringToTop(game.foreground);
 	},
@@ -293,6 +319,10 @@ Play.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
+		if(music.volume < 1) {
+			music.fadeTo(5000 * (1 - music.volume), 0.6);
+		}
+
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -362,7 +392,7 @@ Play.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i));
+			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 
@@ -376,8 +406,6 @@ Play.prototype = {
 
 		// Clear the MessageQueue
 		MessageQueue = [];
-		// Add a test message
-		Messager.PushMessage(game, "Harry", Messager.FAMILY_OLDER, this.message, true);
 
 		game.world.bringToTop(game.foreground);
 	},

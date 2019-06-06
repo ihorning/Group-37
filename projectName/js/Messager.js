@@ -31,7 +31,7 @@ var Messager = {
 
 
 	PushMessage: function(game, receiver, list, audio, messageQueue) {
-		audio.play('', 0, 1, false);
+		audio.play('', 0, 0.65, false);
 		var chosen = Math.round(Math.random() * (list.length - 1));
 		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
 

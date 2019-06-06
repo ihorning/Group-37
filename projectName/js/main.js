@@ -35,10 +35,11 @@ MainMenu.prototype = {
 			game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
 			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
 			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
+
 			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
 			game.load.audio("characterDiesGood", "assets/audio/characterDies.mp3");
-			game.load.audio("characterDiesBad", "assets/audio/blackHole.mp3");
+			game.load.audio("characterDiesBad", "assets/audio/blackhole.mp3");
 			game.load.audio("message", "assets/audio/message1.mp3");
 			game.load.audio("buttonClick", "assets/audio/button.mp3");
 			game.load.audio("progressComplete", "assets/audio/betterComplete.mp3");
@@ -85,7 +86,7 @@ MainMenu.prototype = {
 		this.credits.anchor.setTo(0.5);
 	},
 	update: function() {
-		if(game.sound.context.state === "suspended") {
+		if(game.sound.context.state === "suspended" || music.isPlaying === false) {
 			music.play("", 0, 0, true);
 			music.fadeTo(5000, 0.6);
 		}

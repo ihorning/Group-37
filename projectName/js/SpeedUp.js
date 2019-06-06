@@ -11,7 +11,9 @@ function SpeedUp(game, key, frame, text, value, index, sound){
 
 	//game.add.existing(this);
 	game.foreground.add(this);
-	this.sound = game.add.audio(sound);
+	this.sound1 = game.add.audio(sound);
+	this.sound2 = game.add.audio(sound);
+	this.sound3 = game.add.audio(sound);
 
 }
 
@@ -22,7 +24,23 @@ SpeedUp.prototype.constructor = SpeedUp;
 SpeedUp.prototype.setSpeed = function() {
 	this.frame = 'filled';
 	this.recent = 1;
-	this.sound.play("", 0, 1, false);
+
+	if(game.sound.context.state !== "suspended") {
+		if(this.sound1.isPlaying) {
+			if(this.sound2.isPlaying) {
+				var temp = this.sound2;
+				this.sound2 = this.sound3;
+				this.sound3 = temp;
+				this.sound3.fadeOut(100);
+			}
+			var temp = this.sound1;
+			this.sound1 = this.sound2;
+			this.sound2 = temp;
+			this.sound2.fadeOut(100);
+		}
+		this.sound1.play("", 0, 1, false);
+	}
+
 }
 // SpeedUp.prototype.getRecent = function() {
 // 	return this.recent;

@@ -16,11 +16,12 @@ var Messager = {
 
 	FAMILY_OLDER: [
 		"We haven’t heard from you in a long time! Your little brother got married. Sad you missed it :(",
-		"Grandpa died. He said he was happy you were doing such important work."
+		"Grandpa died. He said he was happy you were doing such important work.",
+		"It's weird to think I'm older than you now. I thought I'd always be the youngest sibling."
 	],
 
 	FAMILY_YOUNGER: [
-		"Harry is shower now, would you join?"
+		"Hey, who said you could get older than me? You're supposed to be the little sibling, not me."
 	],
 
 

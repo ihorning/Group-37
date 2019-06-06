@@ -27,7 +27,10 @@ function PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, but
 	this.onInputUp.add(up, this);
 
 	this.buttonClick = game.add.audio("buttonClick");
-	this.hover = game.add.audio("hover");
+
+	this.hover1 = game.add.audio("hover");
+	this.hover2 = game.add.audio("hover");
+	this.hover3 = game.add.audio("hover");
 }
 
 // Set the prototype of PlayButton to be a copy of Phaser.Button.prototype
@@ -40,7 +43,19 @@ function over() {
 	//this.tint = 0xDDDDFF;
 	this.text.fill = this.color1;
 	if(game.sound.context.state !== "suspended") {
-		this.hover.play("", 0, 1, false);
+		if(this.hover1.isPlaying) {
+			if(this.hover2.isPlaying) {
+				var temp = this.hover2;
+				this.hover2 = this.hover3;
+				this.hover3 = temp;
+				this.hover3.fadeOut(250);
+			}
+			var temp = this.hover1;
+			this.hover1 = this.hover2;
+			this.hover2 = temp;
+			this.hover2.fadeOut(250);
+		}
+		this.hover1.play("", 0, 1, false);
 	}
 }
 

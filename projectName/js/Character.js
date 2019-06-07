@@ -68,8 +68,6 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	//console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
-	game.world.moveDown(this.line);
-	//game.world.moveDown(this);
 	this.drawLine = false;
 
 	//this.popup = popup;
@@ -384,7 +382,7 @@ Character.prototype.update = function() {
 					if(oddEven) {
 						circleRad = 5;
 					} else {
-						circleRad = 3;
+						circleRad = 4;
 					}
 					oddEven = !oddEven;
 					this.line.drawCircle(newX, newY, circleRad);
@@ -417,9 +415,9 @@ Character.prototype.Die = function() {
 	}
 
 	if(this.happiness > 60) {
-		this.audio[2].play('', 0, 1, false);
+		this.audio[2].play('', 0, 0.225, false);
 	} else {
-		this.audio[3].play('', 0, 1, false);
+		this.audio[3].play('', 0, 0.085, false);
 	}
 
 	this.waitingForDrag = false;
@@ -525,9 +523,6 @@ Character.prototype.BeginDrag = function() {
 	// Put this in the game world
 	game.add.existing(this);
 	game.world.moveDown(this);
-	game.world.moveDown(this);
-	//game.world.moveDown(this);
-	//game.world.moveDown(this);
 }
 
 Character.prototype.EndDrag = function() {

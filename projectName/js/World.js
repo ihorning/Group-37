@@ -140,7 +140,7 @@ World.prototype.update = function() {
 
 World.prototype.die = function(){
 	console.log("dead");
-	this.deathSound.play("", 0, 1, false);
+	this.deathSound.play("", 0, 0.9, false);
 	this.x = 10000000;
 	this.y = 10000000;
 	if(this.character != null){

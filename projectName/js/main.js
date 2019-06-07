@@ -50,6 +50,8 @@ MainMenu.prototype = {
 			game.load.audio("speed3", "assets/audio/speed3.mp3");
 			game.load.audio("speed4", "assets/audio/speed4.mp3");
 			game.load.audio("speed5", "assets/audio/speed5.mp3");
+			game.load.audio("open", "assets/audio/open.mp3");
+			game.load.audio("close", "assets/audio/close.mp3");
 			game.load.audio("music", "assets/audio/ambient_space_extra_2.mp3");
 
 			// grab keyboard manager

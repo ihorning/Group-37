@@ -77,7 +77,7 @@ function Rocket(game, sourcePlanet, destinationPlanet, character, speed, key, fr
 
 	this.curve = new RocketCurve(x0, x1, y0, y1, SHAPE, LOG_BASE);
 	this.clockwise = this.curve.reverse;
-	console.log(this.clockwise);
+	//console.log(this.clockwise);
 	this.orbitAngle = this.curve.x0;
 	
 

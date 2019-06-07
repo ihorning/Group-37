@@ -453,6 +453,29 @@ Character.prototype.Die = function() {
 	this.kill();
 }
 
+Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest planet (when drag ends)
+
+	this.planet = planet;
+	this.planet.addChild(this);
+	this.planet.character = this;
+	this.planet.pendingArrival = false;
+	this.x = 74;
+	this.y = 0;
+	if(this.step == 2 && this.planet.name == "purple"){
+		this.step = 3;
+	}
+	else if(this.step == 4 && this.planet.name == "blue"){
+		this.step = 5;
+	}
+	else if(this.step == 5 && this.planet.name == "green"){
+		this.step = 6;
+	}
+	else if(this.step == 6){
+		this.step = 7;
+	}
+
+}
+
 Character.prototype.WaitForDrag = function() {
 	//this.showProfile();
 	this.clicked = true;

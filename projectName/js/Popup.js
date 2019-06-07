@@ -34,7 +34,7 @@ function Popup(game, x, y, xSize, ySize, key, frames) {
 	this.goalYSize = this.ySize;
 
 	this.opening = false;
-	this.openTime = 0.3;
+	this.openTime = 0.25;
 
 	this.textElements = [];
 

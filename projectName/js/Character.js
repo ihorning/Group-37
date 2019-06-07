@@ -288,8 +288,11 @@ Character.prototype.update = function() {
 			this.timeSinceLastMessage = 0;
 		}
 
+		if(this.timeSinceLastMessage > 40 && difference < 5) {
+			this.timeSinceLastMessage = 40;
+		}
 
-		if(this.timeSinceLastMessage > 20 && difference >= 5) {
+		if(this.timeSinceLastMessage > 45 && difference >= 5) {
 
 			this.timeSinceLastMessage = 0;
 
@@ -299,7 +302,7 @@ Character.prototype.update = function() {
 				Messager.PushMessage(game, this.name, this.familyOlderMessages, this.audio[4], true);
 			}
 
-		} else if(this.timeSinceLastMessage > 30 && (this.happiness < 60 || this.happiness == 100)) {
+		} else if(this.timeSinceLastMessage > 45 && (this.happiness < 60 || this.happiness == 100)) {
 
 			this.timeSinceLastMessage = 0;
 

@@ -88,6 +88,8 @@ Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
 
+	this.character.UpdateAheadBehind();
+
 	if(!this.character.alive) {
 		this.destroy();
 		this.destination.pendingArrival = false;

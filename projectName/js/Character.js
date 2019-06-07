@@ -288,24 +288,6 @@ Character.prototype.update = function() {
 
 		this.efficiency = this.happiness / 100;
 
-		var aheadBehind = "ahead of";
-		if((100 - this.life) - this.home.currentTime < 0) {
-			aheadBehind = "behind";
-		}
-		var displayedDiff = (Math.floor(10 * difference) / 10);
-		if(displayedDiff == Math.floor(displayedDiff)) {
-			displayedDiff = displayedDiff+".0";
-		} else {
-			displayedDiff = displayedDiff+"";
-		}
-		if(Math.floor(difference) != 1){
-			this.info.diff.text = "" + displayedDiff + " years " + aheadBehind + " family";
-		}
-		else{
-			this.info.diff.text = "" + displayedDiff + " year " + aheadBehind + " family";
-		}
-		//this.debugText.text = "";
-
 
 		if(this.planet === this.home) {
 			this.timeSinceLastMessage = 0;
@@ -350,6 +332,8 @@ Character.prototype.update = function() {
 
 		//this.hideProfile();
 	}
+
+	this.UpdateAheadBehind();
 
 	// if(this.aDifference < this.zDifference && Math.floor(this.aDifference) != 0){
 	// 	this.info.diff.text += " ∧";
@@ -429,6 +413,27 @@ Character.prototype.update = function() {
 
 	if(this.waitingForDrag) {
 		this.WaitForDrag();
+	}
+}
+
+Character.prototype.UpdateAheadBehind = function() {
+	var difference = Math.abs((100 - this.life) - this.home.currentTime);
+
+	var aheadBehind = "ahead of";
+	if((100 - this.life) - this.home.currentTime < 0) {
+		aheadBehind = "behind";
+	}
+	var displayedDiff = (Math.floor(10 * difference) / 10);
+	if(displayedDiff == Math.floor(displayedDiff)) {
+		displayedDiff = displayedDiff+".0";
+	} else {
+		displayedDiff = displayedDiff+"";
+	}
+	if(Math.floor(difference * 10) != 10){
+		this.info.diff.text = "" + displayedDiff + " years " + aheadBehind + " family";
+	}
+	else{
+		this.info.diff.text = "" + displayedDiff + " year " + aheadBehind + " family";
 	}
 }
 

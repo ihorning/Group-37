@@ -70,23 +70,7 @@ MainMenu.prototype = {
 		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
 
-		if(music === undefined) {
-			music = game.add.audio("music");
-			music.play("", 0, 0, true);
-		} else if(!music.isPlaying) {
-			music.play("", 0, 0, true);
-		} else {
-			music.fadeTo(1000, 0);
-		}
-		if(menusounds === undefined) {
-			menusounds = game.add.audio("menusounds");
-			menusounds.play("", 0, 0, true);
-			menusounds.fadeTo(5000, 0.5);
-		} else if(!menusounds.isPlaying) {
-			menusounds.play("", 0, 0, true);
-		} else {
-			menusounds.fadeTo(1000, 0.5);
-		}
+		this.musicSetUp = false;
 
 		// add title and play, tutorial, credits button
 		this.blackHoleBG = this.add.sprite(game.width/2, game.height/2, 'hole', 'blackHole01');
@@ -104,10 +88,27 @@ MainMenu.prototype = {
 		this.credits.anchor.setTo(0.5);
 	},
 	update: function() {
-		if(game.sound.context.state === "suspended") {
-			menusounds.play("", 0, 0, true);
-			menusounds.fadeTo(5000, 0.5);
-		} else if(menusounds.volume === 0) {
+		if(!this.musicSetUp && !(game.sound.context.state === "suspended")) {
+			if(music === undefined) {
+				music = game.add.audio("music");
+				music.play("", 0, 0, true);
+			} else if(!music.isPlaying) {
+				music.play("", 0, 0, true);
+			} else {
+				music.fadeTo(1000, 0);
+			}
+			if(menusounds === undefined) {
+				menusounds = game.add.audio("menusounds");
+				menusounds.play("", 0, 0, true);
+				menusounds.fadeTo(5000, 0.5);
+			} else if(!menusounds.isPlaying) {
+				menusounds.play("", 0, 0, true);
+			} else {
+				menusounds.fadeTo(1000, 0.5);
+			}
+			this.musicSetUp = true;
+		}
+		if(!(game.sound.context.state === "suspended") && menusounds.volume === 0) {
 			menusounds.fadeTo(3000, 0.5);
 		}
 	}

@@ -144,7 +144,7 @@ Tutorial.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars2", 0);
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars3", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
 		this.stars.alpha = 0.7;
@@ -367,7 +367,7 @@ Play.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars2", 0);
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars4", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
 		this.stars.alpha = 0.7;
@@ -472,6 +472,10 @@ Play.prototype = {
 	update: function() {
 		// run game loop
 
+		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
+		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
+		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
+		
 		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
 		for(var a in this.arrows){
 			if(this.arrows[a].recent === 1){

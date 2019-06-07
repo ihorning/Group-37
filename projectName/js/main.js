@@ -21,6 +21,8 @@ MainMenu.prototype = {
 
 		if(!preloadedAssets) {
 			// console.log('MainMenu: preload');
+			game.load.image('credits', 'assets/img/CreditsAlph.png');
+
 			game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
 			game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
 			game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
@@ -100,12 +102,19 @@ var start = function(){
 }
 var tutorial = function(){
 	game.state.start('Tutorial', true, false, 0);
-	//console.log('Tutorial');
 }
 
 var credits = function(){
-	//game.state.start('Credits');
-	console.log('Credits');
+	game.state.start('Credits');
+}
+
+var Credits = function(game) {};
+Credits.prototype = {
+	create: function() {
+		this.credits = this.add.image(0, 0, 'credits', 0);
+		this.esc = new PlayButton(game, game.width-20, 20, 'exit', toMenu, this, 'exitOff', 'exitOn', "");
+		this.esc.anchor.setTo(1, 0);
+	}
 }
 
 var Tutorial = function(game) {};
@@ -134,7 +143,7 @@ Tutorial.prototype = {
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exitTutorial, this, 'exitOff', 'exitOn', "");
+		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exit, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
 		// Add in the planets
@@ -345,7 +354,7 @@ Play.prototype = {
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.esc = new PlayButton(game, game.width-10, 10, 'exit', exit, this, 'exitOff', 'exitOn', "");
+		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exit, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
 		// Add in the planets
@@ -642,6 +651,7 @@ var toMenu = function(){
 
 //add states to StateManager and start MainMenu
 game.state.add('MainMenu', MainMenu);
+game.state.add('Credits', Credits);
 game.state.add('Tutorial', Tutorial);
 game.state.add('Play', Play);
 game.state.add('GameOver', GameOver);

@@ -292,11 +292,17 @@ Character.prototype.update = function() {
 		if((100 - this.life) - this.home.currentTime < 0) {
 			aheadBehind = "behind";
 		}
+		var displayedDiff = (Math.floor(10 * difference) / 10);
+		if(displayedDiff == Math.floor(displayedDiff)) {
+			displayedDiff = displayedDiff+".0";
+		} else {
+			displayedDiff = displayedDiff+"";
+		}
 		if(Math.floor(difference) != 1){
-			this.info.diff.text = "" + Math.floor(difference) + " years " + aheadBehind + " family";
+			this.info.diff.text = "" + displayedDiff + " years " + aheadBehind + " family";
 		}
 		else{
-			this.info.diff.text = "" + Math.floor(difference) + " year " + aheadBehind + " family";
+			this.info.diff.text = "" + displayedDiff + " year " + aheadBehind + " family";
 		}
 		//this.debugText.text = "";
 
@@ -445,50 +451,6 @@ Character.prototype.Die = function() {
 
 	this.hideProfile();
 	this.kill();
-}
-
-Character.prototype.ExitPlanet = function() { // Remove this from the current planet (when drag starts)
-	this.drawLine = true;
-	this.clicked = false;
-	//play the clickCharacter sound
-	this.audio[0].play('', 0, 1, false);
-
-	// Find and remove this from the planet's children
-	for(var i = 0; i < this.planet.children.length; i++) {
-		if(this.planet.children[i] === this) {
-			this.planet.children.splice(i, 1);
-			break;
-		}
-	}
-	// Remove reference from planet
-	this.planet.character = null;
-	// Remove reference of planet
-	this.planet = null;
-	// Put this in the main game group
-	game.add.existing(this);
-}
-
-Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest planet (when drag ends)
-
-	this.planet = planet;
-	this.planet.addChild(this);
-	this.planet.character = this;
-	this.planet.pendingArrival = false;
-	this.x = 74;
-	this.y = 0;
-	if(this.step == 2 && this.planet.name == "purple"){
-		this.step = 3;
-	}
-	else if(this.step == 4 && this.planet.name == "blue"){
-		this.step = 5;
-	}
-	else if(this.step == 5 && this.planet.name == "green"){
-		this.step = 6;
-	}
-	else if(this.step == 6){
-		this.step = 7;
-	}
-
 }
 
 Character.prototype.WaitForDrag = function() {

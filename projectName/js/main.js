@@ -12,6 +12,7 @@ game.foreground = null;
 var dragging = false;
 
 var music;
+var menusounds;
 
 var preloadedAssets = false;
 
@@ -55,7 +56,8 @@ MainMenu.prototype = {
 			game.load.audio("speed5", "assets/audio/speed5.mp3");
 			game.load.audio("open", "assets/audio/open.mp3");
 			game.load.audio("close", "assets/audio/close.mp3");
-			game.load.audio("music", "assets/audio/ambient_space_extra_2.mp3");
+			game.load.audio("music", "assets/audio/ambientspacebalanced.mp3");
+			game.load.audio("menusounds", "assets/audio/menusounds.mp3");
 
 			// grab keyboard manager
 			var cursors = game.input.keyboard.createCursorKeys();
@@ -70,9 +72,17 @@ MainMenu.prototype = {
 
 		if(music === undefined) {
 			music = game.add.audio("music");
-			//music.fadeIn(5000, true);
 			music.play("", 0, 0, true);
-			music.fadeTo(5000, 0.6);
+		} else {
+			music.fadeTo(1000, 0);
+		}
+		if(menusounds === undefined) {
+			menusounds = game.add.audio("menusounds");
+			menusounds.play("", 0, 0, true);
+			menusounds.fadeTo(5000, 0.5);
+		} else {
+			menusounds.play("", 0, 0, true);
+			menusounds.fadeTo(1000, 0.5);
 		}
 
 		// add title and play, tutorial, credits button
@@ -91,9 +101,12 @@ MainMenu.prototype = {
 		this.credits.anchor.setTo(0.5);
 	},
 	update: function() {
-		if(game.sound.context.state === "suspended" || music.isPlaying === false) {
-			music.play("", 0, 0, true);
-			music.fadeTo(5000, 0.6);
+		if(game.sound.context.state === "suspended") {
+			
+			music.fadeTo(3000, 0);
+
+			menusounds.play("", 0, 0, true);
+			menusounds.fadeTo(5000, 0.5);
 		}
 	}
 }
@@ -136,9 +149,8 @@ Tutorial.prototype = {
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
 
-		if(music.volume < 1) {
-			music.fadeTo(5000 * (1 - music.volume), 0.6);
-		}
+		menusounds.fadeTo(5000, 0);
+		music.fadeTo(1000, 0.6);
 
 		game.universalTime = 0.3;
 		//Escape button
@@ -348,9 +360,8 @@ Play.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		if(music.volume < 1) {
-			music.fadeTo(5000 * (1 - music.volume), 0.6);
-		}
+		menusounds.fadeTo(1000, 0);
+		music.fadeTo(1000, 0.6);
 
 		game.universalTime = 0.3;
 		//Escape button

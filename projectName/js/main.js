@@ -35,6 +35,7 @@ MainMenu.prototype = {
 			game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
 			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
 			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
+			game.load.atlas("starAtlas", "assets/img/starAtlas.png", "assets/img/starAtlas.json");
 
 			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
@@ -118,6 +119,14 @@ Tutorial.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars", 0);
+		this.stars.anchor.set(0.5);
+		this.stars.scale.set(1);
+		this.stars.alpha = 0.625;
+
+		game.add.existing(this.stars);
+		game.world.sendToBack(this.stars);
+
 		if(music.volume < 1) {
 			music.fadeTo(5000 * (1 - music.volume), 0.6);
 		}
@@ -199,6 +208,10 @@ Tutorial.prototype = {
 		game.world.bringToTop(game.foreground);
 	},
 	update: function() {
+		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
+		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
+		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
+
 		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
 		for(var a in this.arrows){
 			if(this.arrows[a].recent === 1){

@@ -103,10 +103,27 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.dragOffsetY = 0;
 
 	this.timeSinceLastMessage = 0;
+
 	this.familyHappyMessages = Array.from(Messager.FAMILY_HAPPY);
+	for(var i = 0; i < this.familyHappyMessages.length; i++) {
+		this.familyHappyMessages[i] = this.familyHappyMessages[i].replace(/@/g, this.name);
+	}
+
 	this.familyUnhappyMessages = Array.from(Messager.FAMILY_UNHAPPY);
+	for(var i = 0; i < this.familyUnhappyMessages.length; i++) {
+		this.familyUnhappyMessages[i] = this.familyUnhappyMessages[i].replace(/@/g, this.name);
+	}
+
 	this.familyYoungerMessages = Array.from(Messager.FAMILY_YOUNGER);
+	for(var i = 0; i < this.familyYoungerMessages.length; i++) {
+		this.familyYoungerMessages[i] = this.familyYoungerMessages[i].replace(/@/g, this.name);
+	}
+
 	this.familyOlderMessages = Array.from(Messager.FAMILY_OLDER);
+	for(var i = 0; i < this.familyOlderMessages.length; i++) {
+		this.familyOlderMessages[i] = this.familyOlderMessages[i].replace(/@/g, this.name);
+	}
+
 }
 
 Character.prototype = Object.create(Phaser.Sprite.prototype);
@@ -302,7 +319,7 @@ Character.prototype.update = function() {
 				Messager.PushMessage(game, this.name, this.familyOlderMessages, this.audio[4], true);
 			}
 
-		} else if(this.timeSinceLastMessage > 45 && (this.happiness < 60 || this.happiness == 100)) {
+		} else if(this.timeSinceLastMessage >= 40 && (this.happiness < 60 || this.happiness == 100)) {
 
 			this.timeSinceLastMessage = 0;
 

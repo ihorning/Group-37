@@ -288,18 +288,6 @@ Character.prototype.update = function() {
 
 		this.efficiency = this.happiness / 100;
 
-		var aheadBehind = "ahead of";
-		if((100 - this.life) - this.home.currentTime < 0) {
-			aheadBehind = "behind";
-		}
-		if(Math.floor(difference) != 1){
-			this.info.diff.text = "" + Math.floor(difference) + " years " + aheadBehind + " family";
-		}
-		else{
-			this.info.diff.text = "" + Math.floor(difference) + " year " + aheadBehind + " family";
-		}
-		//this.debugText.text = "";
-
 
 		if(this.planet === this.home) {
 			this.timeSinceLastMessage = 0;
@@ -344,6 +332,8 @@ Character.prototype.update = function() {
 
 		//this.hideProfile();
 	}
+
+	this.UpdateAheadBehind();
 
 	// if(this.aDifference < this.zDifference && Math.floor(this.aDifference) != 0){
 	// 	this.info.diff.text += " ∧";
@@ -426,6 +416,27 @@ Character.prototype.update = function() {
 	}
 }
 
+Character.prototype.UpdateAheadBehind = function() {
+	var difference = Math.abs((100 - this.life) - this.home.currentTime);
+
+	var aheadBehind = "ahead of";
+	if((100 - this.life) - this.home.currentTime < 0) {
+		aheadBehind = "behind";
+	}
+	var displayedDiff = (Math.floor(10 * difference) / 10);
+	if(displayedDiff == Math.floor(displayedDiff)) {
+		displayedDiff = displayedDiff+".0";
+	} else {
+		displayedDiff = displayedDiff+"";
+	}
+	if(Math.floor(difference * 10) != 10){
+		this.info.diff.text = "" + displayedDiff + " years " + aheadBehind + " family";
+	}
+	else{
+		this.info.diff.text = "" + displayedDiff + " year " + aheadBehind + " family";
+	}
+}
+
 Character.prototype.Die = function() {
 	if(this.planet) {
 		this.planet.character = null;
@@ -445,27 +456,6 @@ Character.prototype.Die = function() {
 
 	this.hideProfile();
 	this.kill();
-}
-
-Character.prototype.ExitPlanet = function() { // Remove this from the current planet (when drag starts)
-	this.drawLine = true;
-	this.clicked = false;
-	//play the clickCharacter sound
-	this.audio[0].play('', 0, 1, false);
-
-	// Find and remove this from the planet's children
-	for(var i = 0; i < this.planet.children.length; i++) {
-		if(this.planet.children[i] === this) {
-			this.planet.children.splice(i, 1);
-			break;
-		}
-	}
-	// Remove reference from planet
-	this.planet.character = null;
-	// Remove reference of planet
-	this.planet = null;
-	// Put this in the main game group
-	game.add.existing(this);
 }
 
 Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest planet (when drag ends)

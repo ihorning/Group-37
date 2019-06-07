@@ -31,9 +31,9 @@ var Messager = {
 
 
 	PushMessage: function(game, receiver, list, audio, messageQueue) {
-		audio.play('', 0, 0.65, false);
+		audio.play('', 0, 0.5, false);
 		var chosen = Math.round(Math.random() * (list.length - 1));
-		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen]);
+		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen], game.add.audio("open"), game.add.audio("close"));
 
 		if(list != Messager.FAMILY_HAPPY && list != Messager.FAMILY_UNHAPPY && list != Messager.FAMILY_OLDER && list != Messager.FAMILY_YOUNGER) {
 			list.splice(chosen, 1);
@@ -59,7 +59,7 @@ var ShowMessage = function(game) {
 	var message = MessageQueue.shift();
 	message.revive();
 	message.Open(0.25);
-	console.log(message.alive);
+	message.openSound.play("", 0, 1, false);
 	currentMessage = message;
 }
 

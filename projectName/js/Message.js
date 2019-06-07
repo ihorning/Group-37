@@ -1,6 +1,6 @@
 "use strict";
 
-function Message(game, x, y, xSize, ySize, key, frames, title, message) {
+function Message(game, x, y, xSize, ySize, key, frames, title, message, openSound, closeSound) {
 
 	Popup.call(this, game, x, y, xSize, ySize, key, frames);
 
@@ -31,6 +31,9 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message) {
 	this.textElements[this.textElements.length] = this.messageDisplay;
 	this.textElements[this.textElements.length] = this.closeButton;
 
+	this.openSound = openSound;
+	this.closeSound = closeSound;
+
 	game.add.existing(this);
 
 	this.Resize(this.xSize, this.ySize);
@@ -40,6 +43,7 @@ Message.prototype = Object.create(Popup.prototype);
 Message.prototype.constructor = Message;
 
 Message.prototype.Close = function() {
+	this.closeSound.play("", 0, 1, false);
 	var newX = this.closeButton.worldX;
 	var newY = this.closeButton.worldY;
 	game.add.existing(this.closeButton);

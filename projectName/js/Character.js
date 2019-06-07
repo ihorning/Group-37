@@ -288,8 +288,11 @@ Character.prototype.update = function() {
 			this.timeSinceLastMessage = 0;
 		}
 
+		if(this.timeSinceLastMessage > 40 && difference < 5) {
+			this.timeSinceLastMessage = 40;
+		}
 
-		if(this.timeSinceLastMessage > 20 && difference >= 5) {
+		if(this.timeSinceLastMessage > 45 && difference >= 5) {
 
 			this.timeSinceLastMessage = 0;
 
@@ -299,7 +302,7 @@ Character.prototype.update = function() {
 				Messager.PushMessage(game, this.name, this.familyOlderMessages, this.audio[4], true);
 			}
 
-		} else if(this.timeSinceLastMessage > 30 && (this.happiness < 60 || this.happiness == 100)) {
+		} else if(this.timeSinceLastMessage > 45 && (this.happiness < 60 || this.happiness == 100)) {
 
 			this.timeSinceLastMessage = 0;
 
@@ -353,20 +356,36 @@ Character.prototype.update = function() {
 			var newCurve = new RocketCurve(x0, x1, y0, y1, 0.8, 2);
 
 			if(!newCurve.reverse) {
+				var oddEven = false;
 				for(var i = newCurve.x0; i < newCurve.x1; i += (newCurve.x1 - newCurve.x0) / 50) {
 					this.line.beginFill(0xffffff, (i - newCurve.x0) / (newCurve.x1 - newCurve.x0));
 					var newRad = newCurve.y(i);
 					var newX = game.world.centerX + (newRad * Math.cos(i));
 					var newY = game.world.centerY - (newRad * Math.sin(i));
-					this.line.drawCircle(newX, newY, 5);
+					var circleRad;
+					if(oddEven) {
+						circleRad = 5;
+					} else {
+						circleRad = 3;
+					}
+					oddEven = !oddEven;
+					this.line.drawCircle(newX, newY, circleRad);
 				}
 			} else {
+				var oddEven = false;
 				for(var i = newCurve.x1; i < newCurve.x0; i += (newCurve.x0 - newCurve.x1) / 50) {
 					this.line.beginFill(0xffffff, (newCurve.x0 - i) / (newCurve.x0 - newCurve.x1));
 					var newRad = newCurve.y(i);
 					var newX = game.world.centerX + (newRad * Math.cos(i));
 					var newY = game.world.centerY - (newRad * Math.sin(i));
-					this.line.drawCircle(newX, newY, 5);
+					var circleRad;
+					if(oddEven) {
+						circleRad = 5;
+					} else {
+						circleRad = 4;
+					}
+					oddEven = !oddEven;
+					this.line.drawCircle(newX, newY, circleRad);
 				}
 			}
 
@@ -396,9 +415,9 @@ Character.prototype.Die = function() {
 	}
 
 	if(this.happiness > 60) {
-		this.audio[2].play('', 0, 1, false);
+		this.audio[2].play('', 0, 0.225, false);
 	} else {
-		this.audio[3].play('', 0, 1, false);
+		this.audio[3].play('', 0, 0.085, false);
 	}
 
 	this.waitingForDrag = false;
@@ -504,9 +523,6 @@ Character.prototype.BeginDrag = function() {
 	// Put this in the game world
 	game.add.existing(this);
 	game.world.moveDown(this);
-	game.world.moveDown(this);
-	//game.world.moveDown(this);
-	//game.world.moveDown(this);
 }
 
 Character.prototype.EndDrag = function() {

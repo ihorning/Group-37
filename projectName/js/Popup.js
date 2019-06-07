@@ -137,7 +137,6 @@ Popup.prototype.update = function() {
 			for(var element in this.textElements) {
 				this.textElements[element].alpha = 1;
 			}
-			console.log("TEST");
 		} else {
 			this.Resize(newX, newY);
 		}

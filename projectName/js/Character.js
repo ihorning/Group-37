@@ -68,6 +68,8 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	//console.log("debugText note:\n:) = happiness, efficiency\nOn home planet, |difference| < 10 is good\nOn other planet, |difference| < 5 is good\nGreen = regaining happiness\nRed = losing happiness")
 
 	this.line = game.add.graphics();
+	game.world.moveDown(this.line);
+	//game.world.moveDown(this);
 	this.drawLine = false;
 
 	//this.popup = popup;
@@ -356,20 +358,36 @@ Character.prototype.update = function() {
 			var newCurve = new RocketCurve(x0, x1, y0, y1, 0.8, 2);
 
 			if(!newCurve.reverse) {
+				var oddEven = false;
 				for(var i = newCurve.x0; i < newCurve.x1; i += (newCurve.x1 - newCurve.x0) / 50) {
 					this.line.beginFill(0xffffff, (i - newCurve.x0) / (newCurve.x1 - newCurve.x0));
 					var newRad = newCurve.y(i);
 					var newX = game.world.centerX + (newRad * Math.cos(i));
 					var newY = game.world.centerY - (newRad * Math.sin(i));
-					this.line.drawCircle(newX, newY, 5);
+					var circleRad;
+					if(oddEven) {
+						circleRad = 5;
+					} else {
+						circleRad = 3;
+					}
+					oddEven = !oddEven;
+					this.line.drawCircle(newX, newY, circleRad);
 				}
 			} else {
+				var oddEven = false;
 				for(var i = newCurve.x1; i < newCurve.x0; i += (newCurve.x0 - newCurve.x1) / 50) {
 					this.line.beginFill(0xffffff, (newCurve.x0 - i) / (newCurve.x0 - newCurve.x1));
 					var newRad = newCurve.y(i);
 					var newX = game.world.centerX + (newRad * Math.cos(i));
 					var newY = game.world.centerY - (newRad * Math.sin(i));
-					this.line.drawCircle(newX, newY, 5);
+					var circleRad;
+					if(oddEven) {
+						circleRad = 5;
+					} else {
+						circleRad = 3;
+					}
+					oddEven = !oddEven;
+					this.line.drawCircle(newX, newY, circleRad);
 				}
 			}
 

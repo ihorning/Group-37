@@ -263,6 +263,7 @@ Tutorial.prototype = {
 		if(allJobsDone) { // productivity has been completed
 			game.universalTime = 0;
 			this.esc.destroy();
+			this.medChar.hideProfile();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
@@ -490,6 +491,9 @@ Play.prototype = {
 			game.universalTime = 0;
 			//this.esc.destroy();
 			this.esc.pendingDestroy = true;
+			this.slowChar.hideProfile();
+			this.medChar.hideProfile();
+			this.fastChar.hideProfile();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 

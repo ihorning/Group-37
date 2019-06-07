@@ -314,19 +314,19 @@ Character.prototype.update = function() {
 			this.timeSinceLastMessage = 0;
 
 			if((100 - this.life) - this.home.currentTime > 0) {
-				Messager.PushMessage(game, this.name, this.familyYoungerMessages, this.audio[4], true);
+				Messager.PushMessage(game, this, this.familyYoungerMessages, this.audio[4], true);
 			} else {
-				Messager.PushMessage(game, this.name, this.familyOlderMessages, this.audio[4], true);
+				Messager.PushMessage(game, this, this.familyOlderMessages, this.audio[4], true);
 			}
 
-		} else if(this.timeSinceLastMessage >= 40 && (this.happiness < 60 || this.happiness == 100)) {
+		} else if(this.timeSinceLastMessage >= 45 && (this.happiness < 60 || this.happiness == 100)) {
 
 			this.timeSinceLastMessage = 0;
 
 			if(this.happiness > 60) {
-				Messager.PushMessage(game, this.name, this.familyHappyMessages, this.audio[4], true);
+				Messager.PushMessage(game, this, this.familyHappyMessages, this.audio[4], true);
 			} else {
-				Messager.PushMessage(game, this.name, this.familyUnhappyMessages, this.audio[4], true);
+				Messager.PushMessage(game, this, this.familyUnhappyMessages, this.audio[4], true);
 			}
 
 		} else {

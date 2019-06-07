@@ -7,21 +7,28 @@ var MessageQueue = [];
 
 var Messager = {
 	FAMILY_HAPPY: [
-		"We are so proud of you! Everyone is well!"
+		"We are so proud of you! Everyone is well!",
+		"It's hard without you around, but we know this job is important. You're helping so many people!"
 	],
 
 	FAMILY_UNHAPPY: [
-		":("
+		"@, are you okay? I haven't heard from you in a long time. I know this job is really important, but we all miss you. Hopefully we can get to see you soon.",
+		"It's good to hear you're getting back on track. Take care of yourself, try to visit home if you can."
 	],
 
 	FAMILY_OLDER: [
 		"We haven’t heard from you in a long time! Your little brother got married. Sad you missed it :(",
 		"Grandpa died. He said he was happy you were doing such important work.",
-		"It's weird to think I'm older than you now. I thought I'd always be the youngest sibling."
+		"It's weird to think I'm older than you now. I thought I'd always be the youngest sibling.",
+		"Please find the time to visit, we miss you. It's been a lot longer for us than it's been for you.",
+		"Things have changed a lot around here since you left. Maybe you can find the time to come back and catch up. We love you!"
 	],
 
 	FAMILY_YOUNGER: [
-		"Hey, who said you could get older than me? You're supposed to be the little sibling, not me."
+		"Hey, who said you could get older than me? You're supposed to be the little sibling, not me.",
+		"It's been hard around here since we last saw you. Honestly, it's hard for us to see you this way. I can't stop thinking about all the time together we lost.",
+		"Oh my goodness, you look so different! It's still hard for me to wrap my head around this whole thing. Hope we'll get to see you soon.",
+		"I can't believe you're # now! We have so many birthday parties to make up for."
 	],
 
 
@@ -30,10 +37,15 @@ var Messager = {
 	],
 
 
-	PushMessage: function(game, receiver, list, audio, messageQueue) {
+	PushMessage: function(game, receiver, list, audio) {
 		audio.play('', 0, 0.5, false);
 		var chosen = Math.round(Math.random() * (list.length - 1));
-		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver+"):", list[chosen], game.add.audio("open"), game.add.audio("close"));
+		var chosenString = list[chosen];
+		if(chosenString === undefined) {
+			chosenString = "NO MORE MESSAGES";
+		}
+		chosenString = chosenString.replace(/#/g, Math.floor(20 + (100 - receiver.life)*.6));
+		var message = new Message(game, game.world.centerX, game.world.centerY, 500, 400, MESSAGE_ATAS, MESSAGE_FRAMES, "INCOMING TRANSMISSION (to "+receiver.name+"):", chosenString, game.add.audio("open"), game.add.audio("close"));
 
 		if(list != Messager.FAMILY_HAPPY && list != Messager.FAMILY_UNHAPPY && list != Messager.FAMILY_OLDER && list != Messager.FAMILY_YOUNGER) {
 			list.splice(chosen, 1);
@@ -44,10 +56,8 @@ var Messager = {
 		message.anchor.set(0.5);
 		message.Resize(message.xSize, message.ySize);
 
-		if(messageQueue) {
-			message.kill();
-			MessageQueue.push(message);
-		}
+		message.kill();
+		MessageQueue.push(message);
 	}
 }
 

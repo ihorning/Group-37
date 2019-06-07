@@ -128,10 +128,10 @@ Tutorial.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars", 0);
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars2", 0);
 		this.stars.anchor.set(0.5);
-		this.stars.scale.set(1);
-		this.stars.alpha = 0.625;
+		this.stars.scale.set(1.4);
+		this.stars.alpha = 0.7;
 
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);

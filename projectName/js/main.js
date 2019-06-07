@@ -73,6 +73,8 @@ MainMenu.prototype = {
 		if(music === undefined) {
 			music = game.add.audio("music");
 			music.play("", 0, 0, true);
+		} else if(!music.isPlaying) {
+			music.play("", 0, 0, true);
 		} else {
 			music.fadeTo(1000, 0);
 		}
@@ -80,8 +82,9 @@ MainMenu.prototype = {
 			menusounds = game.add.audio("menusounds");
 			menusounds.play("", 0, 0, true);
 			menusounds.fadeTo(5000, 0.5);
-		} else {
+		} else if(!menusounds.isPlaying) {
 			menusounds.play("", 0, 0, true);
+		} else {
 			menusounds.fadeTo(1000, 0.5);
 		}
 
@@ -102,12 +105,12 @@ MainMenu.prototype = {
 	},
 	update: function() {
 		if(game.sound.context.state === "suspended") {
-			
-			music.fadeTo(3000, 0);
-
 			menusounds.play("", 0, 0, true);
 			menusounds.fadeTo(5000, 0.5);
+		} else if(menusounds.volume === 0) {
+			menusounds.fadeTo(3000, 0.5);
 		}
+		console.log(menusounds.isPlaying+" "+menusounds.volume);
 	}
 }
 var start = function(){
@@ -148,6 +151,10 @@ Tutorial.prototype = {
 
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
+
+		if(!music.isPlaying) {
+			music.play("", 0, 0, true);
+		}
 
 		menusounds.fadeTo(5000, 0);
 		music.fadeTo(1000, 0.6);
@@ -359,6 +366,18 @@ Play.prototype = {
 	create: function() {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
+
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars2", 0);
+		this.stars.anchor.set(0.5);
+		this.stars.scale.set(1.4);
+		this.stars.alpha = 0.7;
+
+		game.add.existing(this.stars);
+		game.world.sendToBack(this.stars);
+
+		if(!music.isPlaying) {
+			music.play("", 0, 0, true);
+		}
 
 		menusounds.fadeTo(1000, 0);
 		music.fadeTo(1000, 0.6);

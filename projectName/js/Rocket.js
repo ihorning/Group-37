@@ -88,7 +88,17 @@ Rocket.prototype.update = function() {
 	// Change character age and happiness according to radius
 	var ageChange = game.universalTime * ((this.orbitRad / 400) / 0.66) * game.time.elapsed / 1000;
 	this.character.life -= ageChange;
+	if(this.character.life < 0) {
+		this.character.life = 0;
+		this.character.Die();
+		return;
+	}
 	this.character.happiness += ageChange * (5 - Math.abs((100 - this.character.life) - this.character.home.currentTime));
+	if(this.character.happiness > 100) {
+		this.character.happiness = 100;
+	} else if(this.character.happiness < 0) {
+		this.character.happiness = 0;
+	}
 	// Update the character's ahead/behind number, efficiency, and age on their profile
 	this.character.UpdateAheadBehind();
 	this.character.info.happiness.text = "Efficiency: " + Math.floor(this.character.happiness) + "%";

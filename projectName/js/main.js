@@ -105,6 +105,7 @@ MainMenu.prototype = {
 		game.add.tween(this.credits).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 260);
 		game.add.tween(this.credits.scale).from({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.Out, true, 260);
 
+		animatingMenu = false;
 
 	},
 	update: function() {
@@ -134,7 +135,7 @@ MainMenu.prototype = {
 	}
 }
 var startGame = function(){
-	if(animatingMenu) {
+	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
 	animatingMenu = true;
@@ -160,7 +161,7 @@ var startGame = function(){
 	}
 }
 var startTutorial = function(){
-	if(animatingMenu) {
+	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
 	animatingMenu = true;

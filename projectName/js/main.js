@@ -201,7 +201,7 @@ Tutorial.prototype = {
 
 		//Pop-up for instructions
 		//Popup(game, x, y, xSize, ySize, key, frames)
-		this.popup = new Popup(game, -1000, -1000, 0, 0, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup = new Popup(game, -1000, -1000, 40, 2, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 
 		//Instruction text
 		this.instruction = game.make.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
@@ -292,6 +292,7 @@ Tutorial.prototype = {
 
 		this.instruction.x = this.popup.x - 30;
 		this.instruction.y = this.popup.y - 30;
+		this.popup.textElements = [this.instruction];
 		
 		if(this.medChar.step === 6 && game.universalTime > 0.3){
 			this.medChar.step = 7;
@@ -302,69 +303,118 @@ Tutorial.prototype = {
 			game.universalTime = 0;
 				this.popup.x = 200;
 				this.popup.y = 300;
-				this.popup.Resize(700, 180);
+				if(!this.medChar.openOnce){
+					console.log("opening");
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(700, 180);
+					this.popup.Open();
+				}
 				this.instruction.text = "Before you is a set of planets that all run at different time \nspeeds because of their relative distance from the black hole \nthey are orbiting. The mission you have been assigned is to \nmanage workers trying to stop the planets from being consumed \nby the black hole. This is a simplified simulation that will \nprepare you for the real thing.\n\nClick anywhere to begin";
 				break;
 			case 1:
 				game.universalTime = 0.3;
 				this.popup.x = 750;
 				this.popup.y = 700;
-				this.popup.Resize(150, 25);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(150, 25);
+					this.popup.Open();
+				}
 				this.instruction.text = "Click on the \ncharacter icon to \nsee their profile.";
 				break;
 			case 2:
 				this.popup.x = 480;
 				this.popup.y = 650;
-				this.popup.Resize(500, 20);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(500, 20);
+					this.popup.Open();
+				}
 				this.instruction.text = "Here, you can learn more about your worker.\n\nClick anywhere else to close Abigail's profile.";
 				break;
 			case 3:
 				this.popup.x = 100;
 				this.popup.y = 450;
-				this.popup.Resize(370, 140);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(370, 140);
+					this.popup.Open();
+				}
 				this.instruction.text = "Planets will slowly move towards \nthe black hole. When stationed at a \nplanet, workers will increase the \npercentage, shown below each planet, \nto slow its movement inward.\n\nClick anywhere to continue.";
 				break;
 			case 4:
-				this.popup.Resize(400, 80);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(400, 80);
+					this.popup.Open();
+				}
 				this.instruction.text = "Once it reaches 100% the planet will \nno longer be pulled by the black hole! \n\nClick and drag Abigail's icon to \nthe purple planet to move her there.";
 				break;
 			case 5:
 				this.popup.x = 540;
 				this.popup.y = 100;
-				this.popup.Resize(470, 140);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(470, 140);
+					this.popup.Open();
+				}
 				this.instruction.text = "Time moves faster for someone the further \nthey are from a strong gravitational field. \nThis means that workers on planets further \nfrom the black hole age and work faster than \non planets closer to the black hole.\n\nClick anywhere to continue."
 				break;
 			case 6:
 				this.instruction.text = "This difference in time speeds also means \nthat the workers will age at different speeds \nthan their family back on their home planet. \nUse the arrows in the top left corner to \nspeed up the entire game.\n\nClick one of the arrows now.";
 				break;
 			case 7:
-				this.popup.Resize(400, 20);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(400, 20);
+					this.popup.Open();
+				}
 				this.instruction.text = "Open Abigail's profile and watch what \nhappens when she gets 5 or more years \nahead of her family.";
 				break;
 			case 8:
 				this.popup.x = 480;
 				this.popup.y = 610;
-				this.popup.Resize(480, 80);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(480, 80);
+					this.popup.Open();
+				}
 				this.instruction.text = "Notice that Abigail's efficiency has started \nto drop now that she's sad because she is \n5 years ahead of her family.\n\nDrag her back to her home, the blue planet.";
 				break;
 			case 9:
 				this.popup.x = 100;
 				this.popup.y = 200;
-				this.popup.Resize(340, 160);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(340, 160);
+					this.popup.Open();
+				}
 				this.instruction.text = "While a worker is on their home \nplanet, instead of efficiency \nstarting to drop at the 5 year \nmark, their efficiency will \ndrop when they are 10 or more \nyears off from their family.\n\nClick anywhere to continue.";
 				break;
 			case 10:
-				this.popup.Resize(350, 160);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(350, 160);
+					this.popup.Open();
+				}
 				this.instruction.text = "To make Abigail closer to her \nfamily's age again, she must go to \na planet closer to the black hole \nthan her home planet. In this \ncase the only planet slower than \nher home is the green planet.\n\nSend her there now.";
 				break;
 			case 11:
 				this.popup.x = 100;
 				this.popup.y = 150;
-				this.popup.Resize(800, 75);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(800, 75);
+					this.popup.Open();
+				}
 				this.instruction.text = "The percentage below a worker’s icon is how much life they have left, \nmeaning when that reaches 0%, they will die. You lose the game if all of \nyour workers die.\n\nClick anywhere to continue.";
 				break;
 			case 12:
-				this.popup.Resize(800, 55);
+				if(!this.medChar.openOnce){
+					this.medChar.openOnce = true;
+					this.popup.ResetGoal(800, 55);
+					this.popup.Open();
+				}
 				this.instruction.text = "To win, complete each planet. Make sure you do this before the planet \ngets consumed by the black hole!\n\nClick anywhere to continue."
 				break; 
 			case 13:
@@ -373,6 +423,7 @@ Tutorial.prototype = {
 			case 14:
 				this.instruction.text = "";
 				this.popup.destroy();
+				break;
 		}
 	},
 	speedUp: function() {

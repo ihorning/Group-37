@@ -73,6 +73,11 @@ Popup.prototype = Object.create(Phaser.Sprite.prototype);
 // Define constructor
 Popup.prototype.constructor = Popup;
 
+Popup.prototype.ResetGoal = function(x,y) {
+	this.goalXSize = x;
+	this.goalYSize = y;
+}
+
 // Function to Resize the Popup window
 Popup.prototype.Resize = function(xSize, ySize) {
 
@@ -153,8 +158,7 @@ Popup.prototype.Open = function(time) {
 	for(var element in this.textElements) {
 		this.textElements[element].alpha = 0;
 	}
-	// Resize to the default starting size
-	this.Resize(300, 10);
+	this.Resize(30,1);
 }
 
 // Define the Popup update function
@@ -165,10 +169,10 @@ Popup.prototype.update = function() {
 		var newX = this.xSize;
 		var newY = this.ySize;
 		if(this.xSize < this.goalXSize) {
-			newX += ((game.time.elapsed / 1000) / this.openTime) * (this.goalXSize - 300);
+			newX += ((game.time.elapsed / 1000) / this.openTime) * (this.goalXSize - 30);
 		}
 		if(this.ySize < this.goalYSize) {
-			newY += ((game.time.elapsed / 1000) / this.openTime) * (this.goalYSize - 10);
+			newY += ((game.time.elapsed / 1000) / this.openTime) * (this.goalYSize - 1);
 		}
 		// Do not overshoot the goal
 		if(newX > this.goalXSize) {

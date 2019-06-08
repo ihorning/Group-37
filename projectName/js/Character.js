@@ -27,6 +27,9 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	// Step keeps track of where the character is in the tutorial;
 	this.step = 0;
 
+	//Keeps track of if tutorial popups have been opened
+	this.openOnce = false;
+
 	// Save this character's name
 	this.name = name;
 		
@@ -149,24 +152,31 @@ Character.prototype.update = function() {
 			switch(this.step){
 				case 0:
 					this.step = 1;
+					this.openOnce = false;
 					break;
 				case 3:
 					this.step = 4;
+					this.openOnce = false;
 					break;
 				case 5:
 					this.step = 6;
+					this.openOnce = false;
 					break;
 				case 9:
 					this.step = 10;
+					this.openOnce = false;
 					break;
 				case 11:
 					this.step = 12;
+					this.openOnce = false;
 					break;
 				case 12:
 					this.step = 13;
+					this.openOnce = false;
 					break;
 				case 13:
 					this.step = 14;
+					this.openOnce = false;
 			}
 			this.clickOnce = false;
 		}
@@ -175,12 +185,14 @@ Character.prototype.update = function() {
 			this.hideProfile();
 			if(this.step == 2){
 				this.step = 3;
+				this.openOnce = false;
 			}
 		}
 		else{
 			this.showProfile();
 			if(this.step == 1){
 				this.step = 2;
+				this.openOnce = false;
 			}
 		}
 	}
@@ -292,6 +304,7 @@ Character.prototype.update = function() {
 			else if(difference > 5) {
 				if(this.step == 7){
 					this.step = 8;
+					this.openOnce = false;
 				}
 				//this.emote.frameName = "unhappy";
 				this.emote.frameName = "sad";
@@ -518,12 +531,15 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.y = 0;
 	if(this.step == 4 && this.planet.name == "purple"){
 		this.step = 5;
+		this.openOnce = false;
 	}
 	else if(this.step == 8 && this.planet.name == "blue"){
 		this.step = 9;
+		this.openOnce = false;
 	}
 	else if(this.step == 10 && this.planet.name == "green"){
 		this.step = 11;
+		this.openOnce = false;
 	}
 
 }
@@ -532,9 +548,7 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 Character.prototype.WaitForDrag = function() {
 	//this.showProfile();
 	this.clicked = true;
-	if(this.step == 0){
-		this.step = 1;
-	}
+
 	if(!this.waitingForDrag) {
 		this.dragOffsetX = game.input.x - this.world.x;
 		this.dragOffsetY = game.input.y - this.world.y;

@@ -292,7 +292,6 @@ Tutorial.prototype = {
 
 		this.instruction.x = this.popup.x - 30;
 		this.instruction.y = this.popup.y - 30;
-		//this.medChar.step = 6;
 		
 		if(this.medChar.step === 6 && game.universalTime > 0.3){
 			this.medChar.step = 7;
@@ -300,86 +299,76 @@ Tutorial.prototype = {
 
 		switch(this.medChar.step){
 			case 0:
+			game.universalTime = 0;
 				this.popup.x = 200;
-				this.popup.y = 200;
-				this.popup.Resize(600, 500);
-				this.instruction.text = "Before you is a set of planets that all run at different time \nspeeds because of their relative distance from the black hole they \nare orbiting. The mission you have been assigned is to manage \nworkers trying to stop the planets from being consumed by the \nblack hole. This is a simplified simulation that will prepare \nyou for the real thing.\n\nClick anywhere to continue";
+				this.popup.y = 300;
+				this.popup.Resize(700, 180);
+				this.instruction.text = "Before you is a set of planets that all run at different time \nspeeds because of their relative distance from the black hole \nthey are orbiting. The mission you have been assigned is to \nmanage workers trying to stop the planets from being consumed \nby the black hole. This is a simplified simulation that will \nprepare you for the real thing.\n\nClick anywhere to begin";
 				break;
 			case 1:
+				game.universalTime = 0.3;
 				this.popup.x = 750;
 				this.popup.y = 700;
-				this.popup.Resize(150, 50);
+				this.popup.Resize(150, 25);
 				this.instruction.text = "Click on the \ncharacter icon to \nsee their profile.";
 				break;
 			case 2:
-				this.popup.Resize(160, 20);
-				this.instruction.text = "Here, you can \nlearn more about \nyour worker.\n\nClick anywhere else \nto get rid of \nAbigail's profile.";
+				this.popup.x = 480;
+				this.popup.y = 650;
+				this.popup.Resize(500, 20);
+				this.instruction.text = "Here, you can learn more about your worker.\n\nClick anywhere else to close Abigail's profile.";
 				break;
 			case 3:
 				this.popup.x = 100;
-				this.popup.y = 350;
-				this.popup.Resize(330, 220);
-				this.instruction.text = "Planets will slowly move towards \nthe black hole. When stationed at \na planet, workers will increase \nthe percentage, shown below each planet, \nto slow its movement inward.\n\nClick anywhere to continue.";
+				this.popup.y = 450;
+				this.popup.Resize(370, 140);
+				this.instruction.text = "Planets will slowly move towards \nthe black hole. When stationed at a \nplanet, workers will increase the \npercentage, shown below each planet, \nto slow its movement inward.\n\nClick anywhere to continue.";
 				break;
 			case 4:
-				this.popup.x = 100;
-				this.popup.y = 350;
-				this.popup.Resize(330, 220);
-				this.instruction.text = "Once it reaches 100% the planet will no longer be pulled by the black hole! \n\nClick and drag Abigail's icon to the purple planet to move her there.";
+				this.popup.Resize(400, 80);
+				this.instruction.text = "Once it reaches 100% the planet will \nno longer be pulled by the black hole! \n\nClick and drag Abigail's icon to \nthe purple planet to move her there.";
 				break;
 			case 5:
-				this.popup.x = 570;
+				this.popup.x = 540;
 				this.popup.y = 100;
-				this.popup.Resize(440, 330);
-				this.instruction.text = "Time moves faster for someone the further they are from a strong gravitational field. This means that workers on planets further from the black hole age and work faster than on planets closer to the black hole.\n\nClick anywhere to continue."
+				this.popup.Resize(470, 140);
+				this.instruction.text = "Time moves faster for someone the further \nthey are from a strong gravitational field. \nThis means that workers on planets further \nfrom the black hole age and work faster than \non planets closer to the black hole.\n\nClick anywhere to continue."
 				break;
 			case 6:
-				this.popup.x = 570;
-				this.popup.y = 100;
-				this.popup.Resize(440, 330);
-				this.instruction.text = "This difference in time speeds also means that the workers will age at different speeds than their family back on their home planet. Use the arrows in the top left corner to speed up the entire game.\n\nClick one of the arrows now.";
+				this.instruction.text = "This difference in time speeds also means \nthat the workers will age at different speeds \nthan their family back on their home planet. \nUse the arrows in the top left corner to \nspeed up the entire game.\n\nClick one of the arrows now.";
 				break;
 			case 7:
-				this.popup.x = 570;
-				this.popup.y = 100;
-				this.popup.Resize(440, 330);
-				this.instruction.text = "Open Abigail's profile and watch what happens when she gets 5 or more years ahead of her family.";
+				this.popup.Resize(400, 20);
+				this.instruction.text = "Open Abigail's profile and watch what \nhappens when she gets 5 or more years \nahead of her family.";
 				break;
 			case 8:
-				this.popup.x = 560;
-				this.popup.y = 700;
-				this.popup.Resize(450, 50);
-				this.instruction.text = "Notice that Abigail's efficiency has started to drop now that she's sad because she is 5 years ahead of her family.\n\nDrag her back to her home, the blue planet.";
+				this.popup.x = 480;
+				this.popup.y = 610;
+				this.popup.Resize(480, 80);
+				this.instruction.text = "Notice that Abigail's efficiency has started \nto drop now that she's sad because she is \n5 years ahead of her family.\n\nDrag her back to her home, the blue planet.";
 				break;
 			case 9:
 				this.popup.x = 100;
-				this.popup.y = 100;
-				this.popup.Resize(350, 250);
-				this.instruction.text = "While a worker is on their home planet, instead of efficiency starting to drop at the 5 year mark, their efficiency will drop when they are 10 or more years off from their family.\n\nClick anywhere to continue.";
+				this.popup.y = 200;
+				this.popup.Resize(340, 160);
+				this.instruction.text = "While a worker is on their home \nplanet, instead of efficiency \nstarting to drop at the 5 year \nmark, their efficiency will \ndrop when they are 10 or more \nyears off from their family.\n\nClick anywhere to continue.";
 				break;
 			case 10:
-				this.popup.x = 100;
-				this.popup.y = 100;
-				this.popup.Resize(350, 250);
-				this.instruction.text = "To make Abigail closer to her family's age again, she must go to a planet closer to the black hole than her home planet. In this case the only planet slower than her home is the green planet.\n\nSend her there now.";
+				this.popup.Resize(350, 160);
+				this.instruction.text = "To make Abigail closer to her \nfamily's age again, she must go to \na planet closer to the black hole \nthan her home planet. In this \ncase the only planet slower than \nher home is the green planet.\n\nSend her there now.";
 				break;
 			case 11:
 				this.popup.x = 100;
-				this.popup.y = 100;
-				this.popup.Resize(900, 75);
-				this.instruction.text = "The percentage below a worker’s icon is how much life they have left, meaning when that reaches 0%, they will die. You lose the game if all of your workers die.\n\nClick anywhere to continue.";
+				this.popup.y = 150;
+				this.popup.Resize(800, 75);
+				this.instruction.text = "The percentage below a worker’s icon is how much life they have left, \nmeaning when that reaches 0%, they will die. You lose the game if all of \nyour workers die.\n\nClick anywhere to continue.";
 				break;
 			case 12:
-				this.popup.x = 100;
-				this.popup.y = 100;
-				this.popup.Resize(900, 75);
-				this.instruction.text = "To win, complete each planet. Make sure you do this before the planet gets consumed by the black hole!\n\nClick anywhere to continue."
+				this.popup.Resize(800, 55);
+				this.instruction.text = "To win, complete each planet. Make sure you do this before the planet \ngets consumed by the black hole!\n\nClick anywhere to continue."
 				break; 
 			case 13:
-				this.popup.x = 100;
-				this.popup.y = 100;
-				this.popup.Resize(900, 75);
-				this.instruction.text = "Complete all of the planets to finish the simulation and move on to the real mission where you manage 5 planets and 3 workers.\n\nClick anywhere to get rid of this message.";
+				this.instruction.text = "Complete all of the planets to finish the simulation and move on to the \nreal mission where you manage 5 planets and 3 workers.\n\nClick anywhere to get rid of this message.";
 				break;
 			case 14:
 				this.instruction.text = "";

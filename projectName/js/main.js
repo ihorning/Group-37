@@ -15,6 +15,7 @@ var music;
 var menusounds;
 
 var preloadedAssets = false;
+var animatingMenu = false;
 
 var MainMenu = function(game) {};
 MainMenu.prototype = {
@@ -80,9 +81,9 @@ MainMenu.prototype = {
 		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', start, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', startGame, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.play.anchor.setTo(0.5);
-		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', tutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', startTutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.tutorial.anchor.setTo(0.5);
 		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
@@ -113,11 +114,49 @@ MainMenu.prototype = {
 		}
 	}
 }
-var start = function(){
-	game.state.start('Play');
+var startGame = function(){
+	if(game.state.getCurrentState().key != "MainMenu") {
+		game.state.start("Play");
+	} else {
+
+		var startTimer = game.time.create(true);
+		startTimer.add(1200, function() {game.state.start("Play");}, this);
+		startTimer.start();
+
+		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
+
+		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
+		game.add.tween(this.play.scale).to({x: 0.0001, y: 0.0001}, 800, Phaser.Easing.Cubic.In, true);
+
+		game.add.tween(this.tutorial).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 70);
+		game.add.tween(this.tutorial.scale).to({x: 0.0001, y: 0.0001}, 820, Phaser.Easing.Cubic.In, true, 70);
+
+		game.add.tween(this.credits).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 140);
+		game.add.tween(this.credits.scale).to({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.In, true, 140);
+
+	}
 }
-var tutorial = function(){
-	game.state.start('Tutorial', true, false, 0);
+var startTutorial = function(){
+	if(game.state.getCurrentState().key != "MainMenu") {
+		game.state.start('Tutorial', true, false, 0);
+	} else {
+
+		var startTimer = game.time.create(true);
+		startTimer.add(1200, function() {game.state.start('Tutorial', true, false, 0);}, this);
+		startTimer.start();
+
+		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
+
+		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
+		game.add.tween(this.play.scale).to({x: 0.0001, y: 0.0001}, 800, Phaser.Easing.Cubic.In, true);
+
+		game.add.tween(this.tutorial).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 70);
+		game.add.tween(this.tutorial.scale).to({x: 0.0001, y: 0.0001}, 820, Phaser.Easing.Cubic.In, true, 70);
+
+		game.add.tween(this.credits).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 140);
+		game.add.tween(this.credits.scale).to({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.In, true, 140);
+
+	}
 }
 
 var credits = function(){
@@ -644,14 +683,14 @@ GameOver.prototype = {
 		if(this.tutor === true){ //if from the tutorial
 			//if they beat the tutorial let them continue to game
 			if(this.won === 1){
-				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startGame, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
 			}
 			else{ //if they lose the tutorial let them retry the tutorial
-				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', tutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startTutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 			}
 		}
 		else{ //not from tutorial, can only try again
-			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', start, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startGame, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 		}
 		this.retry.anchor.setTo(0.5);
 

@@ -8,12 +8,21 @@ var MessageQueue = [];
 var Messager = {
 	FAMILY_HAPPY: [
 		"We are so proud of you! Everyone is well!",
-		"It's hard without you around, but we know this job is important. You're helping so many people!"
+		"It's hard without you around, but we know this job is important. You're helping so many people!",
+		"Your last visit was so wonderful! We hope you return again soon!",
+		"Wow! We just found out you were given a humanitarian award! Congratulations!",
+		"@, everyone back home has been talking about you! They love knowing someone so involved in the mission.",
+		"Man, my little cousin saving the planet. I can’t believe it.",
+		"I know we fired you from your job here, but we were wondering if you would be interested in rejoining us considering your latest experience?"
 	],
 
 	FAMILY_UNHAPPY: [
 		"@, are you okay? I haven't heard from you in a long time. I know this job is really important, but we all miss you. Hopefully we can get to see you soon.",
-		"It's good to hear you're getting back on track. Take care of yourself, try to visit home if you can."
+		"It's good to hear you're getting back on track. Take care of yourself, try to visit home if you can.",
+		"Did you get my last message?",
+		"You said you were coming home soon, but will this new issue make that not happen?",
+		"I heard a rumor that some of the new hardware caught on fire. Is this true?",
+		"It’s weird looking up at the stars and know you’re somewhere out there among them."
 	],
 
 	FAMILY_OLDER: [
@@ -21,14 +30,24 @@ var Messager = {
 		"Grandpa died. He said he was happy you were doing such important work.",
 		"It's weird to think I'm older than you now. I thought I'd always be the youngest sibling.",
 		"Please find the time to visit, we miss you. It's been a lot longer for us than it's been for you.",
-		"Things have changed a lot around here since you left. Maybe you can find the time to come back and catch up. We love you!"
+		"Things have changed a lot around here since you left. Maybe you can find the time to come back and catch up. We love you!",
+		"It’s been hard taking care of things with you gone all the time. When you get back we should talk.",
+		"I went to the doctor today and they told me I have cancer. Please come home so I can spend some time with you.",
+		"We had to sell the family lake house. It was getting to be too much work. We’re sorry you didn’t get one last summer in it.",
+		"Your cat died. I’m sorry, we tried to keep her going the last few years but it was a lost cause.",
+		"Mom is so pissed that you’re not calling her. Dad too, but he’s pretending he doesn’t feel emotion."
 	],
 
 	FAMILY_YOUNGER: [
 		"Hey, who said you could get older than me? You're supposed to be the little sibling, not me.",
 		"It's been hard around here since we last saw you. Honestly, it's hard for us to see you this way. I can't stop thinking about all the time together we lost.",
 		"Oh my goodness, you look so different! It's still hard for me to wrap my head around this whole thing. Hope we'll get to see you soon.",
-		"I can't believe you're # now! We have so many birthday parties to make up for."
+		"I can't believe you're # now! We have so many birthday parties to make up for.",
+		"Your mother is making your favorite cake! Wish you were here to celebrate with us!",
+		"Are those gray hairs I see in your latest video log? # is not looking so good on you.",
+		"Maybe you should come home and let me take care of you. I don’t feel comfortable being the mother of someone older than me.",
+		"Sparky, your little pup, has been having so much fun going on walks everyday! I’m sure he’ll jump for joy the next time he sees you...as long as he recognizes you.",
+		"In our eyes you’re still only a kid. Not fair that you’re already #."
 	],
 
 

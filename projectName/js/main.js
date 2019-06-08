@@ -254,7 +254,7 @@ Tutorial.prototype = {
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exit, this, 'exitOff', 'exitOn', "");
+		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exitTutorial, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
 		// Add in the planets

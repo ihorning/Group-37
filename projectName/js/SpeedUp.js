@@ -42,15 +42,3 @@ SpeedUp.prototype.setSpeed = function() {
 	}
 
 }
-// SpeedUp.prototype.getRecent = function() {
-// 	return this.recent;
-// }
-// SpeedUp.prototype.getIndex = function() {
-// 	return this.index;
-// }
-// SpeedUp.prototype.setRecent = function(r) {
-// 	this.recent = r;
-// }
-// SpeedUp.prototype.setFrame = function(f) {
-// 	this.frame = f;
-// }

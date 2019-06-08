@@ -102,6 +102,8 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.dragOffsetX = 0;
 	this.dragOffsetY = 0;
 
+	this.clickOnce = true;
+
 	this.timeSinceLastMessage = 0;
 
 	this.familyHappyMessages = Array.from(Messager.FAMILY_HAPPY);
@@ -133,19 +135,47 @@ Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	if(game.input.activePointer.isDown){
+		if(this.clickOnce){
+			switch(this.step){
+				case 0:
+					this.step = 1;
+					break;
+				case 3:
+					this.step = 4;
+					break;
+				case 5:
+					this.step = 6;
+					break;
+				case 9:
+					this.step = 10;
+					break;
+				case 11:
+					this.step = 12;
+					break;
+				case 12:
+					this.step = 13;
+					break;
+				case 13:
+					this.step = 14;
+			}
+			this.clickOnce = false;
+		}
 		if(this.clicked == false){
 			//console.log("hide1");
 			this.hideProfile();
-			if(this.step == 1){
-				this.step = 2;
+			if(this.step == 2){
+				this.step = 3;
 			}
 		}
 		else{
 			this.showProfile();
-			if(this.step == 0){
-				this.step = 1;
+			if(this.step == 1){
+				this.step = 2;
 			}
 		}
+	}
+	else{
+		this.clickOnce = true;
 	}
 	
 	//if character is over 35 start to fade in the oldness filter
@@ -257,8 +287,8 @@ Character.prototype.update = function() {
 				this.picture.frameName = this.name + "Meh";
 			}
 			else if(difference > 5) {
-				if(this.step == 3){
-					this.step = 4;
+				if(this.step == 7){
+					this.step = 8;
 				}
 				//this.debugText.fill = "#ff0000";
 				//this.debugText.text = ":(";
@@ -466,17 +496,14 @@ Character.prototype.EnterPlanet = function(planet) { // Add this to the nearest 
 	this.planet.pendingArrival = false;
 	this.x = 74;
 	this.y = 0;
-	if(this.step == 2 && this.planet.name == "purple"){
-		this.step = 3;
-	}
-	else if(this.step == 4 && this.planet.name == "blue"){
+	if(this.step == 4 && this.planet.name == "purple"){
 		this.step = 5;
 	}
-	else if(this.step == 5 && this.planet.name == "green"){
-		this.step = 6;
+	else if(this.step == 8 && this.planet.name == "blue"){
+		this.step = 9;
 	}
-	else if(this.step == 6){
-		this.step = 7;
+	else if(this.step == 10 && this.planet.name == "green"){
+		this.step = 11;
 	}
 
 }

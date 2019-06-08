@@ -145,6 +145,10 @@ Character.prototype.constructor = Character;
 
 // Define the Character's update function
 Character.prototype.update = function() {
+	if(game.state.getCurrentState().key === 'GameOver'){
+		this.inputEnabled = false;
+	}
+
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	if(game.input.activePointer.isDown){

@@ -87,6 +87,20 @@ MainMenu.prototype = {
 		this.tutorial.anchor.setTo(0.5);
 		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
+
+
+		game.add.tween(this.title).from({y: -100}, 700, Phaser.Easing.Quadratic.Out, true, 0);
+
+		game.add.tween(this.play).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 400);
+		game.add.tween(this.play.scale).from({x: 0.0001, y: 0.0001}, 800, Phaser.Easing.Cubic.Out, true, 400);
+
+		game.add.tween(this.tutorial).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 330);
+		game.add.tween(this.tutorial.scale).from({x: 0.0001, y: 0.0001}, 820, Phaser.Easing.Cubic.Out, true, 330);
+
+		game.add.tween(this.credits).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 260);
+		game.add.tween(this.credits.scale).from({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.Out, true, 260);
+
+
 	},
 	update: function() {
 		if(!this.musicSetUp && !(game.sound.context.state === "suspended")) {

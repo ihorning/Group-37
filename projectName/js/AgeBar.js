@@ -7,7 +7,7 @@
 
 // Look at WorkBar for details about what the variables do
 
-var AGE_BAR_WIDTH = 96;
+var AGE_BAR_WIDTH = 72;
 var AGE_BAR_HEIGHT = 10;
 var AGE_PROGRESS_WIDTH = AGE_BAR_WIDTH;
 var AGE_PROGRESS_HEIGHT = 4;
@@ -39,7 +39,10 @@ function AgeBar(game, x, y, person) {
 	this.person = person;
 
 	// Make a text object to display %
-	this.displayText = this.addChild(game.make.text(AGE_BAR_WIDTH, 0, "0%", AGE_BAR_FONT));
+	this.displayText = this.addChild(game.make.text(AGE_BAR_WIDTH, 0, "0% Life", AGE_BAR_FONT));
+	this.displayText.scale.set(0.65);
+
+	AgeBar.prototype.update.call(this);
 
 }
 
@@ -54,7 +57,7 @@ AgeBar.prototype.update = function() {
 	this.percent = this.person.life;
 
 	// Update the text to the life value
-	this.displayText.text = " "+Math.ceil(this.percent)+"%";
+	this.displayText.text = " "+Math.ceil(this.percent)+"% Life Left";
 
 	// Call the ProgressBar update function from here
 	ProgressBar.prototype.update.call(this);

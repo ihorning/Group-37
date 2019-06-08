@@ -4,6 +4,8 @@
 *.mp3
 *.wav
 .DS_Store
-# json files are included
 *.json
 projectName/assets/img/barAtlas.json
+*.json
+*.ai
+*.json

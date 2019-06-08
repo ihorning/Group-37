@@ -112,3 +112,9 @@ MessageButton.prototype.update = function() {
 		this.notificationNumber.visible = true;
 	}
 }
+
+MessageButton.prototype.closeRemaining = function() {
+	if(currentMessage) {
+		currentMessage.Close();
+	}
+}

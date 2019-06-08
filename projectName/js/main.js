@@ -229,7 +229,7 @@ Tutorial.prototype = {
 
 
 		// Add a MessageButton
-		new MessageButton();
+		this.messageButton = new MessageButton();
 
 		// Clear the MessageQueue
 		MessageQueue = [];
@@ -277,6 +277,7 @@ Tutorial.prototype = {
 		if(!this.medChar.alive) {
 			game.universalTime = 0;
 			this.esc.destroy();
+			this.messageButton.closeRemaining();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, true);
 		}
@@ -284,6 +285,7 @@ Tutorial.prototype = {
 			game.universalTime = 0;
 			this.esc.destroy();
 			this.medChar.hideProfile();
+			this.messageButton.closeRemaining();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, 0, true);
 		}
@@ -463,7 +465,7 @@ Play.prototype = {
 
 
 		// Add a MessageButton
-		new MessageButton();
+		this.messageButton = new MessageButton();
 
 		// Clear the MessageQueue
 		MessageQueue = [];
@@ -520,6 +522,7 @@ Play.prototype = {
 			game.universalTime = 0;
 			//this.esc.destroy();
 			this.esc.pendingDestroy = true;
+			this.messageButton.closeRemaining();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 0, this.numPlanets, this.pLeft, false);
 
@@ -530,6 +533,7 @@ Play.prototype = {
 			this.slowChar.hideProfile();
 			this.medChar.hideProfile();
 			this.fastChar.hideProfile();
+			this.messageButton.closeRemaining();
 			//(won, numPlanets, pLeft, tutor)
 			game.state.start('GameOver', false, false, 1, this.numPlanets, this.pLeft, false);
 

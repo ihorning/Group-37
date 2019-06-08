@@ -182,9 +182,31 @@ var startTutorial = function(){
 }
 
 var credits = function(){
-	if(!animatingMenu) {
-		game.state.start('Credits');
+	if(animatingMenu) {
+		return;
 	}
+	animatingMenu = true;
+	if(game.state.getCurrentState().key != "MainMenu") {
+		game.state.start('Credits');
+	} else {
+
+		var startTimer = game.time.create(true);
+		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Credits');}, this);
+		startTimer.start();
+
+		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
+
+		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
+		game.add.tween(this.play.scale).to({x: 0.0001, y: 0.0001}, 800, Phaser.Easing.Cubic.In, true);
+
+		game.add.tween(this.tutorial).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 70);
+		game.add.tween(this.tutorial.scale).to({x: 0.0001, y: 0.0001}, 820, Phaser.Easing.Cubic.In, true, 70);
+
+		game.add.tween(this.credits).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true, 140);
+		game.add.tween(this.credits.scale).to({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.In, true, 140);
+
+	}
+
 }
 
 var Credits = function(game) {};

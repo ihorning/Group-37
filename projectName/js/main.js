@@ -115,12 +115,16 @@ MainMenu.prototype = {
 	}
 }
 var startGame = function(){
+	if(animatingMenu) {
+		return;
+	}
+	animatingMenu = true;
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start("Play");
 	} else {
 
 		var startTimer = game.time.create(true);
-		startTimer.add(1200, function() {game.state.start("Play");}, this);
+		startTimer.add(1200, function() {animatingMenu = false; game.state.start("Play");}, this);
 		startTimer.start();
 
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
@@ -137,12 +141,16 @@ var startGame = function(){
 	}
 }
 var startTutorial = function(){
+	if(animatingMenu) {
+		return;
+	}
+	animatingMenu = true;
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start('Tutorial', true, false, 0);
 	} else {
 
 		var startTimer = game.time.create(true);
-		startTimer.add(1200, function() {game.state.start('Tutorial', true, false, 0);}, this);
+		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Tutorial', true, false, 0);}, this);
 		startTimer.start();
 
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
@@ -160,7 +168,9 @@ var startTutorial = function(){
 }
 
 var credits = function(){
-	game.state.start('Credits');
+	if(!animatingMenu) {
+		game.state.start('Credits');
+	}
 }
 
 var Credits = function(game) {};

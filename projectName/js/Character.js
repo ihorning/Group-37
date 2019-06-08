@@ -336,40 +336,43 @@ Character.prototype.update = function() {
 		// Calculate efficiency
 		this.efficiency = this.happiness / 100;
 
-		if(this.planet === this.home) { // If at home,
-			this.timeSinceLastMessage = 0; // Reset time since last message
-		}
+		if(game.state.getCurrentState().key != "Tutorial") {
 
-		if(this.timeSinceLastMessage > 40 && difference < 5) { // If it has been 40 units since last message and age difference is small,
-			this.timeSinceLastMessage = 40; // Cap at 40, leaving >5 units of time after threshold passed before a message is sent
-		}
-
-		if(this.timeSinceLastMessage > 45 && difference >= 5) { // If it has been 45 units since last message and age difference is large...
-
-			// Reset time since last message
-			this.timeSinceLastMessage = 0;
-
-			// Push a message according to ahead/behind
-			if((100 - this.life) - this.home.currentTime > 0) {
-				Messager.PushMessage(game, this, this.familyYoungerMessages, this.audio[4], true);
-			} else {
-				Messager.PushMessage(game, this, this.familyOlderMessages, this.audio[4], true);
+			if(this.planet === this.home) { // If at home,
+				this.timeSinceLastMessage = 0; // Reset time since last message
 			}
 
-		} else if(this.timeSinceLastMessage >= 45 && (this.happiness < 60 || this.happiness == 100)) { // If it has been 45 units since last message, difference is small, and happiness is significantly high/low...
-
-			// Reset time since last message
-			this.timeSinceLastMessage = 0;
-
-			// Push a message according to happiness
-			if(this.happiness > 60) {
-				Messager.PushMessage(game, this, this.familyHappyMessages, this.audio[4], true);
-			} else {
-				Messager.PushMessage(game, this, this.familyUnhappyMessages, this.audio[4], true);
+			if(this.timeSinceLastMessage > 40 && difference < 5) { // If it has been 40 units since last message and age difference is small,
+				this.timeSinceLastMessage = 40; // Cap at 40, leaving >5 units of time after threshold passed before a message is sent
 			}
 
-		} else { // If no message should be sent,
-			this.timeSinceLastMessage += (game.universalTime / 0.3) * this.home.timeMultiplier * (game.time.elapsed / 1000); // Update time since last message
+			if(this.timeSinceLastMessage > 45 && difference >= 5) { // If it has been 45 units since last message and age difference is large...
+
+				// Reset time since last message
+				this.timeSinceLastMessage = 0;
+
+				// Push a message according to ahead/behind
+				if((100 - this.life) - this.home.currentTime > 0) {
+					Messager.PushMessage(game, this, this.familyYoungerMessages, this.audio[4], true);
+				} else {
+					Messager.PushMessage(game, this, this.familyOlderMessages, this.audio[4], true);
+				}
+
+			} else if(this.timeSinceLastMessage >= 45 && (this.happiness < 60 || this.happiness == 100)) { // If it has been 45 units since last message, difference is small, and happiness is significantly high/low...
+
+				// Reset time since last message
+				this.timeSinceLastMessage = 0;
+
+				// Push a message according to happiness
+				if(this.happiness > 60) {
+					Messager.PushMessage(game, this, this.familyHappyMessages, this.audio[4], true);
+				} else {
+					Messager.PushMessage(game, this, this.familyUnhappyMessages, this.audio[4], true);
+				}
+
+			} else { // If no message should be sent,
+				this.timeSinceLastMessage += (game.universalTime / 0.3) * this.home.timeMultiplier * (game.time.elapsed / 1000); // Update time since last message
+			}
 		}
 
 

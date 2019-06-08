@@ -20,6 +20,11 @@ var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
 
+		game.scale.pageAlignHorizontally = true;
+		game.scale.pageAlignVertically = true;
+		game.scale.refresh();
+
+
 		if(!preloadedAssets) {
 			// console.log('MainMenu: preload');
 			game.load.image('credits', 'assets/img/CreditsAlph.png');

@@ -17,6 +17,8 @@ var menusounds;
 var preloadedAssets = false;
 var animatingMenu = false;
 
+var gameBorders;
+
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
@@ -106,6 +108,14 @@ MainMenu.prototype = {
 		game.add.tween(this.credits.scale).from({x: 0.0001, y: 0.0001}, 810, Phaser.Easing.Cubic.Out, true, 260);
 
 		animatingMenu = false;
+
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height);
+		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(0, 0);
 
 	},
 	update: function() {
@@ -221,6 +231,14 @@ Credits.prototype = {
 		this.credits = this.add.image(0, 0, 'credits', 0);
 		this.esc = new PlayButton(game, game.width-20, 20, 'exit', toMenu, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
+
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height);
+		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(0, 0);
 	}
 }
 
@@ -326,6 +344,15 @@ Tutorial.prototype = {
 		MessageQueue = [];
 
 		game.world.bringToTop(game.foreground);
+
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height);
+		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(0, 0);
+
 	},
 	update: function() {
 		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
@@ -647,6 +674,14 @@ Play.prototype = {
 		MessageQueue = [];
 
 		game.world.bringToTop(game.foreground);
+
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height);
+		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(0, 0);
 	},
 
 	update: function() {
@@ -842,6 +877,14 @@ GameOver.prototype = {
 			this.missionReport[property].alpha = 0;
 		}*/
 		this.popup.Open();
+
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height);
+		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(0, 0);
 	},
 	update: function() {
 		/*//cool resize animation to make things snazzy

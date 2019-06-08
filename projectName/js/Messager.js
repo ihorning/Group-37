@@ -95,6 +95,10 @@ function MessageButton() {
 	this.notificationNumber = this.addChild(game.make.text(-60, -this.height + 15, "0", {font: "20px Courier", fontWeight: "bold", fill: "#fff"}));
 	this.notificationNumber.anchor.set(0.5);
 
+	this.shake = game.add.tween(this).to({
+			x: 1083
+		}, 200, Phaser.Easing.Linear.None, true, 1000, -1, true);
+
 	game.foreground.add(this);
 }
 
@@ -107,9 +111,13 @@ MessageButton.prototype.update = function() {
 	if(MessageQueue.length == 0) {
 		this.bubble.alpha = 0;
 		this.notificationNumber.visible = false;
+		this.shake.pause();
 	} else {
 		this.bubble.alpha = 1;
 		this.notificationNumber.visible = true;
+		if(this.shake.isPaused){
+			this.shake.resume();
+		}
 	}
 }
 

@@ -19,7 +19,7 @@ var preloadedAssets = false;
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
-
+		// http://www.html5gamedevs.com/topic/1609-centering-canvas/
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.scale.refresh();

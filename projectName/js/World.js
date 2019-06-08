@@ -1,11 +1,21 @@
 "use strict";
 
+// Define a path to draw a more precise circle than in the drawCircle function of graphics
 var circlePath = [];
 var circleDetail = 1000;
 for(var i = 0; i < circleDetail; i++) {
 	circlePath[circlePath.length] = new Phaser.Point(Math.cos(2 * Math.PI * i / (circleDetail - 1)), Math.sin(2 * Math.PI * i / (circleDetail - 1)));
 }
 
+// Constructor
+// game: the game
+// orbitRad: the initial distance to the black hole
+// oribtAngle: the initial angle about the black hole
+// orbitSpeed: how fast this will orbit the black hole
+// key: texture atlas
+// frame: frame of this World in atlas
+//// timeMultiplier:
+// name: the name of this planet
 function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplier, name) {
 	// Call Phaser.Sprite constructor
 	Phaser.Sprite.call(this, game, -1000, -1000);
@@ -13,16 +23,18 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	// Set the anchor point to the center
 	this.anchor.set(0.5);
 
+	// Save the name
 	this.name = name;
 
+	// Save the orbit radius/angle/speed
 	this.orbitRad = orbitRad;
 	this.orbitAngle = orbitAngle;
 	this.orbitSpeed = orbitSpeed;
 
-
+	// Create a graphics object on the background that will show this World's orbit path/radius
 	this.orbit = game.background.add(game.make.graphics());
 
-
+	// Set the initial x and y coordinates based on orbit radius/angle
 	this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 	this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 
@@ -30,63 +42,79 @@ function World(game, orbitRad, orbitAngle, orbitSpeed, key, frame, timeMultiplie
 	// Store the time multiplier
 	this.timeMultiplier = timeMultiplier;
 	
+	// Set the current time to 0 to start
 	this.currentTime = 0;
 
 	// Add this to the game
 	game.add.existing(this);
 
-
-	// Add in a text to display time
-	this.debugTimeDisplay = this.addChild(game.make.text(0, 0, "0", {font: "15px Courier", font: "15px Lucida Console", fontWeight: "bold", fill: "#fff"}));
-	this.debugTimeDisplay.anchor.set(0.5);
-
-	// Add a WorkBar
+	// Add a WorkBar as a child
 	this.job = new WorkBar(game, 0, 0, this.timeMultiplier);
 	this.addChild(this.job);
 
 	// Start with character as null
 	this.character = null;
+	// No arrivals pending yet
 	this.pendingArrival = null;
 
+	// Start out not dying
 	this.death = false;
+	// Create a sound to play when dying
 	this.deathSound = game.add.audio("blackHole");
 
+	// Create a WorldSpin object to visualize the planet
 	this.spin = new WorldSpin(game, key, frame, this.timeMultiplier, this);
 }
 
+// Set the prototype to a copy of the Phaser.Sprite prototype
 World.prototype = Object.create(Phaser.Sprite.prototype);
-
+// Define the constructor
 World.prototype.constructor = World;
 
+// Define the World's update function
 World.prototype.update = function() {
+	// Calculate a time difference variable based on relative time, global time, and time since last frame
 	var delta = this.timeMultiplier * game.universalTime * game.time.elapsed / 1000;
+	// Update currentTime with the new time delta
 	this.currentTime += delta;
 
+	// Calculate how much the radius should move
+	// This depends on the work progress
 	var progressFactor = (75 - this.job.bar.percent) / 100;
 	if(progressFactor < 0) {
 		progressFactor = -Math.pow(progressFactor, 2);
 	}
+	// Update the orbit radius
 	this.orbitRad -= (delta / this.timeMultiplier) * progressFactor;
+	// Make sure it does not go below zero
 	if(this.orbitRad < 0) {
 		this.orbitRad = 0;
 	}
+	// Update the time multiplier according to new distance from the black hole
 	this.timeMultiplier = (this.orbitRad / 400) / 0.66;
 
+	// Clear the orbit line
 	this.orbit.clear();
+	// Reset the style
 	this.orbit.lineStyle(2.2 - (1.3 * Math.sin(2 * this.currentTime)), 0xffffff, 0.2 + (0.05 * (Math.sin(2 * (this.currentTime + 1)))));
-	//this.orbit.drawCircle(game.world.centerX, game.world.centerY, this.orbitRad * 2);
+	// Define a new path based on the circle path variable
 	var newCirclePath = [];
-	for(var i = 0; i < circlePath.length; i++) {
+	for(var i = 0; i < circlePath.length; i++) { // Each point is multiplied by the orbit radius and offset to be centered around the black hole
 		newCirclePath[i] = new Phaser.Point((circlePath[i].x * this.orbitRad) + game.world.centerX, (circlePath[i].y * this.orbitRad) + game.world.centerY);
 	}
+	// Draw the new circle path
 	this.orbit.drawPolygon(newCirclePath);
 
+	// Update the orbit angle
 	this.orbitAngle += delta * this.orbitSpeed / (this.orbitRad);
+	// Keep it in range [0, 2*PI)
 	this.orbitAngle = this.orbitAngle % (Math.PI * 2);
 	
 
+	// If too close to the center...
 	if(Math.pow(this.x - game.world.centerX, 2) + Math.pow(this.y - game.world.centerY, 2) <= 5184){
-		if(this.death === false){
+		if(this.death === false){ // If not started dying...
+			// Start dying, add tweens to fly into the black hole
 			this.death = true;
 			this.shrink = game.add.tween(this.scale).to({
 				x: 0.1,
@@ -107,25 +135,19 @@ World.prototype.update = function() {
 			this.zoom.onComplete.add(this.die, this);	
 		}
 	}
-	else if(this.death === false){
+	else if(this.death === false){ // If not too close and not dying...
+		// Set the x and y position according to orbit radius and angle
 		this.x = game.world.centerX + (this.orbitRad * Math.cos(this.orbitAngle));
 		this.y = game.world.centerY - (this.orbitRad * Math.sin(this.orbitAngle));
 	}
 
-	// Get the number to be displayed (1 decimal)
-	var numberToDisplay = Math.floor(this.currentTime * 10) / 10;
-	// Add a .0 if rounds to integer
-	if(Math.floor(numberToDisplay) == numberToDisplay) {
-		this.debugTimeDisplay.text = numberToDisplay+".0";
-	} else { // Otherwise, just make it a string
-		this.debugTimeDisplay.text = numberToDisplay+"";
-	}
 
 	if(this.character == null) { // If no character,
 		this.job.bar.sleep = true; // Turn off job progress
 	} else { // If there is a character,
+		// Update the job's efficiency
 		this.job.efficiency = this.character.efficiency;
-		if(!this.job.bar.complete) {
+		if(!this.job.bar.complete) { // If the job is NOT done,
 			this.job.bar.sleep = false; // Turn on job progress
 		}
 		// Update the character, but not if it is being updated in the world (coincides with drawLine)
@@ -138,6 +160,7 @@ World.prototype.update = function() {
 	this.job.update();
 }
 
+// Function called when the planet dies
 World.prototype.die = function(){
 	console.log("dead");
 	this.deathSound.play("", 0, 0.9, false);
@@ -148,10 +171,7 @@ World.prototype.die = function(){
 	}
 }
 
-World.prototype.currentTime = function() {
-	return this.currentTime;
-}
-
+// Constructor for WorldSpin
 function WorldSpin(game, key, frame, timeMultiplier, planet) {
 	// Call Phaser.TileSprite constructor
 	Phaser.TileSprite.call(this, game, -1000, -1000, 70, 70, key, frame);
@@ -176,10 +196,12 @@ function WorldSpin(game, key, frame, timeMultiplier, planet) {
 	game.add.existing(this);
 }
 
+// Set the prototype to a copy of Phaser.TileSprite prototype
 WorldSpin.prototype = Object.create(Phaser.TileSprite.prototype);
-
+// Define the constructor
 WorldSpin.prototype.constructor = WorldSpin;
 
+// Define the WorldSpin's update function
 WorldSpin.prototype.update = function() {
 	//Scroll planet
 	this.tilePosition.x -= this.timeMultiplier * (game.universalTime / 0.3);

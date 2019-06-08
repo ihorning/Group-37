@@ -113,8 +113,8 @@ MainMenu.prototype = {
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
 		gameBorders.lineTo(game.world.width, 0);
-		gameBorders.lineTo(game.world.width, game.world.height);
-		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
 		gameBorders.lineTo(0, 0);
 
 	},
@@ -236,8 +236,8 @@ Credits.prototype = {
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
 		gameBorders.lineTo(game.world.width, 0);
-		gameBorders.lineTo(game.world.width, game.world.height);
-		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
 		gameBorders.lineTo(0, 0);
 	}
 }
@@ -349,8 +349,8 @@ Tutorial.prototype = {
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
 		gameBorders.lineTo(game.world.width, 0);
-		gameBorders.lineTo(game.world.width, game.world.height);
-		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
 		gameBorders.lineTo(0, 0);
 
 	},
@@ -679,8 +679,8 @@ Play.prototype = {
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
 		gameBorders.lineTo(game.world.width, 0);
-		gameBorders.lineTo(game.world.width, game.world.height);
-		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
 		gameBorders.lineTo(0, 0);
 	},
 
@@ -882,8 +882,8 @@ GameOver.prototype = {
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
 		gameBorders.lineTo(game.world.width, 0);
-		gameBorders.lineTo(game.world.width, game.world.height);
-		gameBorders.lineTo(0, game.world.height);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
 		gameBorders.lineTo(0, 0);
 	},
 	update: function() {

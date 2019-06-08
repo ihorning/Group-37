@@ -10,7 +10,7 @@ for(var i = 0; i < circleDetail; i++) {
 // Constructor
 // game: the game
 // orbitRad: the initial distance to the black hole
-// oribtAngle: the initial angle about the black hole
+// orbitAngle: the initial angle about the black hole
 // orbitSpeed: how fast this will orbit the black hole
 // key: texture atlas
 // frame: frame of this World in atlas
@@ -169,6 +169,7 @@ World.prototype.die = function(){
 	if(this.character != null){
 			this.character.Die();
 	}
+	this.orbit.visible = false;
 }
 
 // Constructor for WorldSpin

@@ -304,7 +304,6 @@ Tutorial.prototype = {
 				this.popup.x = 200;
 				this.popup.y = 300;
 				if(!this.medChar.openOnce){
-					console.log("opening");
 					this.medChar.openOnce = true;
 					this.popup.ResetGoal(700, 180);
 					this.popup.Open();

@@ -262,10 +262,6 @@ Character.prototype.update = function() {
 	// Update life text
 	this.lifeText.text = Math.floor(this.life)+1 + "%";
 
-	if(this.life < 0) { // If dead,
-		//Remove charcter
-		this.Die();
-	}
 
 	if(!this.input.isDragged) { // If on a planet...
 		// Emote and life text are visible
@@ -501,6 +497,11 @@ Character.prototype.update = function() {
 	if(this.waitingForDrag) {
 		this.WaitForDrag();
 	}
+
+	if(this.life < 0) { // If dead,
+		//Remove charcter
+		this.Die();
+	}
 }
 
 // Function to update the ahead/behind number on character profile
@@ -544,7 +545,7 @@ Character.prototype.Die = function() {
 	this.input.disableDrag();
 
 	this.hideProfile();
-	this.kill();
+	this.destroy();
 }
 
 // Function to enter a new planet

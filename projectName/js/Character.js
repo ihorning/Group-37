@@ -95,8 +95,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 		name:      game.foreground.add(game.make.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"})),
 		age:       game.foreground.add(game.make.text(150, game.height - 123, "", {font: "25px Courier", fill: "#fff"})),
 		diff:      game.foreground.add(game.make.text(150, game.height - 63, "", {font: "17px Courier", fill: "#fff"})),
-		happiness: game.foreground.add(game.make.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"})),
-		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
+		happiness: game.foreground.add(game.make.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"}))
 	}
 	this.aDifference = 0;
 	this.zDifference = 0;
@@ -136,6 +135,9 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 		this.familyOlderMessages[i] = this.familyOlderMessages[i].replace(/@/g, this.name);
 	}
 
+	this.currentGTime = 0.3; //time check for leaving the profile open when speed arrow clicked 
+
+	this.continue = false; //boolean for handling clicking through the tutorial to keep the profile open
 }
 
 // Set prototype to a copy of Phaser.Sprite prototype
@@ -152,47 +154,73 @@ Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	if(game.input.activePointer.isDown){
-		if(this.clickOnce){
-			switch(this.step){
+		if(this.clickOnce){ //make sure tutorial steps aren't skipped
+			switch(this.step){ // tutorial advancement
 				case 0:
 					this.step = 1;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 3:
 					this.step = 4;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 5:
 					this.step = 6;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 9:
 					this.step = 10;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 11:
 					this.step = 12;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 12:
 					this.step = 13;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 13:
 					this.step = 14;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 			}
-			this.clickOnce = false;
+			this.clickOnce = false; //set clickOnce to false until mouse is up again
 		}
-		if(this.clicked == false){
-			//console.log("hide1");
-			this.hideProfile();
-			if(this.step == 2){
+		//Check if this character was clicked
+		if(this.clicked == false && this.currentGTime === game.universalTime){ // if not and speed arrows weren't clicked, hide thier profile
+			if(!this.continue){
+				this.hideProfile();
+			}
+			if(this.step == 2){ // tutorial advancement
 				this.step = 3;
 				this.openOnce = false;
 			}
 		}
-		else{
+		else if(this.currentGTime != game.universalTime && this.picture.alpha === 0){ // if a speed arrow clicked while a profile is open, don't close it
+			this.hideProfile();
+		}
+		else{ // if they were clicked, show their profile
 			this.showProfile();
 			if(this.step == 1){
 				this.step = 2;
@@ -201,7 +229,9 @@ Character.prototype.update = function() {
 		}
 	}
 	else{
-		this.clickOnce = true;
+		this.clickOnce = true; //set clickOnce to true if mouse is not down
+		this.currentGTime = game.universalTime; //reset time and tutorial advancement checks
+		this.continue = false;
 	}
 	
 	//if character is over 35 start to fade in the oldness filter
@@ -225,7 +255,6 @@ Character.prototype.update = function() {
 	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
 	
 	this.info.happiness.text = "Efficiency: " + Math.floor(this.happiness) + "%";
-	//this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;

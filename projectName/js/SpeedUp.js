@@ -7,7 +7,7 @@ function SpeedUp(game, key, frame, text, value, index, sound){
 
 	this.inputEnabled = true;
 	this.input.useHandCursor = true;
-	this.events.onInputUp.add(this.setSpeed, this);
+	this.events.onInputDown.add(this.setSpeed, this);
 
 	//game.add.existing(this);
 	game.foreground.add(this);

@@ -237,14 +237,6 @@ Character.prototype.update = function() {
 		//Remove charcter
 		this.Die();
 	}
-											
-	//If moused over character show profile
-	// if(this.input.pointerOver() && this.life > 0.1){
-	// 	this.showProfile();	
-	// }
-	// else{
-	// 	this.hideProfile();
-	// }
 
 	if(!this.input.isDragged) { // If on a planet...
 		// Emote and life text are visible
@@ -385,7 +377,6 @@ Character.prototype.update = function() {
 		this.world.x = game.input.x;
 		this.world.y = game.input.y;
 
-		//this.hideProfile();
 	}
 
 	// Update the ahead/behind number on the profile

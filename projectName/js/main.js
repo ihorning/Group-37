@@ -468,6 +468,7 @@ Tutorial.prototype = {
 					this.medChar.openOnce = true;
 					this.popup.ResetGoal(480, 80);
 					this.popup.Open();
+					this.medChar.showProfile();
 				}
 				this.instruction.text = "Notice that Abigail's efficiency has started \nto drop now that she's sad because she is \n5 years ahead of her family.\n\nDrag her back to her home, the blue planet.";
 				break;

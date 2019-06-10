@@ -60,7 +60,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.efficiency = 1;
 
 	// Add the emote sprite as a child
-	this.emote = this.addChild(game.make.sprite(23, -20, "emoteAtlas", "happy"));
+	this.emote = this.addChild(game.make.sprite(23, -20, "atlas", "happy"));
 	this.emote.anchor.set(0.5);
 	this.emote.inputEnabled = true;
 	this.emote.input.disableDrag();
@@ -76,12 +76,12 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.drawLine = false;
 
 	// Add a Popup that Character statistics will be shown on
-	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "atlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
 	this.picture.bringToTop();
 
 	// Add oldness filter but initialize it as invisible
-	this.old = game.foreground.add(game.make.sprite(0, game.height, 'chars', this.name+"Old"));
+	this.old = game.foreground.add(game.make.sprite(0, game.height, 'atlas', this.name+"Old"));
 	this.old.anchor.setTo(0, 1);
 	this.old.scale.setTo(0.7);
 	this.old.bringToTop();
@@ -95,8 +95,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 		name:      game.foreground.add(game.make.text(150, game.height - 170, "", {font: "35px Courier", fill: "#fff"})),
 		age:       game.foreground.add(game.make.text(150, game.height - 123, "", {font: "25px Courier", fill: "#fff"})),
 		diff:      game.foreground.add(game.make.text(150, game.height - 63, "", {font: "17px Courier", fill: "#fff"})),
-		happiness: game.foreground.add(game.make.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"})),
-		//quote:     game.add.text(150, game.height - 50, "", {font: "20px Courier", fill: "#fff"})
+		happiness: game.foreground.add(game.make.text(150, game.height - 38, "", {font: "17px Courier", fill: "#fff"}))
 	}
 	this.aDifference = 0;
 	this.zDifference = 0;
@@ -136,6 +135,9 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 		this.familyOlderMessages[i] = this.familyOlderMessages[i].replace(/@/g, this.name);
 	}
 
+	this.currentGTime = 0.3; //time check for leaving the profile open when speed arrow clicked 
+
+	this.continue = false; //boolean for handling clicking through the tutorial to keep the profile open
 }
 
 // Set prototype to a copy of Phaser.Sprite prototype
@@ -152,47 +154,73 @@ Character.prototype.update = function() {
 	this.aDifference = (100 - this.life) - this.home.currentTime;
 
 	if(game.input.activePointer.isDown){
-		if(this.clickOnce){
-			switch(this.step){
+		if(this.clickOnce){ //make sure tutorial steps aren't skipped
+			switch(this.step){ // tutorial advancement
 				case 0:
 					this.step = 1;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 3:
 					this.step = 4;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 5:
 					this.step = 6;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 9:
 					this.step = 10;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 11:
 					this.step = 12;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 12:
 					this.step = 13;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 					break;
 				case 13:
 					this.step = 14;
 					this.openOnce = false;
+					if(game.state.getCurrentState().key === 'Tutorial'){
+						this.continue = true;
+					}
 			}
-			this.clickOnce = false;
+			this.clickOnce = false; //set clickOnce to false until mouse is up again
 		}
-		if(this.clicked == false){
-			//console.log("hide1");
-			this.hideProfile();
-			if(this.step == 2){
+		//Check if this character was clicked
+		if(this.clicked == false && this.currentGTime === game.universalTime){ // if not and speed arrows weren't clicked, hide thier profile
+			if(!this.continue){
+				this.hideProfile();
+			}
+			if(this.step == 2){ // tutorial advancement
 				this.step = 3;
 				this.openOnce = false;
 			}
 		}
-		else{
+		else if(this.currentGTime != game.universalTime && this.picture.alpha === 0){ // if a speed arrow clicked while a profile is open, don't close it
+			this.hideProfile();
+		}
+		else{ // if they were clicked, show their profile
 			this.showProfile();
 			if(this.step == 1){
 				this.step = 2;
@@ -201,7 +229,9 @@ Character.prototype.update = function() {
 		}
 	}
 	else{
-		this.clickOnce = true;
+		this.clickOnce = true; //set clickOnce to true if mouse is not down
+		this.currentGTime = game.universalTime; //reset time and tutorial advancement checks
+		this.continue = false;
 	}
 	
 	//if character is over 35 start to fade in the oldness filter
@@ -225,7 +255,6 @@ Character.prototype.update = function() {
 	this.info.age.text = Math.floor(20 + (100 - this.life)*.6) + " YEARS OLD";
 	
 	this.info.happiness.text = "Efficiency: " + Math.floor(this.happiness) + "%";
-	//this.info.quote.text = "YEET";
 
 	// Age self
 	this.life -= delta;
@@ -233,18 +262,6 @@ Character.prototype.update = function() {
 	// Update life text
 	this.lifeText.text = Math.floor(this.life)+1 + "%";
 
-	if(this.life < 0) { // If dead,
-		//Remove charcter
-		this.Die();
-	}
-											
-	//If moused over character show profile
-	// if(this.input.pointerOver() && this.life > 0.1){
-	// 	this.showProfile();	
-	// }
-	// else{
-	// 	this.hideProfile();
-	// }
 
 	if(!this.input.isDragged) { // If on a planet...
 		// Emote and life text are visible
@@ -336,40 +353,43 @@ Character.prototype.update = function() {
 		// Calculate efficiency
 		this.efficiency = this.happiness / 100;
 
-		if(this.planet === this.home) { // If at home,
-			this.timeSinceLastMessage = 0; // Reset time since last message
-		}
+		if(game.state.getCurrentState().key != "Tutorial") {
 
-		if(this.timeSinceLastMessage > 40 && difference < 5) { // If it has been 40 units since last message and age difference is small,
-			this.timeSinceLastMessage = 40; // Cap at 40, leaving >5 units of time after threshold passed before a message is sent
-		}
-
-		if(this.timeSinceLastMessage > 45 && difference >= 5) { // If it has been 45 units since last message and age difference is large...
-
-			// Reset time since last message
-			this.timeSinceLastMessage = 0;
-
-			// Push a message according to ahead/behind
-			if((100 - this.life) - this.home.currentTime > 0) {
-				Messager.PushMessage(game, this, this.familyYoungerMessages, this.audio[4], true);
-			} else {
-				Messager.PushMessage(game, this, this.familyOlderMessages, this.audio[4], true);
+			if(this.planet === this.home) { // If at home,
+				this.timeSinceLastMessage = 0; // Reset time since last message
 			}
 
-		} else if(this.timeSinceLastMessage >= 45 && (this.happiness < 60 || this.happiness == 100)) { // If it has been 45 units since last message, difference is small, and happiness is significantly high/low...
-
-			// Reset time since last message
-			this.timeSinceLastMessage = 0;
-
-			// Push a message according to happiness
-			if(this.happiness > 60) {
-				Messager.PushMessage(game, this, this.familyHappyMessages, this.audio[4], true);
-			} else {
-				Messager.PushMessage(game, this, this.familyUnhappyMessages, this.audio[4], true);
+			if(this.timeSinceLastMessage > 40 && difference < 5) { // If it has been 40 units since last message and age difference is small,
+				this.timeSinceLastMessage = 40; // Cap at 40, leaving >5 units of time after threshold passed before a message is sent
 			}
 
-		} else { // If no message should be sent,
-			this.timeSinceLastMessage += (game.universalTime / 0.3) * this.home.timeMultiplier * (game.time.elapsed / 1000); // Update time since last message
+			if(this.timeSinceLastMessage > 45 && difference >= 5) { // If it has been 45 units since last message and age difference is large...
+
+				// Reset time since last message
+				this.timeSinceLastMessage = 0;
+
+				// Push a message according to ahead/behind
+				if((100 - this.life) - this.home.currentTime > 0) {
+					Messager.PushMessage(game, this, this.familyYoungerMessages, this.audio[4], true);
+				} else {
+					Messager.PushMessage(game, this, this.familyOlderMessages, this.audio[4], true);
+				}
+
+			} else if(this.timeSinceLastMessage >= 45 && (this.happiness < 60 || this.happiness == 100)) { // If it has been 45 units since last message, difference is small, and happiness is significantly high/low...
+
+				// Reset time since last message
+				this.timeSinceLastMessage = 0;
+
+				// Push a message according to happiness
+				if(this.happiness > 60) {
+					Messager.PushMessage(game, this, this.familyHappyMessages, this.audio[4], true);
+				} else {
+					Messager.PushMessage(game, this, this.familyUnhappyMessages, this.audio[4], true);
+				}
+
+			} else { // If no message should be sent,
+				this.timeSinceLastMessage += (game.universalTime / 0.3) * this.home.timeMultiplier * (game.time.elapsed / 1000); // Update time since last message
+			}
 		}
 
 
@@ -382,7 +402,6 @@ Character.prototype.update = function() {
 		this.world.x = game.input.x;
 		this.world.y = game.input.y;
 
-		//this.hideProfile();
 	}
 
 	// Update the ahead/behind number on the profile
@@ -432,7 +451,7 @@ Character.prototype.update = function() {
 					if(oddEven) {
 						circleRad = 5;
 					} else {
-						circleRad = 3;
+						circleRad = 4;
 					}
 					oddEven = !oddEven;
 					this.line.drawCircle(newX, newY, circleRad);
@@ -478,6 +497,11 @@ Character.prototype.update = function() {
 	if(this.waitingForDrag) {
 		this.WaitForDrag();
 	}
+
+	if(this.life < 0) { // If dead,
+		//Remove charcter
+		this.Die();
+	}
 }
 
 // Function to update the ahead/behind number on character profile
@@ -521,7 +545,7 @@ Character.prototype.Die = function() {
 	this.input.disableDrag();
 
 	this.hideProfile();
-	this.kill();
+	this.destroy();
 }
 
 // Function to enter a new planet
@@ -633,13 +657,13 @@ Character.prototype.EndDrag = function() {
 	if(minDistance < 100) {
 
 		if(this.planetList[minInd] === this.home) {
-			console.log(this.name+" gains 10 points of happiness for going home");
+			//console.log(this.name+" gains 10 points of happiness for going home");
 			this.happiness += 10;
 			if(this.happiness > 100) {
 				this.happiness = 100;
 			}
 		} else {
-			console.log(this.name+" loses 10 points of happiness for travel");
+			//console.log(this.name+" loses 10 points of happiness for travel");
 			this.happiness -= 10;
 			if(this.happiness < 0) {
 				this.happiness = 0;
@@ -649,7 +673,7 @@ Character.prototype.EndDrag = function() {
 		this.planetList[minInd].pendingArrival = true;
 
 		// Make a rocket
-		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 300, "rocketAtlas", "rocket");
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 300, "atlas", "rocket");
 		this.input.disableDrag();
 		// Add this as a child
 		newRocket.addChild(this);

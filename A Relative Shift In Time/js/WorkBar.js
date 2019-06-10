@@ -6,7 +6,7 @@
 // I put these variables here instead of as parameters to reduce clutter.
 
 var WORK_BAR_DIVISIONS = 50;
-var WORK_BAR_KEY = "barAtlas";
+var WORK_BAR_KEY = "atlas";
 var WORK_BAR_FRAME = "circleBar";
 var WORK_BAR_BG_FRAME = "circleBarBG";
 var WORK_BAR_TINT = "0x909090"; // Tint when sleeping
@@ -70,7 +70,7 @@ WorkBar.prototype.update = function() {
 		this.bar.tint = 0xeeffee;
 	}
 
-
+	// Show a skeleton if the mouse is over
 	if(!dragging && Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * 0.5) {
 		this.BG.visible = true;
 		this.displayText.scale.set(1.15);

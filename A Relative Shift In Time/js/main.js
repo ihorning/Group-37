@@ -1,50 +1,49 @@
 //Group 37 Jay Holm, Ian Horning, Gram Nitschke
 //https://github.com/ihorning/Group-37
+//https://rockets-and-logarithms.itch.io/a-relative-shift-in-time
 "use strict";
 
-// var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+// Create the game
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
+// Initialize the universalTime variable
 game.universalTime = 0.3;
 
+// Initialize the background and foreground groups
 game.background = null;
 game.foreground = null;
 
+// Initialize the dragging boolean, which keeps track of whether or not the player is dragging a character
 var dragging = false;
 
+// Declare the global music and menusounds objects, which will play the game's music
 var music;
 var menusounds;
 
+// The assets have not yet been preloaded
 var preloadedAssets = false;
+// The menu is not being animated
 var animatingMenu = false;
 
+// Declare the gloabl gameBorders object
+var gameBorders;
+
+// The MainMenu state
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
+		// Center the game on the screen
 		// http://www.html5gamedevs.com/topic/1609-centering-canvas/
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.scale.refresh();
 
-
+		// If assets have not yet been preloaded...
 		if(!preloadedAssets) {
 			// console.log('MainMenu: preload');
-			game.load.image('credits', 'assets/img/CreditsAlph.png');
 
-			game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
-			game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
-			game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
-			game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
-			game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
-			game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
-			game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
-			game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
-			game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
-			game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
-			game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
-			game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
-			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
-			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
-			game.load.atlas("starAtlas", "assets/img/starAtlas.png", "assets/img/starAtlas.json");
+			game.load.atlas('atlas', 'assets/img/atlas.png', 'assets/img/atlas.json');
+
+			// Load in all the sound assets
 
 			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
@@ -68,32 +67,36 @@ MainMenu.prototype = {
 			// grab keyboard manager
 			var cursors = game.input.keyboard.createCursorKeys();
 
+			// Assets have now been preloaded
 			preloadedAssets = true;
 		}
 		
 	},
 	create: function() {
-		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
 
+		// Set scale mode to fill the screen and keep proportions
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+		// The music has not yet been set up
 		this.musicSetUp = false;
 
 		// add title and play, tutorial, credits button
-		this.blackHoleBG = this.add.sprite(game.width/2, game.height/2, 'hole', 'blackHole01');
+		this.blackHoleBG = this.add.sprite(game.width/2, game.height/2, 'atlas', 'blackHole01');
 		this.blackHoleBG.anchor.setTo(0.5);
 		this.blackHoleBG.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
 		this.blackHoleBG.animations.play('swirl');
-		this.title = this.add.image(game.width/2, game.height/2, 'title', 'titleStrip');
+		this.title = this.add.image(game.width/2, game.height/2, 'atlas', 'titleStrip');
 		this.title.anchor.setTo(0.5);
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'title', startGame, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
+		this.play = new PlayButton(game, game.width/2, game.height/2 + 20, 'atlas', startGame, this, 'buttonUp', 'buttonDown', "PLAY", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.play.anchor.setTo(0.5);
-		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'title', startTutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
+		this.tutorial = new PlayButton(game, game.width/2, game.height/2 + 140, 'atlas', startTutorial, this, 'buttonUp', 'buttonDown', "TUTORIAL", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.tutorial.anchor.setTo(0.5);
-		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
+		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'atlas', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
 
-
+		// Tween in all the main menu elements
 		game.add.tween(this.title).from({y: -100}, 700, Phaser.Easing.Quadratic.Out, true, 0);
 
 		game.add.tween(this.play).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 400);
@@ -107,9 +110,20 @@ MainMenu.prototype = {
 
 		animatingMenu = false;
 
+		// Draw lines around the game
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
+		gameBorders.lineTo(0, 0);
+
 	},
 	update: function() {
+		// If audio context is not suspended and music has not been set up...
 		if(!this.musicSetUp && !(game.sound.context.state === "suspended")) {
+			// Start playing the music
 			if(music === undefined) {
 				music = game.add.audio("music");
 				music.play("", 0, 0, true);
@@ -118,6 +132,7 @@ MainMenu.prototype = {
 			} else {
 				music.fadeTo(1000, 0);
 			}
+			// Start playing the menusounds music
 			if(menusounds === undefined) {
 				menusounds = game.add.audio("menusounds");
 				menusounds.play("", 0, 0, true);
@@ -127,26 +142,35 @@ MainMenu.prototype = {
 			} else {
 				menusounds.fadeTo(1000, 0.5);
 			}
+			// Music has now been set up
 			this.musicSetUp = true;
 		}
+		// If not in suspended state and menusounds volume has mysteriously become 0, fade it in again
 		if(!(game.sound.context.state === "suspended") && menusounds.volume === 0) {
 			menusounds.fadeTo(3000, 0.5);
 		}
 	}
 }
 var startGame = function(){
+	// Don't do anything if animating after the button was pressed
 	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start("Play");
-	} else {
+	} else { // Else, animate
 
+		// Animating now
+		animatingMenu = true;
+
+		// Create a timer that will start the play state after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start("Play");}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -161,18 +185,25 @@ var startGame = function(){
 	}
 }
 var startTutorial = function(){
+	// Don't do anything if animating after button was pressed
 	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start('Tutorial', true, false, 0);
 	} else {
 
+		// Animating now
+		animatingMenu = true;
+
+		// Start a timer that will start the tutorial after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Tutorial', true, false, 0);}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -188,18 +219,25 @@ var startTutorial = function(){
 }
 
 var credits = function(){
+	// Don't do anything if animating after button was pressed
 	if(animatingMenu) {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start('Credits');
 	} else {
 
+		// Animating now
+		animatingMenu = true;
+
+		// Start a timer that will start the credits after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Credits');}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -215,12 +253,22 @@ var credits = function(){
 
 }
 
+// Creidts state
 var Credits = function(game) {};
 Credits.prototype = {
 	create: function() {
-		this.credits = this.add.image(0, 0, 'credits', 0);
-		this.esc = new PlayButton(game, game.width-20, 20, 'exit', toMenu, this, 'exitOff', 'exitOn', "");
+		this.credits = this.add.image(0, 0, 'atlas', 'CreditsAlph');
+		this.esc = new PlayButton(game, game.width-20, 20, 'atlas', toMenu, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
+
+		// Draw the game borders
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
+		gameBorders.lineTo(0, 0);
 	}
 }
 
@@ -232,10 +280,11 @@ Tutorial.prototype = {
 	preload: function() {
 	},
 	create: function() {
+		// Create the background and foreground groups
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars3", 0);
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "atlas", "stars3", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
 		this.stars.alpha = 0.7;
@@ -244,26 +293,29 @@ Tutorial.prototype = {
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
 
+		// Play the music if it is not yet playing
 		if(!music.isPlaying) {
 			music.play("", 0, 0, true);
 		}
 
+		// Fade out the menu music and fade in the gameplay music
 		menusounds.fadeTo(5000, 0);
 		music.fadeTo(1000, 0.6);
 
+		// The universalTime must start at default (0.3 -> 1x speed)
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exitTutorial, this, 'exitOff', 'exitOn', "");
+		this.esc = new PlayButton(game, game.width-20, 20, 'atlas', exitTutorial, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
 		// Add in the planets
-		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'planets', 'RSlowP', 1.5, "green");
-		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'planets', 'MedP', 2.5, "blue");
-		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 4, "purple");
+		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'atlas', 'RSlowP', 1.5, "green");
+		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'atlas', 'MedP', 2.5, "blue");
+		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'atlas', 'RFastP', 4, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'hole', 'blackHole01'));
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'atlas', 'blackHole01'));
 		this.blackHole.anchor.setTo(0.5);
 		this.blackHole.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
 		this.blackHole.animations.play('swirl');
@@ -284,7 +336,7 @@ Tutorial.prototype = {
 		this.planetList = [this.reallySlow, this.medium, this.reallyFast];
 
 		//Abigail's Profile Pic
-		this.mPic = this.add.sprite(0, game.height, 'chars', 'Abigail');
+		this.mPic = this.add.sprite(0, game.height, 'atlas', 'Abigail');
 		this.mPic.anchor.setTo(0,1);
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
@@ -292,14 +344,14 @@ Tutorial.prototype = {
 
 		//Pop-up for instructions
 		//Popup(game, x, y, xSize, ySize, key, frames)
-		this.popup = new Popup(game, -1000, -1000, 40, 2, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup = new Popup(game, -1000, -1000, 40, 2, "atlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 
 		//Instruction text
 		this.instruction = game.make.text(10, 15, "", { font: '20px Courier', fill: '#fff'});
 		game.foreground.add(this.instruction);
 
 		//Add Abigail
-		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
+		this.medChar = new Character(game, this.medium, this.planetList, "atlas", "smolAbigail", this.audio, "Abigail", this.mPic);
 
 		this.timeControlDisplay = game.make.text(10, 35, '1x speed', { font: '15px Courier', fill: '#fff'});
 		game.foreground.add(this.timeControlDisplay);
@@ -309,7 +361,7 @@ Tutorial.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
+			this.arrows.push(new SpeedUp(game, 'atlas', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 
@@ -325,31 +377,44 @@ Tutorial.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 
+		// Bring the foreground object to the top of the render list
 		game.world.bringToTop(game.foreground);
+
+		// Draw the game borders
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
+		gameBorders.lineTo(0, 0);
+
 	},
 	update: function() {
+		// Animate the stars
 		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
 		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
 		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
 
 		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
-		for(var a in this.arrows){
-			if(this.arrows[a].recent === 1){
-				for(var r in this.arrows){
-					if(this.arrows[r].index <= this.arrows[a].index){
-						this.arrows[r].frame = 0;
+		for(var a in this.arrows){ //Loop through arrows
+			if(this.arrows[a].recent === 1){ //If this arrow was just clicked
+				for(var r in this.arrows){ //Loop through all arrows again
+					if(this.arrows[r].index <= this.arrows[a].index){ //If the arrow is behind the clicked arrow
+						this.arrows[r].frameName = 'filled'; //Set frame to filled in
 					}
 					else{
-						this.arrows[r].frame = 1;
+						this.arrows[r].frameName = 'empty'; //Otherwise set it to empty
 					}
 				}
-				game.universalTime = this.arrows[a].value;
-				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3;
-				this.arrows[a].recent = 0;
+				game.universalTime = this.arrows[a].value; //Get game time from clicked arrow
+				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3; //Adjust black hole animation speed
+				this.arrows[a].recent = 0; //Reset the clicked checker
 				
 			}
 		}
 
+		// Update the time speed display
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 		this.numPlanets = 0;
 		this.pLeft = 0;
@@ -468,6 +533,7 @@ Tutorial.prototype = {
 					this.medChar.openOnce = true;
 					this.popup.ResetGoal(480, 80);
 					this.popup.Open();
+					this.medChar.showProfile();
 				}
 				this.instruction.text = "Notice that Abigail's efficiency has started \nto drop now that she's sad because she is \n5 years ahead of her family.\n\nDrag her back to her home, the blue planet.";
 				break;
@@ -516,12 +582,14 @@ Tutorial.prototype = {
 				break;
 		}
 	},
+	// Function to speed up the game
 	speedUp: function() {
 		game.universalTime += 0.25 * 0.3;
 		if(game.universalTime > 3.0 * 0.3) {
 			game.universalTime = 3.0 * 0.3;
 		}
 	},
+	// Function to slow down the game
 	speedDown: function() {
 		game.universalTime -= 0.25 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
@@ -529,6 +597,7 @@ Tutorial.prototype = {
 		}
 	}
 }
+// Function to leave the tutorial
 var exitTutorial = function(){
 	game.universalTime = 0;
 	//this.esc.destroy();
@@ -537,16 +606,18 @@ var exitTutorial = function(){
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
 
+// Play state
 var Play = function(game) {};
 Play.prototype = {
 	preload: function() {
 
 	},
 	create: function() {
+		// Create the background and foreground groups
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
-		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars3", 0);
+		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "atlas", "stars3", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
 		this.stars.alpha = 0.7;
@@ -555,28 +626,31 @@ Play.prototype = {
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
 
+		// Play the music if it isn't playing
 		if(!music.isPlaying) {
 			music.play("", 0, 0, true);
 		}
 
+		// Fade out the menu music and fade in the gameplay music
 		menusounds.fadeTo(1000, 0);
 		music.fadeTo(1000, 0.6);
 
+		// Start universal time at default (0.3 -> 1x speed)
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
-		this.esc = new PlayButton(game, game.width-20, 20, 'exit', exit, this, 'exitOff', 'exitOn', "");
+		this.esc = new PlayButton(game, game.width-20, 20, 'atlas', exit, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
 		// Add in the planets
-		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'planets', 'RSlowP', 0.5, "green");
-		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 8, 'planets', 'SlowP', 0.75, "yellow");
-		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'planets', 'MedP', 1, "blue");
-		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 7, 'planets', 'FastP', 1.25, "red");
-		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'planets', 'RFastP', 1.75, "purple");
+		this.reallySlow = new World(game, 0.33 * 400, 1 * Math.PI, 7, 'atlas', 'RSlowP', 0.5, "green");
+		this.slow = new World(game, 0.5 * 400, 0.2123523 * Math.PI, 8, 'atlas', 'SlowP', 0.75, "yellow");
+		this.medium = new World(game, 0.66 * 400, 1.897 * Math.PI, 6, 'atlas', 'MedP', 1, "blue");
+		this.fast = new World(game, 0.83 * 400, 1.23432 * Math.PI, 7, 'atlas', 'FastP', 1.25, "red");
+		this.reallyFast = new World(game, 1.0 * 400, 0.646 * Math.PI, 4, 'atlas', 'RFastP', 1.75, "purple");
 
 		// Put black hole on the screen
-		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'hole', 'blackHole01'));
+		this.blackHole = game.background.add(game.make.sprite(game.width/2, game.height/2, 'atlas', 'blackHole01'));
 		this.blackHole.anchor.setTo(0.5);
 		this.blackHole.animations.add('swirl', Phaser.Animation.generateFrameNames('blackHole', 1, 15, '', 2), 24, true);
 		this.blackHole.animations.play('swirl');
@@ -596,19 +670,19 @@ Play.prototype = {
 		this.planetList = [this.reallySlow, this.slow, this.medium, this.fast, this.reallyFast];
 
 		//Add profile pics
-		this.sPic = this.add.sprite(0, game.height, 'chars', 'Cameron');
+		this.sPic = this.add.sprite(0, game.height, 'atlas', 'Cameron');
 		this.sPic.anchor.setTo(0,1);
 		this.sPic.scale.setTo(0.7);
 		this.sPic.alpha = 0;
 		game.foreground.add(this.sPic);
 
-		this.mPic = this.add.sprite(0, game.height, 'chars', 'Abigail');
+		this.mPic = this.add.sprite(0, game.height, 'atlas', 'Abigail');
 		this.mPic.anchor.setTo(0,1);
 		this.mPic.scale.setTo(0.7);
 		this.mPic.alpha = 0;
 		game.foreground.add(this.mPic);
 
-		this.fPic = this.add.sprite(0, game.height, 'chars', 'Henry');
+		this.fPic = this.add.sprite(0, game.height, 'atlas', 'Henry');
 		this.fPic.anchor.setTo(0,1);
 		this.fPic.scale.setTo(0.7);
 		this.fPic.alpha = 0;
@@ -616,9 +690,9 @@ Play.prototype = {
 
 		//Add characters
 		//Character(game, planet, planetList, key, frame, audio, name, profile)
-		this.slowChar = new Character(game, this.slow, this.planetList, "chars", "smolCameron", this.audio, "Cameron", this.sPic);
-		this.medChar = new Character(game, this.medium, this.planetList, "chars", "smolAbigail", this.audio, "Abigail", this.mPic);
-		this.fastChar = new Character(game, this.fast, this.planetList, "chars", "smolHenry", this.audio, "Henry", this.fPic);
+		this.slowChar = new Character(game, this.slow, this.planetList, "atlas", "smolCameron", this.audio, "Cameron", this.sPic);
+		this.medChar = new Character(game, this.medium, this.planetList, "atlas", "smolAbigail", this.audio, "Abigail", this.mPic);
+		this.fastChar = new Character(game, this.fast, this.planetList, "atlas", "smolHenry", this.audio, "Henry", this.fPic);
 
 		this.characterList = [this.slowChar, this.medChar, this.fastChar];
 		this.ProgressBarList = [this.reallySlow.job, this.slow.job, this.medium.job, this.fast.job, this.reallyFast.job];
@@ -631,7 +705,7 @@ Play.prototype = {
 		//Add arrows for time speed UI
 		//SpeedUp(game, key, frame, arrows, value, index)
 		for(i = 0; i < 5; i++){
-			this.arrows.push(new SpeedUp(game, 'arrows', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
+			this.arrows.push(new SpeedUp(game, 'atlas', 'empty', this.timeControlDisplay.text, (i+2)*0.15, i, "speed"+(i+1)));
 		}
 		this.arrows[0].recent = 1;
 
@@ -646,30 +720,41 @@ Play.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 
+		// Bring the foreground to the top of the render list
 		game.world.bringToTop(game.foreground);
+
+		// Draw the game borders
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
+		gameBorders.lineTo(0, 0);
 	},
 
 	update: function() {
 		// run game loop
 
+		// Animate the stars
 		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
 		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
 		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
 
 		//Check which arrow was just clicked and set all the arrows to be filled behind it and update time
-		for(var a in this.arrows){
-			if(this.arrows[a].recent === 1){
-				for(var r in this.arrows){
-					if(this.arrows[r].index <= this.arrows[a].index){
-						this.arrows[r].frame = 0;
+		for(var a in this.arrows){ //Loop through arrows
+			if(this.arrows[a].recent === 1){ //If this arrow was just clicked
+				for(var r in this.arrows){ //Loop through all arrows again
+					if(this.arrows[r].index <= this.arrows[a].index){ //If the arrow is behind the clicked arrow
+						this.arrows[r].frameName = 'filled'; //Set frame to filled in
 					}
 					else{
-						this.arrows[r].frame = 1;
+						this.arrows[r].frameName = 'empty'; //Otherwise set it to empty
 					}
 				}
-				game.universalTime = this.arrows[a].value;
-				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3;
-				this.arrows[a].recent = 0;
+				game.universalTime = this.arrows[a].value; //Get game time from clicked arrow
+				this.blackHole.animations.currentAnim.speed = this.arrows[a].value * 24/0.3; //Adjust black hole animation speed
+				this.arrows[a].recent = 0; //Reset the clicked checker
 				
 			}
 		}
@@ -715,16 +800,18 @@ Play.prototype = {
 
 		}
 
-
+		// Update time control speed text
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 
 	},
+	// Function to speed up the game
 	speedUp: function() {
 		game.universalTime += 0.25 * 0.3;
 		if(game.universalTime > 3.0 * 0.3) {
 			game.universalTime = 3.0 * 0.3;
 		}
 	},
+	// Function to slow down the game
 	speedDown: function() {
 		game.universalTime -= 0.25 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
@@ -732,6 +819,7 @@ Play.prototype = {
 		}
 	}
 }
+// Function to exit the play state
 var exit = function(){
 	game.universalTime = 0;
 	//this.esc.destroy();
@@ -740,8 +828,10 @@ var exit = function(){
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
+// GameOver state
 var GameOver = function(game) {};
 GameOver.prototype = {
+	// Get information about how the game ended and if it was the tutorial or play state
 	init: function(won, numPlanets, pLeft, tutor) {
 		this.won = won;
 		this.numPlanets = numPlanets;
@@ -764,7 +854,7 @@ GameOver.prototype = {
 		this.padding = '\n\n';
 		
 		//Popup(game, x, y, xSize, ySize, key, frames)
-		this.popup = new Popup(game, game.width/2, game.height/2, 450, 600, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+		this.popup = new Popup(game, game.width/2, game.height/2, 450, 600, "atlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 		this.popup.anchor.setTo(0.5);
 
 		//if from the tutorial, total planets is 3
@@ -820,19 +910,19 @@ GameOver.prototype = {
 		if(this.tutor === true){ //if from the tutorial
 			//if they beat the tutorial let them continue to game
 			if(this.won === 1){
-				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startGame, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'atlas', startGame, this, 'GObuttonOff', 'GObuttonOn', "CONTINUE", "#000000", "#FFFFFF", "40px Courier");
 			}
 			else{ //if they lose the tutorial let them retry the tutorial
-				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startTutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+				this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'atlas', startTutorial, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 			}
 		}
 		else{ //not from tutorial, can only try again
-			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'GObutton', startGame, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
+			this.retry = new PlayButton(game, game.width/2, game.height/2 + 150, 'atlas', startGame, this, 'GObuttonOff', 'GObuttonOn', "TRY AGAIN", "#000000", "#FFFFFF", "40px Courier");
 		}
 		this.retry.anchor.setTo(0.5);
 
 		//always have a return to menu button
-		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'GObutton', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
+		this.return = new PlayButton(game, game.width/2, game.height/2 + 280, 'atlas', toMenu, this, 'GObuttonOff', 'GObuttonOn', "MAIN MENU", "#000000", "#FFFFFF", "40px Courier");
 		this.return.anchor.setTo(0.5);
 
 		//hide mission report items until popup is full sized
@@ -842,6 +932,15 @@ GameOver.prototype = {
 			this.missionReport[property].alpha = 0;
 		}*/
 		this.popup.Open();
+
+		// Draw the game borders
+		gameBorders = game.add.graphics();
+		gameBorders.lineStyle(4, 0xffffff, 1);
+		gameBorders.moveTo(0, 0);
+		gameBorders.lineTo(game.world.width, 0);
+		gameBorders.lineTo(game.world.width, game.world.height - 2);
+		gameBorders.lineTo(0, game.world.height - 2);
+		gameBorders.lineTo(0, 0);
 	},
 	update: function() {
 		/*//cool resize animation to make things snazzy

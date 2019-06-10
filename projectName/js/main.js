@@ -304,6 +304,7 @@ Tutorial.prototype = {
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
+		// Add in the starry background
 		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars3", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
@@ -313,13 +314,16 @@ Tutorial.prototype = {
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
 
+		// Play the music if it is not yet playing
 		if(!music.isPlaying) {
 			music.play("", 0, 0, true);
 		}
 
+		// Fade out the menu music and fade in the gameplay music
 		menusounds.fadeTo(5000, 0);
 		music.fadeTo(1000, 0.6);
 
+		// The universalTime must start at default (0.3 -> 1x speed)
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -394,8 +398,10 @@ Tutorial.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 
+		// Bring the foreground object to the top of the render list
 		game.world.bringToTop(game.foreground);
 
+		// Draw the game borders
 		gameBorders = game.add.graphics();
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
@@ -406,6 +412,7 @@ Tutorial.prototype = {
 
 	},
 	update: function() {
+		// Animate the stars
 		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
 		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
 		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
@@ -428,6 +435,7 @@ Tutorial.prototype = {
 			}
 		}
 
+		// Update the time speed display
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 		this.numPlanets = 0;
 		this.pLeft = 0;
@@ -595,12 +603,14 @@ Tutorial.prototype = {
 				break;
 		}
 	},
+	// Function to speed up the game
 	speedUp: function() {
 		game.universalTime += 0.25 * 0.3;
 		if(game.universalTime > 3.0 * 0.3) {
 			game.universalTime = 3.0 * 0.3;
 		}
 	},
+	// Function to slow down the game
 	speedDown: function() {
 		game.universalTime -= 0.25 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
@@ -608,6 +618,7 @@ Tutorial.prototype = {
 		}
 	}
 }
+// Function to leave the tutorial
 var exitTutorial = function(){
 	game.universalTime = 0;
 	//this.esc.destroy();
@@ -616,15 +627,18 @@ var exitTutorial = function(){
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, true);
 }
 
+// Play state
 var Play = function(game) {};
 Play.prototype = {
 	preload: function() {
 
 	},
 	create: function() {
+		// Create the background and foreground groups
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 
+		// Create the stars object
 		this.stars = game.make.tileSprite(game.world.centerX + 30, game.world.centerY + 100, 1600, 1500, "starAtlas", "stars3", 0);
 		this.stars.anchor.set(0.5);
 		this.stars.scale.set(1.4);
@@ -634,13 +648,16 @@ Play.prototype = {
 		game.add.existing(this.stars);
 		game.world.sendToBack(this.stars);
 
+		// Play the music if it isn't playing
 		if(!music.isPlaying) {
 			music.play("", 0, 0, true);
 		}
 
+		// Fade out the menu music and fade in the gameplay music
 		menusounds.fadeTo(1000, 0);
 		music.fadeTo(1000, 0.6);
 
+		// Start universal time at default (0.3 -> 1x speed)
 		game.universalTime = 0.3;
 		//Escape button
 		//PlayButton(game, x, y, key, callback, callbackContext, buttonFrame, buttonOver, text)
@@ -725,8 +742,10 @@ Play.prototype = {
 		// Clear the MessageQueue
 		MessageQueue = [];
 
+		// Bring the foreground to the top of the render list
 		game.world.bringToTop(game.foreground);
 
+		// Draw the game borders
 		gameBorders = game.add.graphics();
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
@@ -739,6 +758,7 @@ Play.prototype = {
 	update: function() {
 		// run game loop
 
+		// Animate the stars
 		this.stars.angle += (game.time.elapsed / 1000) * game.universalTime * 2;
 		this.stars.tilePosition.x += (game.time.elapsed / 1000) * game.universalTime * 5;
 		this.stars.tilePosition.y += (game.time.elapsed / 1000) * game.universalTime * 10;
@@ -802,16 +822,18 @@ Play.prototype = {
 
 		}
 
-
+		// Update time control speed text
 		this.timeControlDisplay.text = (Math.round(100 * game.universalTime / 0.3) / 100)+"x speed";
 
 	},
+	// Function to speed up the game
 	speedUp: function() {
 		game.universalTime += 0.25 * 0.3;
 		if(game.universalTime > 3.0 * 0.3) {
 			game.universalTime = 3.0 * 0.3;
 		}
 	},
+	// Function to slow down the game
 	speedDown: function() {
 		game.universalTime -= 0.25 * 0.3;
 		if(game.universalTime < 0.25 * 0.3) {
@@ -819,6 +841,7 @@ Play.prototype = {
 		}
 	}
 }
+// Function to exit the play state
 var exit = function(){
 	game.universalTime = 0;
 	//this.esc.destroy();
@@ -827,8 +850,10 @@ var exit = function(){
 	game.state.start('GameOver', false, false, 2, this.numPlanets, this.pLeft, false);
 }
 
+// GameOver state
 var GameOver = function(game) {};
 GameOver.prototype = {
+	// Get information about how the game ended and if it was the tutorial or play state
 	init: function(won, numPlanets, pLeft, tutor) {
 		this.won = won;
 		this.numPlanets = numPlanets;
@@ -930,6 +955,7 @@ GameOver.prototype = {
 		}*/
 		this.popup.Open();
 
+		// Draw the game borders
 		gameBorders = game.add.graphics();
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);

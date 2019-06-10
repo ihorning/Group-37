@@ -89,8 +89,10 @@ Rocket.prototype.update = function() {
 	var ageChange = game.universalTime * ((this.orbitRad / 400) / 0.66) * game.time.elapsed / 1000;
 	this.character.life -= ageChange;
 	if(this.character.life < 0) {
+		this.destination.pendingArrival = false;
 		this.character.life = 0;
 		this.character.Die();
+		this.pendingDestroy = true;
 		return;
 	}
 	this.character.happiness += ageChange * (5 - Math.abs((100 - this.character.life) - this.character.home.currentTime));

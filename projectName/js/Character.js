@@ -451,7 +451,7 @@ Character.prototype.update = function() {
 					if(oddEven) {
 						circleRad = 5;
 					} else {
-						circleRad = 3;
+						circleRad = 4;
 					}
 					oddEven = !oddEven;
 					this.line.drawCircle(newX, newY, circleRad);

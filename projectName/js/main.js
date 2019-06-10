@@ -1,35 +1,48 @@
 //Group 37 Jay Holm, Ian Horning, Gram Nitschke
 //https://github.com/ihorning/Group-37
+//https://rockets-and-logarithms.itch.io/a-relative-shift-in-time
 "use strict";
 
-// var game = new Phaser.Game(900, 900, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+// Create the game
 var game = new Phaser.Game(1100, 900, Phaser.AUTO);
+// Initialize the universalTime variable
 game.universalTime = 0.3;
 
+// Initialize the background and foreground groups
 game.background = null;
 game.foreground = null;
 
+// Initialize the dragging boolean, which keeps track of whether or not the player is dragging a character
 var dragging = false;
 
+// Declare the global music and menusounds objects, which will play the game's music
 var music;
 var menusounds;
 
+// The assets have not yet been preloaded
 var preloadedAssets = false;
+// The menu is not being animated
 var animatingMenu = false;
 
+// Declare the gloabl gameBorders object
 var gameBorders;
 
+// The MainMenu state
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
+		// Center the game on the screen
 		// http://www.html5gamedevs.com/topic/1609-centering-canvas/
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.scale.refresh();
 
-
+		// If assets have not yet been preloaded...
 		if(!preloadedAssets) {
 			// console.log('MainMenu: preload');
+			
+			// Load in all the image assets
+
 			game.load.image('credits', 'assets/img/CreditsAlph.png');
 
 			game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
@@ -47,6 +60,8 @@ MainMenu.prototype = {
 			game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
 			game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
 			game.load.atlas("starAtlas", "assets/img/starAtlas.png", "assets/img/starAtlas.json");
+
+			// Load in all the sound assets
 
 			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');
@@ -70,14 +85,18 @@ MainMenu.prototype = {
 			// grab keyboard manager
 			var cursors = game.input.keyboard.createCursorKeys();
 
+			// Assets have now been preloaded
 			preloadedAssets = true;
 		}
 		
 	},
 	create: function() {
-		 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// console.log('MainMenu: create');
 
+		// Set scale mode to fill the screen and keep proportions
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+		// The music has not yet been set up
 		this.musicSetUp = false;
 
 		// add title and play, tutorial, credits button
@@ -95,7 +114,7 @@ MainMenu.prototype = {
 		this.credits = new PlayButton(game, game.width/2, game.height/2 + 260, 'title', credits, this, 'buttonUp', 'buttonDown', "CREDITS", "#FAFAFA", "#050505", "bold 48px Helvetica");
 		this.credits.anchor.setTo(0.5);
 
-
+		// Tween in all the main menu elements
 		game.add.tween(this.title).from({y: -100}, 700, Phaser.Easing.Quadratic.Out, true, 0);
 
 		game.add.tween(this.play).from({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.Out, true, 400);
@@ -109,6 +128,7 @@ MainMenu.prototype = {
 
 		animatingMenu = false;
 
+		// Draw lines around the game
 		gameBorders = game.add.graphics();
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
@@ -119,7 +139,9 @@ MainMenu.prototype = {
 
 	},
 	update: function() {
+		// If audio context is not suspended and music has not been set up...
 		if(!this.musicSetUp && !(game.sound.context.state === "suspended")) {
+			// Start playing the music
 			if(music === undefined) {
 				music = game.add.audio("music");
 				music.play("", 0, 0, true);
@@ -128,6 +150,7 @@ MainMenu.prototype = {
 			} else {
 				music.fadeTo(1000, 0);
 			}
+			// Start playing the menusounds music
 			if(menusounds === undefined) {
 				menusounds = game.add.audio("menusounds");
 				menusounds.play("", 0, 0, true);
@@ -137,26 +160,35 @@ MainMenu.prototype = {
 			} else {
 				menusounds.fadeTo(1000, 0.5);
 			}
+			// Music has now been set up
 			this.musicSetUp = true;
 		}
+		// If not in suspended state and menusounds volume has mysteriously become 0, fade it in again
 		if(!(game.sound.context.state === "suspended") && menusounds.volume === 0) {
 			menusounds.fadeTo(3000, 0.5);
 		}
 	}
 }
 var startGame = function(){
+	// Don't do anything if animating after the button was pressed
 	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start("Play");
-	} else {
+	} else { // Else, animate
 
+		// Animating now
+		animatingMenu = true;
+
+		// Create a timer that will start the play state after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start("Play");}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -171,18 +203,25 @@ var startGame = function(){
 	}
 }
 var startTutorial = function(){
+	// Don't do anything if animating after button was pressed
 	if(animatingMenu && game.state.getCurrentState().key == "MainMenu") {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start('Tutorial', true, false, 0);
 	} else {
 
+		// Animating now
+		animatingMenu = true;
+
+		// Start a timer that will start the tutorial after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Tutorial', true, false, 0);}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -198,18 +237,25 @@ var startTutorial = function(){
 }
 
 var credits = function(){
+	// Don't do anything if animating after button was pressed
 	if(animatingMenu) {
 		return;
 	}
-	animatingMenu = true;
+	
+	// If not in the main menu state, do not animate
 	if(game.state.getCurrentState().key != "MainMenu") {
 		game.state.start('Credits');
 	} else {
 
+		// Animating now
+		animatingMenu = true;
+
+		// Start a timer that will start the credits after animation
 		var startTimer = game.time.create(true);
 		startTimer.add(1200, function() {animatingMenu = false; game.state.start('Credits');}, this);
 		startTimer.start();
 
+		// Tween out all the menu elements
 		game.add.tween(this.title).to({y: -100}, 700, Phaser.Easing.Quadratic.In, true, 400);
 
 		game.add.tween(this.play).to({y: game.world.centerY}, 800, Phaser.Easing.Quadratic.In, true);
@@ -225,13 +271,17 @@ var credits = function(){
 
 }
 
+// Creidts state
 var Credits = function(game) {};
 Credits.prototype = {
 	create: function() {
+		// Add in the credits image
 		this.credits = this.add.image(0, 0, 'credits', 0);
+		// Add in an escape button
 		this.esc = new PlayButton(game, game.width-20, 20, 'exit', toMenu, this, 'exitOff', 'exitOn', "");
 		this.esc.anchor.setTo(1, 0);
 
+		// Draw the game borders
 		gameBorders = game.add.graphics();
 		gameBorders.lineStyle(4, 0xffffff, 1);
 		gameBorders.moveTo(0, 0);
@@ -250,6 +300,7 @@ Tutorial.prototype = {
 	preload: function() {
 	},
 	create: function() {
+		// Create the background and foreground groups
 		game.background = game.add.group();
 		game.foreground = game.add.group();
 

@@ -1,3 +1,6 @@
+"use strict";
+
+// Constructor
 function SpeedUp(game, key, frame, text, value, index, sound){
 	Phaser.Sprite.call(this, game, 20 * index + 10, 10, key, frame);
 	this.value = value;

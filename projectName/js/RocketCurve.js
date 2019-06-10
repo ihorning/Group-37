@@ -1,6 +1,15 @@
 "use strict";
 
+// Constructor
+// x0: the starting "x" or theta value
+// x1: the ending "x" or theta value
+// y0: the starting "y" or radius value
+// y1: the ending "y" or radius value
+// shape: variable in the logarithm that affects the shape of the curve
+// logBase: base of the logarithm used, also affects shape
+// reverse: clockwise (false) or counterclockwise (true) / left (false) or right (true)
 function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
+	// Save the passed values
 	this.x0 = x0;
 	this.x1 = x1;
 	this.y0 = y0;
@@ -8,19 +17,19 @@ function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 	this.shape = shape;
 	this.logBase = logBase;
 
-
+	// Make x0 > 0
 	while(this.x0 < 0) {
 		this.x0 += Math.PI * 2;
 	}
 	this.x0 = this.x0 % (Math.PI * 2);
 
-
+	// Make x1 > 0
 	while(this.x1 < 0) {
 		this.x1 += Math.PI * 2;
 	}
 	this.x1 = this.x1 % (Math.PI * 2);
 
-
+	// If reverse is not defined, determine based on difference between x0 and x1
 	if(reverse === undefined) {
 		var x2 = this.x1;
 		while(x2 < this.x0) {
@@ -31,24 +40,27 @@ function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 		} else {
 			this.reverse = false;
 		}
-	} else {
+	} else { // If defined, use the requested direction
 		this.reverse = reverse;
 	}
 
-
+	// If not reversed,
 	if(!this.reverse) {
+		// Make x1 > x0
 		while(this.x1 < this.x0) {
 			this.x1 += Math.PI * 2;
 		}
-	} else {
+	} else { // If reversed,
+		// Make x0 > x1
 		while(this.x0 < this.x1) {
 			this.x0 += Math.PI * 2;
 		}
 	}
 	
-
+	// Calculate what to multiply the natural logarithm by to translate it to the desired base
 	this.logBaseFactor = 1 / Math.log(this.logBase);
 
+	// Calculate the coefficient that lines up the curve to meet the requested start and end coordinates
 	if(!this.reverse) {
 		this.coefficient = (this.y1 - this.y0) / (this.logBaseFactor * Math.log(((this.x1 - this.x0) + this.shape) / this.shape));
 	} else {
@@ -56,9 +68,12 @@ function RocketCurve(x0, x1, y0, y1, shape, logBase, reverse) {
 	}
 }
 
+// Set the prototype of RocketCurve to be a copy of Object prototype
 RocketCurve.prototype = Object.create(Object.prototype);
+// Define constructor
 RocketCurve.prototype.constructor = RocketCurve;
 
+// Function to get the y (or radius) for a given x (or theta) of the curve
 RocketCurve.prototype.y = function(x) {
 	var result;
 	if(!this.reverse) {
@@ -69,6 +84,7 @@ RocketCurve.prototype.y = function(x) {
 	return(result);
 };
 
+// Function to get the slope at any given x (or theta) of the curve
 RocketCurve.prototype.derivative = function(x) {
 	var result;
 	if(!this.reverse) {

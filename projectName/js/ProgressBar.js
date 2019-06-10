@@ -60,7 +60,7 @@ function ProgressBar(game, x, y, barWidth, barHeight, maxProgressWidth, progress
 	ProgressBar.prototype.update.call(this);
 }
 
-// Set the prototype of Spike to be a copy of Phaser.Sprite.prototype
+// Set the prototype of ProgressBar to be a copy of Phaser.Sprite.prototype
 ProgressBar.prototype = Object.create(Phaser.TileSprite.prototype);
 // Define the constructor
 ProgressBar.prototype.constructor = ProgressBar;

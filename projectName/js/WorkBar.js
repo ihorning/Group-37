@@ -70,7 +70,7 @@ WorkBar.prototype.update = function() {
 		this.bar.tint = 0xeeffee;
 	}
 
-
+	// Show a skeleton if the mouse is over
 	if(!dragging && Math.pow(Math.pow(game.input.mousePointer.x - this.world.x, 2) + Math.pow(game.input.mousePointer.y - this.world.y, 2), 0.5) < this.BG.width * 0.5) {
 		this.BG.visible = true;
 		this.displayText.scale.set(1.15);

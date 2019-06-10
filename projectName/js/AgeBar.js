@@ -5,8 +5,6 @@
 // Change these "constant" (not really) variables to whatever the default values for AgeBar should be.
 // I put these variables here instead of as parameters to reduce clutter.
 
-// Look at WorkBar for details about what the variables do
-
 var AGE_BAR_WIDTH = 72;
 var AGE_BAR_HEIGHT = 10;
 var AGE_PROGRESS_WIDTH = AGE_BAR_WIDTH;

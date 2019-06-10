@@ -657,13 +657,13 @@ Character.prototype.EndDrag = function() {
 	if(minDistance < 100) {
 
 		if(this.planetList[minInd] === this.home) {
-			console.log(this.name+" gains 10 points of happiness for going home");
+			//console.log(this.name+" gains 10 points of happiness for going home");
 			this.happiness += 10;
 			if(this.happiness > 100) {
 				this.happiness = 100;
 			}
 		} else {
-			console.log(this.name+" loses 10 points of happiness for travel");
+			//console.log(this.name+" loses 10 points of happiness for travel");
 			this.happiness -= 10;
 			if(this.happiness < 0) {
 				this.happiness = 0;

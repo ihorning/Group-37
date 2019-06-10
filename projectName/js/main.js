@@ -31,23 +31,6 @@ MainMenu.prototype = {
 		if(!preloadedAssets) {
 			// console.log('MainMenu: preload');
 			game.load.atlas('atlas', 'assets/img/atlas.png', 'assets/img/atlas.json');
-			// game.load.image('credits', 'assets/img/CreditsAlph.png');
-
-			// game.load.atlas('title', 'assets/img/title.png', 'assets/img/title.json');
-			// game.load.atlas('hole', 'assets/img/blackHole.png', 'assets/img/blackHole.json');
-			// game.load.atlas('arrows', 'assets/img/arrows.png', 'assets/img/arrows.json');
-			// game.load.atlas('GObutton', 'assets/img/GObutton.png', 'assets/img/GObutton.json');
-			// game.load.atlas('exit', 'assets/img/exit.png', 'assets/img/exit.json');
-			// game.load.atlas('chars', 'assets/img/chars.png', 'assets/img/chars.json');
-			// game.load.atlas('spaceatlas', 'assets/img/spaceatlas.png', 'assets/img/spaceatlas.json');
-			// game.load.atlas('planets', 'assets/img/planets.png', 'assets/img/planets.json');
-			// game.load.atlas("barAtlas", "assets/img/barAtlas.png", "assets/img/barAtlas.json");
-			// game.load.atlas("rocketAtlas", "assets/img/rocketAtlas.png", "assets/img/rocketAtlas.json");
-			// game.load.atlas("UIAtlas", "assets/img/UIAtlas.png", "assets/img/UIAtlas.json");
-			// game.load.atlas("emoteAtlas", "assets/img/emoteAtlas.png", "assets/img/emoteAtlas.json");
-			// game.load.atlas("mail", "assets/img/mail.png", "assets/img/mail.json");
-			// game.load.atlas("exitMessage", "assets/img/exitMessage.png", "assets/img/exitMessage.json");
-			// game.load.atlas("starAtlas", "assets/img/starAtlas.png", "assets/img/starAtlas.json");
 
 			game.load.audio('clickCharacter', 'assets/audio/clickCharacter.mp3');
 			game.load.audio('dropCharacter', 'assets/audio/dropCharacter.mp3');

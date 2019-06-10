@@ -44,7 +44,8 @@ function Message(game, x, y, xSize, ySize, key, frames, title, message, openSoun
 	this.messageDisplay = this.addChild(game.make.text(0, this.titleDisplay.height + 20, message, style2));
 
 	// Add a button to close the message
-	this.closeButton = this.addChild(new PlayButton(game, xSize / 2, ySize, 'exitMessage', this.Close, this, 'exitMessageOff', 'exitMessageOn', ""));
+	this.closeButton = this.addChild(new PlayButton(game, xSize / 2, ySize, 'atlas', this.Close, this, 'exitMessageOff', 'exitMessageOn', ""));
+	this.closeButton.scale.set(1);
 	this.closeButton.anchor.set(0.5);
 
 	// Add these items as text elements to be hidden in the opening process

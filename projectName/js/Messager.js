@@ -1,4 +1,4 @@
-var MESSAGE_ATAS = "UIAtlas";
+var MESSAGE_ATAS = "atlas";
 var MESSAGE_FRAMES = ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"];
 
 // The current message object on the screen
@@ -113,8 +113,9 @@ var ShowMessage = function(game) {
 // Constructor for the MessageButton
 function MessageButton() {
 	// Call the Phaser.Button constructor
-	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "mail", null, null, "mailOpen", "mailClosed");
+	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "atlas", null, null, "mailOpen", "mailClosed");
 	// Set the anchor to the bottom right
+
 	this.anchor.set(1);
 	// Show the next message on click if there is a next message
 	this.onInputDown.add(function() {

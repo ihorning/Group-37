@@ -10,7 +10,7 @@ var AGE_BAR_HEIGHT = 10;
 var AGE_PROGRESS_WIDTH = AGE_BAR_WIDTH;
 var AGE_PROGRESS_HEIGHT = 4;
 
-var AGE_BAR_KEY = "barAtlas";
+var AGE_BAR_KEY = "atlas";
 var AGE_BAR_FRAMES = {
 	start: "AgeStartCap",
 	middle: "AgeBar",

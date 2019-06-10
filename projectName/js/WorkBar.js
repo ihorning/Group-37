@@ -6,7 +6,7 @@
 // I put these variables here instead of as parameters to reduce clutter.
 
 var WORK_BAR_DIVISIONS = 50;
-var WORK_BAR_KEY = "barAtlas";
+var WORK_BAR_KEY = "atlas";
 var WORK_BAR_FRAME = "circleBar";
 var WORK_BAR_BG_FRAME = "circleBarBG";
 var WORK_BAR_TINT = "0x909090"; // Tint when sleeping

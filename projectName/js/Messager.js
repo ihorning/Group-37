@@ -1,4 +1,4 @@
-var MESSAGE_ATAS = "UIAtlas";
+var MESSAGE_ATAS = "atlas";
 var MESSAGE_FRAMES = ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"];
 
 var currentMessage;
@@ -96,7 +96,7 @@ var ShowMessage = function(game) {
 
 function MessageButton() {
 
-	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "mail", null, null, "mailOpen", "mailClosed");
+	Phaser.Button.call(this, game, game.world.width - 10, game.world.height - 10, "atlas", null, null, "mailOpen", "mailClosed");
 	this.anchor.set(1);
 	this.onInputDown.add(function() {
 		if(MessageQueue.length > 0 && game.state.getCurrentState().key != 'GameOver') {

@@ -60,7 +60,7 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.efficiency = 1;
 
 	// Add the emote sprite as a child
-	this.emote = this.addChild(game.make.sprite(23, -20, "emoteAtlas", "happy"));
+	this.emote = this.addChild(game.make.sprite(23, -20, "atlas", "happy"));
 	this.emote.anchor.set(0.5);
 	this.emote.inputEnabled = true;
 	this.emote.input.disableDrag();
@@ -76,12 +76,12 @@ function Character(game, planet, planetList, key, frame, audio, name, profile) {
 	this.drawLine = false;
 
 	// Add a Popup that Character statistics will be shown on
-	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "UIAtlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
+	this.popup = new Popup(game, 0, game.height - 115, 365, 140, "atlas", ["windowNW", "windowN", "windowNE", "windowW", "windowC", "windowE", "windowSW", "windowS", "windowSE"]);
 	this.picture = profile;
 	this.picture.bringToTop();
 
 	// Add oldness filter but initialize it as invisible
-	this.old = game.foreground.add(game.make.sprite(0, game.height, 'chars', this.name+"Old"));
+	this.old = game.foreground.add(game.make.sprite(0, game.height, 'atlas', this.name+"Old"));
 	this.old.anchor.setTo(0, 1);
 	this.old.scale.setTo(0.7);
 	this.old.bringToTop();
@@ -673,7 +673,7 @@ Character.prototype.EndDrag = function() {
 		this.planetList[minInd].pendingArrival = true;
 
 		// Make a rocket
-		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 300, "rocketAtlas", "rocket");
+		var newRocket = new Rocket(game, this.planet, this.planetList[minInd], this, 300, "atlas", "rocket");
 		this.input.disableDrag();
 		// Add this as a child
 		newRocket.addChild(this);
